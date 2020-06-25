@@ -1,0 +1,73 @@
+user_parameters
+    - name: name
+      value: new n2v model
+      type: string
+      default: new n2v model
+      help: The name of the model. The model will be saved in a folder with this name. Using the name of an existing model will overwrite the data.
+    - name: baseDir
+      value: ../../models
+      type: string
+      default: ../../models
+      help: The base-folder under which the trained model will be saved.
+    - name: dataPath
+      type: string
+      value: ../../n2v-data/training
+      default: ../../n2v-data/training
+      help: The path to folder containig the noisy images on which the model will be trained.
+    - name: epochs
+      type: int
+      value: 30
+      default: 30
+      help: The number of epochs the network will be trained.
+    - name: patchSizeXY
+      type: int
+      value: 64
+      default: 64
+      help: The image is divided into patches for training. Input the size of the patches (length of a side). The value should be between 64 and the dimensions of the image and divisible by 8.
+advanced_parameters
+    - name: stepsPerEpoch
+      type: int
+      value: 0
+      default: 0
+      help:  Define the number of training steps by epoch. By default this parameter is calculated so that each image / patch is seen at least once per epoch. Enter 0 to use number_of_patches / batch_size.
+    - name: batchSize
+      type: int
+      value: 128
+      default: 128
+      help:  This parameter defines the number of patches seen in each training step. Noise2Void requires a large batch size for stable training. Reduce this parameter if your GPU runs out of memory.
+    - name: validationFraction
+      type: float
+      value: 10.0
+      default: 10.0
+      help: The fraction of your training dataset in percent, you want to use to validate the network during the training.
+    - name: learningRate
+      type: float
+      value: 0.0004
+      default: 0.0004
+      help: The initial learning rate. The learning rate controls how much the weights of the network with are adjusted with respect to the loss gradient.
+internal_network_parameters
+    - name: netDepth
+      type: int
+      value: 2
+      dafault: 2
+      help: The depth of the U-Net.
+    - name: netKernelSize
+      type: int
+      value: 3
+      default: 3
+      help: The size of conv. kernels in first layer
+    - name: n2vPercPix
+      type: float
+      value: 1.6
+      default: 1.6
+      help: The percentage of pixels to be manipulated by N2V
+    - name: unetNFirst
+      type: int
+      value: 32
+      default: 32
+      help: The number of feature channels in the first u-net layer.
+    - name: noAugment
+      type: bool
+      value: True
+      default: True
+      help: Do not rotate and flip training patches.
