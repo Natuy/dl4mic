@@ -3,6 +3,8 @@ import os
 import shutil
 import time
 import tensorflow
+import yaml
+import argparse
 import tensorflow as tf
 from csbdeep.io import save_tiff_imagej_compatible
 from n2v.internals.N2V_DataGenerator import N2V_DataGenerator
@@ -10,6 +12,38 @@ from n2v.models import N2VConfig, N2V
 from tensorflow.python.client import device_lib
 from tifffile import imread
 
+
+class ParserCreator(object):
+
+    @classmethod
+    def createArgumentParser(cls, parameterFile):
+        parser = argparse.ArgumentParser()
+        with open(parameterFile, 'r') as file:
+            params = yaml.load(file, Loader=yaml.FullLoader)
+            for key in params.keys():
+                parameterSet = params[key]
+                for parameter in parameterSet:
+                    if parameter['type'] == 'string':
+                        parser.add_argument('--' + parameter['name'], help=parameter['help'],
+                                            default=parameter['default'])
+                    if parameter['type'] == 'int':
+                        parser.add_argument('--' + parameter['name'],
+                                            help=parameter['help'],
+                                            default=parameter['default'],
+                                            type=int)
+                    if parameter['type'] == 'float':
+                        parser.add_argument('--' + parameter['name'],
+                                            help=parameter['help'],
+                                            default=parameter['default'],
+                                            type=float)
+                    if parameter['type'] == 'bool':
+                        storeParam = 'store_false'
+                        if parameter['default']:
+                            storeParam = 'store_true'
+                        parser.add_argument('--' + parameter['name'],
+                                            help=parameter['help'],
+                                            action=storeParam)
+        return parser
 
 class N2VNetwork(object):
 
@@ -44,12 +78,19 @@ class N2VNetwork(object):
         self.numberOfSteps = None
         self.batchSize = 128
         self.percentValidation = 10
+        self.initialLearningRate = 0.0004
+        self.percentPixel = 1.6
+        self.netDepth = 2
+        self.kernelSize = 3
+        self.uNetNFirst = 32
         self.trainingData = None
         self.validationData = None
         self.config = None
         self.model = None
         self.history = None
         self.start = None
+        self.dataAugmentationActivated = False
+        self.tile = (2, 1)
 
     def train(self):
         self.__deleteModelFromDisc()
@@ -115,9 +156,35 @@ class N2VNetwork(object):
     def setPercentValidation(self, percent):
         self.percentValidation = percent
 
+    def setInitialLearningRate(self, rate):
+        self.initialLearningRate = rate
+
+    def setPercentPixel(self, percent):
+        self.percentPixel = percent
+
+    def setNetDepth(self, depth):
+        self.netDepth = depth
+
+    def setKernelSize(self, size):
+        self.kernelSize = size
+
+    def setUNetNFirst(self, n):
+        self.uNetNFirst = n
+
+    def deactivateDataAugmentation(self):
+        self.dataAugmentationActivated = False
+
+    def activateDataAugmentation(self):
+        self.dataAugmentationActivated = True
+
+    def setTile(self, tile):
+        self.tile = tile
+
     def __prepareData(self):
         # split patches from the training images
-        data = self.dataGen.generate_patches_from_list(self.getTrainingImages(), shape=(self.patchSize, self.patchSize))
+        data = self.dataGen.generate_patches_from_list(self.getTrainingImages(),
+                                                       shape=(self.patchSize, self.patchSize),
+                                                       augment=self.dataAugmentationActivated)
         # create a threshold (10 % patches for the validation)
         threshold = int(data.shape[0] * (self.percentValidation / 100))
         # split the patches into training patches and validation patches
@@ -130,10 +197,19 @@ class N2VNetwork(object):
         print(self.trainingData.shape[0] - threshold, "patch images for training.")
         print(self.numberOfSteps)
         # noinspection PyTypeChecker
-        self.config = N2VConfig(self.trainingData, unet_kern_size=3,
-                                train_steps_per_epoch=self.numberOfSteps, train_epochs=self.numberOfEpochs,
-                                train_loss='mse', batch_norm=True, train_batch_size=self.batchSize, n2v_perc_pix=0.198,
-                                n2v_manipulator='uniform_withCP', n2v_neighborhood_radius=5)
+        self.config = N2VConfig(self.trainingData,
+                                unet_kern_size=self.kernelSize,
+                                train_steps_per_epoch=self.numberOfSteps,
+                                train_epochs=self.numberOfEpochs,
+                                train_loss='mse',
+                                batch_norm=True,
+                                train_batch_size=self.batchSize,
+                                n2v_perc_pix=self.percentPixel,
+                                n2v_manipulator='uniform_withCP',
+                                unet_n_depth=self.netDepth,
+                                unet_n_first=self.uNetNFirst,
+                                train_learning_rate=self.initialLearningRate,
+                                n2v_neighborhood_radius=5)
         print(vars(self.config))
         self.model = N2V(self.config, self.name, basedir=self.path)
         print("Setup done.")
