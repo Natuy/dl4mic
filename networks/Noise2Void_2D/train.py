@@ -36,7 +36,7 @@ def main(argv):
     n2v.train()
     n2v.saveHistory()
     n2v.printElapsedTime()
-    print("trainN2V done")
+    print("---training done---")
 
 
 if __name__ == '__main__':
