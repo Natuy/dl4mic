@@ -15,7 +15,7 @@ user_parameters:
   default: ../../n2v-data/training
   help: The path to the folder containig the noisy images on which the model will be trained.
 - name: epochs
-  value: 30
+  value: 4
   type: int
   default: 30
   help: The number of epochs the network will be trained.

@@ -15,6 +15,7 @@ def main(argv):
     n2v.setPath(args.baseDir)
     n2v.setTile((args.tileY, args.tileX))
     n2v.predict(args.dataPath, args.output)
+    print("---predictions done---")
 
 
 if __name__ == '__main__':

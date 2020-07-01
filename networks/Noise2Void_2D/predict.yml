@@ -1,6 +1,6 @@
 user_parameters:
 - name: name
-  value: new n2v model
+  value: new_n2v_model
   type: string
   default: new n2v model
   help: The name of the model. The model is read from a folder with this name.
@@ -10,22 +10,22 @@ user_parameters:
   default: ../../models
   help: The base-folder under which the trained model is saved.
 - name: dataPath
+  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/mri-tools/DL4Mic/n2v-data/prediction-in/
   type: string
-  value: ../../n2v-data/prediction-in
   default: ../../n2v-data/prediction-in
   help: The path to the folder containig the noisy images..
 - name: output
+  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/mri-tools/DL4Mic/n2v-data/prediction-out/
   type: string
-  value: ../../n2v-data/prediction-out
   default: ../../n2v-data/prediction-out
   help: The folder into which the result images will be saved.
 - name: tileX
-  type: int
   value: 1
+  type: int
   default: 1
   help: The image will be cut into tileX tiles in the x-dimension if necessary to fit into the GPU memory.
 - name: tileY
-  type: int
   value: 2
+  type: int
   default: 2
   help: The image will be cut into tileY tiles in the y-dimension if necessary to fit into the GPU memory.
