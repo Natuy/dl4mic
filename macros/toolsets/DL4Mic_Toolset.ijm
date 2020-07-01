@@ -94,18 +94,26 @@ function about() {
 function predict() {
 	inputFolder = "";
 	outputFolder = "";
+	workingOnOpenImage = false;
+	isStack = false;
 	if (nImages==0) {
 		inputFolder = getDirectory("Input Folder");	
 		outputFolder = getDirectory("Output Folder");	
 	} else {
+		workingOnOpenImage = true;
+		emptyTmpFolder();
+		title = getTitle();
+		parts = split(title, ".");
+		title = parts[0] + ".tif";
 		File.makeDirectory(getDirectory("imagej") + "dl4mic" + File.separator + "tmp");
 		inputFolder = getDirectory("imagej") + "dl4mic" + File.separator + "tmp" + File.separator + "in";
 		File.makeDirectory(inputFolder);
 		outputFolder = getDirectory("imagej") + "dl4mic" + File.separator + "tmp" + File.separator + "out";
 		if (nSlices>1) {
-			run("Image Sequence... ", "format=TIFF save="+inputFolder);	
+			isStack = true;
+			run("Image Sequence... ", "format=TIFF save="+inputFolder+File.separator+title);	
 		} else {
-			saveAs("tiff", inputFolder);
+			saveAs("tiff", inputFolder +File.separator+title);
 		}
 	}
 	for (i = 0; i < _PREDICT_PARAMETER_GROUP.length; i++) {
@@ -140,15 +148,39 @@ function predict() {
 	}
 	files = getFileList(outputFolder);
 	count = 0;
+	index = 0;
 	for (i = 0; i < files.length; i++) {
 		file = files[i];
 		if (endsWith(file, ".tif")) {
+			index = i;
 			count++;
 		}
 	}
 	print("" + count + " result images have been written to: \n" + outputFolder);
+	if (workingOnOpenImage) {
+		if (isStack) {
+			run("Image Sequence...", "open="+outputFolder+"/"+files[index] + " sort");
+		} else {
+			open(outputFolder +File.separator+title);
+		}
+	}
 }
 
+function emptyTmpFolder() {
+	folder = getDirectory("imagej") + "dl4mic" + File.separator + "tmp";
+	inFolder  = folder + File.separator + "in";
+	outFolder  = folder + File.separator + "out";
+	files = getFileList(inFolder);
+	for (i = 0; i < files.length; i++) {
+		file = files[i];
+		File.delete(inFolder + File.separator + file);
+	}
+	files = getFileList(outFolder);
+	for (i = 0; i < files.length; i++) {
+		file = files[i];
+		File.delete(outFolder + File.separator + file);
+	}
+}
 function train() {
 	if (!File.exists(_PYTHON_INTERPRETER)) {
 		showMessage("Error", "Could not find the python environment. Please install the dl4mic-python-environment or set the path to the interpreter.");
