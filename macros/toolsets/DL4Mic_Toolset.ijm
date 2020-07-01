@@ -223,7 +223,6 @@ function train() {
 
 function displayTrainingEvaluationPlot() {
 	path = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + getValueOfParameter('baseDir') + File.separator + getValueOfParameter("name") + File.separator + "Quality Control" + File.separator + "training_evaluation.csv";
-	print(path);
 	open(path);
 	loss = Table.getColumn("loss", "training_evaluation.csv");
 	valLoss = Table.getColumn("val_loss", "training_evaluation.csv");
@@ -534,6 +533,5 @@ function info() {
 	}
 	message = File.openAsString(_NETWORKS_DIR + "/" + _CURRENT_NETWORK + "/info.html");
 	message = replace(message, "<!--img-->", "<img src='file://"+_NETWORKS_DIR + "/" + _CURRENT_NETWORK + "/picture.png" +"'>");
-	print(message);
 	showMessage("Info: "+_CURRENT_NETWORK, message);
 }
