@@ -1,0 +1,13 @@
+2.7.2020
+
+- download dl4mic
+- extract and rename to remove version information
+- copy the toolset to macros/toolsets
+
+- n2v info: image not displayed    ok
+- python interpreter at C:\ProgramData\Anaconda3\envs\dl
+
+conda install tensorflow-gpu=1.14.0
+conda install pyYAML
+pip install csbdeep
+pip install n2v
