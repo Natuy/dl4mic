@@ -15,6 +15,11 @@ pip install n2v
 NVIDIA Quadro P400
 23.21.13.8816
 
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2018 NVIDIA Corporation
+Built on Sat_Aug_25_21:08:04_Central_Daylight_Time_2018
+Cuda compilation tools, release 10.0, V10.0.130
+
 CUDA Toolkit 	Linux x86_64 Driver Version
 CUDA 11.0 (11.0.171) 	>= 450.36.06
 CUDA 10.2 (10.2.89) 	>= 440.33
@@ -28,3 +33,8 @@ CUDA 8.0 (8.0.44) 	>= 367.48
 CUDA 7.5 (7.5.16) 	>= 352.31
 CUDA 7.0 (7.0.28) 	>= 346.46
 
+cudatoolkit               10.0.130                      0
+cudnn                     7.6.5                cuda10.0_0
+
+  cudatoolkit                            10.2.89-h74a9793_1 --> 10.0.130-0
+  cudnn                                    7.6.5-cuda10.2_0 --> 7.6.5-cuda10.0_0
