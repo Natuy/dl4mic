@@ -38,3 +38,6 @@ cudnn                     7.6.5                cuda10.0_0
 
   cudatoolkit                            10.2.89-h74a9793_1 --> 10.0.130-0
   cudnn                                    7.6.5-cuda10.2_0 --> 7.6.5-cuda10.0_0
+
+  - feature:/win-64::__cuda==9.1=0
+  - feature:|@/win-64::__cuda==9.1=0
