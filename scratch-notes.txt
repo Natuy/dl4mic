@@ -1,3 +1,7 @@
+31.07.2020
+cd D:\MRI\Fiji2.app\dl4mic\networks\Noise2Void_2D; C:\Users\MachineLearning\.conda\envs\dl\python.exe train.py --name new_n2v_model --baseDir ../../models --dataPath ../../n2v-data/training --epochs 60 --patchSizeXY 64 --stepsPerEpoch 0 --batchSize 128 --validationFraction 10 --learningRate 0.0004 --netDepth 2 --netKernelSize 3 --n2vPercPix 1.6 --unetNFirst 32 --noAugment 2>&1 | tee log_training.txt
+
+
 2.7.2020
 
 - download dl4mic
