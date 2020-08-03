@@ -196,15 +196,31 @@ function train() {
 	selectWindow("Log");
 	parameters = getParameterString();
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" "+script+" "+parameters+" 2>&1 | tee log_training.txt";
 	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_training.txt";
 	File.delete(logPath);
-	a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);
+	os = toLowerCase(getInfo("os.name"));
+	if (indexOf(os, "win")>-1) {
+		writeBatchFile();
+		setOption("WaitForCompletion", false);
+		a = exec("run.bat");
+	} else {
+		command = "cd "+baseFolder+" & "+_PYTHON_INTERPRETER+" "+script+" "+parameters+" 2>&1 | tee log_training.txt";
+		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);	
+	}
 	exists = File.exists(logPath);
+	print("log path", logPath);
+	for (i = 0; i < 1000; i++) {
+		if (exists) {
+			break;
+		}
+		wait(500);
+		exists = File.exists(logPath);
+	}
 	out = File.openAsString(logPath);
 	count = 0;
 	finished = false;
 	endFound = false;
+
 	while (!finished){
 		if (endFound) finished = true;
 		lines = split(out, "\n");
@@ -223,9 +239,31 @@ function train() {
 
 function displayTrainingEvaluationPlot() {
 	path = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + getValueOfParameter('baseDir') + File.separator + getValueOfParameter("name") + File.separator + "Quality Control" + File.separator + "training_evaluation.csv";
-	open(path);
-	loss = Table.getColumn("loss", "training_evaluation.csv");
-	valLoss = Table.getColumn("val_loss", "training_evaluation.csv");
+	os = toLowerCase(getInfo("os.name"));
+	if (indexOf(os, "win")>-1) {
+		text = File.openAsString(path);
+		text = replace(text, "\n\n", "\n");
+		lines = split(text, "\n");
+		loss = newArray(0);
+		valLoss = newArray(0);
+		for (i = 1; i < lines.length; i++) {
+			line = lines[i];
+			parts = split(line, ',');
+			if (parts.length<2) continue;
+			currentLoss = parseFloat(parts[0]);
+			currentValLoss = parseFloat(parts[1]);
+			loss = Array.concat(loss, currentLoss);
+			valLoss = Array.concat(valLoss, currentValLoss);
+		}
+		Table.create(path);
+		Table.setColumn("loss", loss, path);
+		Table.setColumn("val_loss", valLoss, path);	
+	} else {
+		open(path);
+	}
+	tableTitle = getInfo("window.title");
+	loss = Table.getColumn("loss", tableTitle);
+	valLoss = Table.getColumn("val_loss", tableTitle);
 	xValues = newArray(loss.length);
 	for (i = 1; i <= xValues.length; i++) {
 		xValues[i-1] = i; 
@@ -310,6 +348,10 @@ function findPythonInterpreter() {
 		return interpreter;
 	}
 	interpreter = home + "Anaconda3" + File.separator + "envs" + File.separator + "dl" + File.separator + "python.exe";
+	if (File.exists(interpreter)) {
+		return interpreter;
+	}
+	interpreter = home + ".conda" + File.separator + "envs" + File.separator + "dl" + File.separator + "python.exe";
 	if (File.exists(interpreter)) {
 		return interpreter;
 	}
@@ -532,6 +574,17 @@ function info() {
 		return;
 	}
 	message = File.openAsString(_NETWORKS_DIR + "/" + _CURRENT_NETWORK + "/info.html");
-	message = replace(message, "<!--img-->", "<img src='file://"+_NETWORKS_DIR + "/" + _CURRENT_NETWORK + "/picture.png" +"'>");
+	imagePath = "file:///"+_NETWORKS_DIR + "/" + _CURRENT_NETWORK + "/picture.png";
+	imagePath = replace(imagePath, '\\', '/');
+	message = replace(message, "<!--img-->", "<img src='"+imagePath+"'>");
 	showMessage("Info: "+_CURRENT_NETWORK, message);
+}
+
+function writeBatchFile() {
+	parameters = getParameterString();
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
+	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_training.txt";
+	command = "conda activate dl && cd "+baseFolder+" && python.exe -u train.py "+parameters+" > log_training.txt";
+	folder = getDir("imagej");
+	File.saveString(command, folder + "run.bat");
 }
