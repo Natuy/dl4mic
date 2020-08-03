@@ -124,11 +124,26 @@ function predict() {
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	script = "predict.py";
 	parameters = getPredictParameterString();
-	command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" "+script+" "+parameters+" 2>&1 | tee log_prediction.txt";
 	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_prediction.txt";
 	File.delete(logPath);
-	a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);
+	os = toLowerCase(getInfo("os.name"));
+	if (indexOf(os, "win")>-1) {
+		writePredictBatchFile();
+		setOption("WaitForCompletion", false);
+		a = exec("predict.bat");
+	} else {
+		command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" "+script+" "+parameters+" 2>&1 | tee log_prediction.txt";
+		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);
+	}
 	exists = File.exists(logPath);
+	print("log path", logPath);
+	for (i = 0; i < 1000; i++) {
+		if (exists) {
+			break;
+		}
+		wait(500);
+		exists = File.exists(logPath);
+	}
 	out = File.openAsString(logPath);
 	count = 0;
 	finished = false;
@@ -202,7 +217,7 @@ function train() {
 	if (indexOf(os, "win")>-1) {
 		writeBatchFile();
 		setOption("WaitForCompletion", false);
-		a = exec("run.bat");
+		a = exec("train.bat");
 	} else {
 		command = "cd "+baseFolder+" & "+_PYTHON_INTERPRETER+" "+script+" "+parameters+" 2>&1 | tee log_training.txt";
 		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);	
@@ -586,5 +601,13 @@ function writeBatchFile() {
 	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_training.txt";
 	command = "conda activate dl && cd "+baseFolder+" && python.exe -u train.py "+parameters+" > log_training.txt";
 	folder = getDir("imagej");
-	File.saveString(command, folder + "run.bat");
+	File.saveString(command, folder + "train.bat");
+}
+
+function writePredictBatchFile() {
+	parameters = getPredictParameterString();
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
+	command = "conda activate dl && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_prediction.txt";
+	folder = getDir("imagej");
+	File.saveString(command, folder + "predict.bat");
 }
