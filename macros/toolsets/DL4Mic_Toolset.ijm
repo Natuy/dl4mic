@@ -19,6 +19,22 @@ var _PREDICT_PARAMETER_HELP = newArray(0);
 var _PREDICT_PARAMETER_TYPE = newArray(0);
 var _PREDICT_PARAMETER_DEFAULT = newArray(0);
 
+var _EVALUATE_PARAMETER_GROUP = newArray(0);
+var _EVALUATE_PARAMETER_NAME = newArray(0);
+var _EVALUATE_PARAMETER_VALUE = newArray(0);
+var _EVALUATE_PARAMETER_HELP = newArray(0);
+var _EVALUATE_PARAMETER_TYPE = newArray(0);
+var _EVALUATE_PARAMETER_DEFAULT = newArray(0);
+
+var helpURL = "https://github.com/MontpellierRessourcesImagerie/dl4mic/wiki";
+
+_CURRENT_NETWORK = "Noise2Void_2D";
+readParameters();
+readPredictParameter();
+readEvaluateParameter();
+evaluate();
+exit();
+
 macro "DL4Mic Action Tool (f2) - C666D00C555D10C444L2090C333Da0C777Db0CeeeDc0C777D01C666D11C555D21C444L31b1C888Dc1CeeeDd1C777L0222C555D32C666L42a2C555Lb2c2C999Dd2C777L0323C888D33CcccL43b3CaaaDc3C999Dd3C777L0424C999D34CdddL44b4CbbbDc4C999Dd4C777L0525C999D35CdddL45b5CbbbDc5C999Dd5C777L0626C999D36CdddL46b6CbbbDc6C999Dd6C777L0727C999D37CdddL47b7CbbbDc7C999Dd7C666D08C777L1828C999D38CdddL48b8CbbbDc8C999Dd8C666L0919C777D29C999D39CdddL49b9CbbbDc9C999Dd9CdddD0aC777D1aC666D2aC888D3aCdddL4abaCbbbDcaC999DdaCdddD1bC777D2bC888D3bCdddL4bbbCbbbDcbC999DdbCdddD2cC888D3cC999L4cbcC888DccC999DdcCeeeD3dCdddL4dcdCeeeDdd" {
 	about();
 }
@@ -59,12 +75,16 @@ macro "DL4Mic Train [f6]" {
 	train();
 }
 
-macro "Validate the model Action Tool (f7) - CcccD50C888D60C666L7080C888D90CcccDa0CdddD31C333D41C000L51a1C777Db1CcccDe1CbbbD22C000L3242C222D52C777D62CaaaL7282C777D92C333Da2C999Db2C777Dd2C000De2C777Df2CdddD13C000L2333C777D43Dc3C000Dd3C111De3CcccDf3C333D14C000D24C777D34Db4C000Lc4d4CbbbDe4CcccD05C000D15C222D25C777Da5C000Lb5c5CbbbDd5C888D06C000D16C777D26C999L5666C777D96C000Da6C111Db6CbbbDc6C777De6CdddDf6C666D07C000D17CaaaD27C111D57C000D67C777L7787C000D97C111Da7CbbbDb7Dd7C000De7C666Df7D08C000D18CaaaD28CbbbD58C111D68C000L7888C111D98CbbbDa8CaaaDd8C000De8C666Df8C888D09C000D19C777D29CbbbD69C111L7989CbbbD99C777Dd9C000De9C888Df9CcccD0aC000D1aC222D2aCdddL7a8aC111DdaC000DeaCcccDfaC333D1bC000D2bC777D3bDcbC000DdbC333DebCdddD1cC000L2c3cC777D4cDbcC000DccC111DdcCdddDecCbbbD2dC000L3d4dC111D5dC777D6dCaaaL7d8dC777D9dC222DadC000DbdC111DcdCbbbDddCdddD3eC333D4eC000L5eaeC333DbeCdddDceCcccD5fC888D6fC666L7f8fC888D9fCcccDaf" {
-	validate();
+macro "Evaluate the model Action Tool (f7) - CcccD50C888D60C666L7080C888D90CcccDa0CdddD31C333D41C000L51a1C777Db1CcccDe1CbbbD22C000L3242C222D52C777D62CaaaL7282C777D92C333Da2C999Db2C777Dd2C000De2C777Df2CdddD13C000L2333C777D43Dc3C000Dd3C111De3CcccDf3C333D14C000D24C777D34Db4C000Lc4d4CbbbDe4CcccD05C000D15C222D25C777Da5C000Lb5c5CbbbDd5C888D06C000D16C777D26C999L5666C777D96C000Da6C111Db6CbbbDc6C777De6CdddDf6C666D07C000D17CaaaD27C111D57C000D67C777L7787C000D97C111Da7CbbbDb7Dd7C000De7C666Df7D08C000D18CaaaD28CbbbD58C111D68C000L7888C111D98CbbbDa8CaaaDd8C000De8C666Df8C888D09C000D19C777D29CbbbD69C111L7989CbbbD99C777Dd9C000De9C888Df9CcccD0aC000D1aC222D2aCdddL7a8aC111DdaC000DeaCcccDfaC333D1bC000D2bC777D3bDcbC000DdbC333DebCdddD1cC000L2c3cC777D4cDbcC000DccC111DdcCdddDecCbbbD2dC000L3d4dC111D5dC777D6dCaaaL7d8dC777D9dC222DadC000DbdC111DcdCbbbDddCdddD3eC333D4eC000L5eaeC333DbeCdddDceCcccD5fC888D6fC666L7f8fC888D9fCcccDaf" {
+	evaluate();
 }
 
-macro "DL4Mic Validate [f7]" {
-	validate();
+macro "DL4Mic Evaluate [f7]" {
+	evaluate();
+}
+
+macro "Evaluate the model Action Tool (f7) Options" {
+	showEvaluateParametersDialog("user_parameters");
 }
 
 macro "Predict Action Tool (f8) - C999D21C111D31C999D41C555D22C000L3242C333D52CdddD62C555D23C000L3363C888D73C555D24C000D34CaaaD44C777D54C000L6474C222D84CcccD94C555D25C000D35CbbbD45CcccD65C333D75C000L8595C666Da5C555D26C000D36CbbbD46C999D86C000L96a6C222Db6CbbbDc6C555D27C000D37CbbbD47CdddD97C333Da7C000Lb7c7C999Dd7C555D28C000D38CbbbD48CdddD98C333Da8C000Lb8c8C999Dd8C555D29C000D39CbbbD49C999D89C000L99a9C222Db9CbbbDc9C555D2aC000D3aCbbbD4aCcccD6aC333D7aC000L8a9aC666DaaC555D2bC000D3bCaaaD4bC777D5bC000L6b7bC222D8bCcccD9bC555D2cC000L3c6cC888D7cC555D2dC000L3d4dC333D5dCdddD6dC999D2eC111D3eC999D4e" {
@@ -79,16 +99,125 @@ macro "Predict Action Tool (f8) Options" {
 	showPredictParametersDialog("user_parameters");
 }
 
-function validate() {
-	showMessage("Not implemented yet.");
-}
-
 function showHelp() {
-	showMessage("Not implemented yet.");
+	run('URL...', 'url='+helpURL);
 }
 
 function about() {
-	showMessage("Not implemented yet.");
+
+	aboutMessage = "<html><h1>About DL4Mic</h1>" +
+	  "<p>	(c) 2020, INSERM <br>" +
+      "written by Volker Baecker at Montpellier Ressources Imagerie, Biocampus Montpellier, INSERM, CNRS, University of Montpellier (www.mri.cnrs.fr)" +
+      "<p>DL4Mic is free software under the <a href='https://raw.githubusercontent.com/MontpellierRessourcesImagerie/dl4mic/master/LICENSE.txt'>CeCILL-B license</a>." +
+	  "<p>The python code of the neural networks has been adapted from the <a href='https://github.com/HenriquesLab/ZeroCostDL4Mic/wiki'>ZeroCostDL4Mic</a> project." +
+	  "<p>Please also cite this original paper of a given network when using it via this software." +
+	  "<p>Have fun !!!" +
+      "</html>";
+
+	showMessage("About DL4Mic Toolset", aboutMessage);
+}
+
+function evaluate() {
+	inputFolder = "";
+	outputFolder = "";
+	workingOnOpenImage = false;
+	isStack = false;
+	if (nImages==0) {
+		inputFolder = getDirectory("Input Folder");	
+		outputFolder = getDirectory("Ground Truth Folder");	
+	} else {
+		workingOnOpenImage = true;
+		emptyTmpFolder();
+		title = getTitle();
+		parts = split(title, ".");
+		title = parts[0] + ".tif";
+		File.makeDirectory(getDirectory("imagej") + "dl4mic" + File.separator + "tmp");
+		inputFolder = getDirectory("imagej") + "dl4mic" + File.separator + "tmp" + File.separator + "in";
+		File.makeDirectory(inputFolder);
+		outputFolder = getDirectory("imagej") + "dl4mic" + File.separator + "tmp" + File.separator + "out";
+		if (nSlices>1) {
+			isStack = true;
+			run("Image Sequence... ", "format=TIFF save="+inputFolder+File.separator+title);	
+		} else {
+			saveAs("tiff", inputFolder +File.separator+title);
+		}
+	}
+	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
+		if (_EVALUATE_PARAMETER_NAME[i]=='dataPath') _EVALUATE_PARAMETER_VALUE[i] = inputFolder;
+		if (_EVALUATE_PARAMETER_NAME[i]=='output') _EVALUATE_PARAMETER_VALUE[i] = outputFolder;
+	}
+	saveEvaluateParameters();
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
+	script = "evaluate.py";
+	parameters = getEvaluateParameterString();
+	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_evaluation.txt";
+	File.delete(logPath);
+	os = toLowerCase(getInfo("os.name"));
+	if (indexOf(os, "win")>-1) {
+		writePredictBatchFile();
+		setOption("WaitForCompletion", false);
+		a = exec("evaluate.bat");
+	} else {
+		command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" -u "+script+" "+parameters+" 2>&1 | tee log_evaluation.txt";
+		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);
+	}
+	exists = File.exists(logPath);
+	print("log path", logPath);
+	for (i = 0; i < 1000; i++) {
+		if (exists) {
+			break;
+		}
+		wait(500);
+		exists = File.exists(logPath);
+	}
+	out = File.openAsString(logPath);
+	count = 0;
+	finished = false;
+	endFound = false;
+	while (!finished){
+		if (endFound) finished = true;
+		lines = split(out, "\n");
+		start = count;
+		end = lines.length;
+		for (i = start; i < end; i++) {
+			print(lines[i]);
+			count=end;
+		}
+		endFound = indexOf(out, "---evaluation done---")!=-1;
+		if (File.exists(logPath)) out = File.openAsString(logPath);
+		wait(500);
+	}
+	files = getFileList(outputFolder);
+	count = 0;
+	index = 0;
+	for (i = 0; i < files.length; i++) {
+		file = files[i];
+		if (endsWith(file, ".tif")) {
+			index = i;
+			count++;
+		}
+	}
+	run("Image Sequence...", "open=["+outputFolder+"/"+files[index] + "] sort");
+	targetID = getImageID();
+	rename("Target");
+	run("Image Sequence...", "open=["+inputFolder+"/"+files[index] + "] sort");
+	sourceID = getImageID();
+	rename("Source");
+	baseDir = getValueOfEvaluateParameter('baseDir');
+	name = getValueOfEvaluateParameter("name");
+	predictionsDir = baseDir + name + "/Quality Control/Prediction/";
+	print("" + count + " result images have been written to: \n" + predictionsDir);
+	print(predictionsDir+"/"+files[index]);
+	run("Image Sequence...", "open=["+predictionsDir+"/"+files[index] + "] sort");
+	predictionID = getImageID();
+	rename("Prediction");
+	selectImage(targetID);
+	run("Out [-]");
+	selectImage(sourceID);
+	run("Out [-]");
+	selectImage(predictionID);
+	run("Out [-]");
+	run("Tile");
 }
 
 function predict() {
@@ -132,7 +261,7 @@ function predict() {
 		setOption("WaitForCompletion", false);
 		a = exec("predict.bat");
 	} else {
-		command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" "+script+" "+parameters+" 2>&1 | tee log_prediction.txt";
+		command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" -u "+script+" "+parameters+" 2>&1 | tee log_prediction.txt";
 		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);
 	}
 	exists = File.exists(logPath);
@@ -219,7 +348,7 @@ function train() {
 		setOption("WaitForCompletion", false);
 		a = exec("train.bat");
 	} else {
-		command = "cd "+baseFolder+" & "+_PYTHON_INTERPRETER+" "+script+" "+parameters+" 2>&1 | tee log_training.txt";
+		command = "cd "+baseFolder+" && "+_PYTHON_INTERPRETER+" "+script+" "+parameters+" 2>&1 | tee log_training.txt";
 		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);	
 	}
 	exists = File.exists(logPath);
@@ -319,6 +448,17 @@ function getPredictParameterString() {
 	return string;
 }
 
+function getEvaluateParameterString() {
+	string = "";
+	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
+		if (_EVALUATE_PARAMETER_TYPE[i]=="bool" && _EVALUATE_PARAMETER_VALUE[i]=='True') {
+			string = string + "--" + _EVALUATE_PARAMETER_NAME[i];
+		} else {
+			string = string + "--" + _EVALUATE_PARAMETER_NAME[i] + " " + _EVALUATE_PARAMETER_VALUE[i] + " ";
+		}
+	}
+	return string;
+}
 
 function getValueOfParameter(aParameter) {
 	for (i = 0; i < _PARAMETER_NAME.length; i++) {
@@ -332,6 +472,14 @@ function getValueOfPredictParameter(aParameter) {
 	for (i = 0; i < _PREDICT_PARAMETER_NAME.length; i++) {
 		if (_PREDICT_PARAMETER_NAME[i]==aParameter) {
 			return _PREDICT_PARAMETER_VALUE[i];
+		}
+	}
+}
+
+function getValueOfEvaluateParameter(aParameter) {
+	for (i = 0; i < _EVALUATE_PARAMETER_NAME.length; i++) {
+		if (_EVALUATE_PARAMETER_NAME[i]==aParameter) {
+			return _EVALUATE_PARAMETER_VALUE[i];
 		}
 	}
 }
@@ -371,6 +519,45 @@ function findPythonInterpreter() {
 		return interpreter;
 	}
 	return '';
+}
+
+function showEvaluateParametersDialog(parameterGroup) {
+	Dialog.create("Evaluate Options");	
+	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
+		if (_EVALUATE_PARAMETER_GROUP[i]!=parameterGroup) continue;
+		help = replace(_EVALUATE_PARAMETER_HELP[i], '\\. ', ".\n");
+		if (_EVALUATE_PARAMETER_TYPE[i]=="string") {
+			Dialog.addMessage(help);
+			Dialog.addString(_EVALUATE_PARAMETER_NAME[i], _EVALUATE_PARAMETER_VALUE[i], 20);
+		}
+		if (_EVALUATE_PARAMETER_TYPE[i]=="int" || _EVALUATE_PARAMETER_TYPE[i]=="float") {
+			if (_EVALUATE_PARAMETER_TYPE[i]=="int") 
+				Dialog.addNumber(_EVALUATE_PARAMETER_NAME[i], _EVALUATE_PARAMETER_VALUE[i], 0, 20, '');
+			else
+			 	Dialog.addNumber(_EVALUATE_PARAMETER_NAME[i], _EVALUATE_PARAMETER_VALUE[i], 8, 20, '');
+			Dialog.addToSameRow();
+			Dialog.addMessage(help);
+		}
+		if (_EVALUATE_PARAMETER_TYPE[i]=="bool") {
+			Dialog.addCheckbox(_EVALUATE_PARAMETER_NAME[i], (_EVALUATE_PARAMETER_VALUE[i]=='True'));
+			Dialog.addToSameRow();
+			Dialog.addMessage(help);
+		}
+	}
+	Dialog.show();
+	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
+		if (_EVALUATE_PARAMETER_GROUP[i]!=parameterGroup) continue;
+		if (_EVALUATE_PARAMETER_TYPE[i]=="string") {
+			_EVALUATE_PARAMETER_VALUE[i] = Dialog.getString();
+		}
+		if (_EVALUATE_PARAMETER_TYPE[i]=="int" || _PARAMETER_TYPE[i]=="float") {
+			_EVALUATE_PARAMETER_VALUE[i] = Dialog.getNumber();
+		}
+		if (_EVALUATE_PARAMETER_TYPE[i]=="bool") {
+			_EVALUATE_PARAMETER_VALUE[i] = Dialog.getCheckbox();
+		}
+	}
+	saveEvaluateParameters();
 }
 
 function showPredictParametersDialog(parameterGroup) {
@@ -494,6 +681,38 @@ function readPredictParameter() {
 	}
 }
 
+function readEvaluateParameter() {
+	baseFolder = _NETWORKS_DIR + "/" + _CURRENT_NETWORK;
+	_EVALUATE_PARAMETER_NAME = newArray(0);
+	_EVALUATE_PARAMETER_VALUE = newArray(0);
+	_EVALUATE_PARAMETER_HELP = newArray(0);
+	_EVALUATE_PARAMETER_DEFAULT = newArray(0);
+	_EVALUATE_PARAMETER_TYPE = newArray(0);
+	_EVALUATE_PARAMETER_GROUP = newArray(0);
+	parameterFile = File.openAsString(baseFolder + "/evaluate.yml");
+	parameterLines = split(parameterFile, "\n");
+	for (i = 0; i < parameterLines.length; i++) {
+		line = String.trim(parameterLines[i]);
+		if (line.length<1) continue;
+		nameAndValue = split(line, ":");
+		if (nameAndValue.length==1) {
+			currentGroup = replace(line, ":", '');
+			continue;
+		} 
+		name = replace(nameAndValue[0], "-", "");
+		name = String.trim(name);
+		value = String.trim(nameAndValue[1]);
+		if (name=='name') {
+			_EVALUATE_PARAMETER_NAME = Array.concat(_EVALUATE_PARAMETER_NAME, value);
+			_EVALUATE_PARAMETER_GROUP = Array.concat(_EVALUATE_PARAMETER_GROUP, currentGroup);
+		}
+		if (name=='value') _EVALUATE_PARAMETER_VALUE = Array.concat(_EVALUATE_PARAMETER_VALUE, value);
+		if (name=='help') _EVALUATE_PARAMETER_HELP = Array.concat(_EVALUATE_PARAMETER_HELP, value);
+		if (name=='type') _EVALUATE_PARAMETER_TYPE = Array.concat(_EVALUATE_PARAMETER_TYPE, value);
+		if (name=='default') _EVALUATE_PARAMETER_DEFAULT  = Array.concat(_EVALUATE_PARAMETER_DEFAULT, value);
+	}
+}
+
 function readParameters() {
 	baseFolder = _NETWORKS_DIR + "/" + _CURRENT_NETWORK;
 	_PARAMETER_GROUP = newArray(0);
@@ -562,11 +781,30 @@ function savePredictParameters() {
 	File.saveString(content, baseFolder + "/predict.yml");
 }
 
+function saveEvaluateParameters() {
+	baseFolder = _NETWORKS_DIR + "/" + _CURRENT_NETWORK;
+	group = "";
+	content = "";
+	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
+		if (group!=_EVALUATE_PARAMETER_GROUP[i]) {
+			group = _EVALUATE_PARAMETER_GROUP[i];
+			content = content + group + ":\n";
+		}
+		content = content + '- name: ' + _EVALUATE_PARAMETER_NAME[i] + "\n";
+		content = content + '  value: ' + _EVALUATE_PARAMETER_VALUE[i] + "\n";
+		content = content + '  type: ' + _EVALUATE_PARAMETER_TYPE[i] + "\n";
+		content = content + '  default: ' + _EVALUATE_PARAMETER_DEFAULT[i] + "\n";
+		content = content + '  help: ' + _EVALUATE_PARAMETER_HELP[i] + "\n";
+	}
+	File.saveString(content, baseFolder + "/evaluate.yml");
+}
+
 function selectNetwork() {
    _CURRENT_NETWORK = getArgument();
    print("DL4Mic - Current network: ", _CURRENT_NETWORK);
    readParameters();
    readPredictParameter();
+   readEvaluateParameter();
 }
 
 function getNetworks() {
@@ -610,4 +848,12 @@ function writePredictBatchFile() {
 	command = "conda activate dl && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_prediction.txt";
 	folder = getDir("imagej");
 	File.saveString(command, folder + "predict.bat");
+}
+
+function writeEvaluateBatchFile() {
+	parameters = getEvaluateParameterString();
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
+	command = "conda activate dl && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_evaluation.txt";
+	folder = getDir("imagej");
+	File.saveString(command, folder + "evaluate.bat");
 }

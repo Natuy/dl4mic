@@ -10,12 +10,12 @@ user_parameters:
   default: ../../models
   help: The base-folder under which the trained model is saved.
 - name: dataPath
-  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/mri-tools/DL4Mic/n2v-data/prediction-in/
+  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/n2v-data/prediction-in/
   type: string
   default: ../../n2v-data/prediction-in
   help: The path to the folder containig the noisy images..
 - name: output
-  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/mri-tools/DL4Mic/n2v-data/prediction-out/
+  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/n2v-data/prediction-out/
   type: string
   default: ../../n2v-data/prediction-out
   help: The folder into which the result images will be saved.

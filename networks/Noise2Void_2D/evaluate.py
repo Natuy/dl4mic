@@ -133,7 +133,10 @@ def main(argv):
     # All data is now processed saved
     Test_FileList = os.listdir(Source_QC_folder)  # this assumes, as it should,
     #                                               that both source and target are named the same
+    print("---evaluation done---")
 
+
+'''
     plt.figure(figsize=(15, 15))
     # Currently only displays the last computed set, from memory
     # Target (Ground-truth)
@@ -188,6 +191,7 @@ def main(argv):
     imRSE_GTvsPrediction = plt.imshow(img_RSE_GTvsPrediction, cmap=cmap, vmin=0, vmax=1)
     plt.colorbar(imRSE_GTvsPrediction, fraction=0.046, pad=0.04)
     plt.title('Target vs. Prediction NRMSE: '+str(round(NRMSE_GTvsPrediction, 3)))
+'''
 
 def gauss(size, sigma):
 
