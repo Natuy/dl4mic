@@ -204,6 +204,7 @@ class N2VNetwork(object):
                                 train_loss='mse',
                                 batch_norm=True,
                                 train_batch_size=self.batchSize,
+                                n2v_patch_shape=(self.patchSize, self.patchSize),
                                 n2v_perc_pix=self.percentPixel,
                                 n2v_manipulator='uniform_withCP',
                                 unet_n_depth=self.netDepth,
