@@ -1,0 +1,70 @@
+2020-08-03 17:29:57.548970: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2020-08-03 17:29:57.584016: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2899885000 Hz
+2020-08-03 17:29:57.584700: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5652aa5b5c50 executing computations on platform Host. Devices:
+2020-08-03 17:29:57.584745: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+2020-08-03 17:29:57.585023: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Could not dlopen library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/lib/linux64:/media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/mm/linux64
+2020-08-03 17:29:57.585057: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: UNKNOWN ERROR (303)
+2020-08-03 17:29:57.585069: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (orion): /proc/driver/nvidia/version does not exist
+2020-08-03 17:29:57.640657: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+Preparing validation data:   0%|          | 0/43 [00:00<?, ?it/s]Preparing validation data: 100%|██████████| 43/43 [00:00<00:00, 536.73it/s]Namespace(baseDir='../../models', batchSize=128, dataPath='../../n2v-data/training', epochs=4, learningRate=0.0004, n2vPercPix=1.6, name='new_n2v_model', netDepth=2, netKernelSize=3, noAugment=True, patchSizeXY=64, stepsPerEpoch=0, unetNFirst=32, validationFraction=10.0)
+You do not have GPU access.
+Expect slow performance.
+Available devices:
+name: "/device:CPU:0"
+device_type: "CPU"
+memory_limit: 268435456
+locality {
+}
+incarnation: 4154335776137457318
+
+name: "/device:XLA_CPU:0"
+device_type: "XLA_CPU"
+memory_limit: 17179869184
+locality {
+}
+incarnation: 2827001155963227160
+physical_device_desc: "device: XLA_CPU device"
+
+Using Tensorflow version  1.14.0
+Generated patches: (144, 64, 64, 1)
+Generated patches: (144, 64, 64, 1)
+Generated patches: (144, 64, 64, 1)
+432 patches created.
+43 patch images for validation ( 10.0 %).
+346 patch images for training.
+4
+{'means': ['79.02383'], 'stds': ['21.078737'], 'n_dim': 2, 'axes': 'YXC', 'n_channel_in': 1, 'n_channel_out': 1, 'unet_residual': False, 'unet_n_depth': 2, 'unet_kern_size': 3, 'unet_n_first': 32, 'unet_last_activation': 'linear', 'unet_input_shape': (None, None, 1), 'train_loss': 'mse', 'train_epochs': 4, 'train_steps_per_epoch': 4, 'train_learning_rate': 0.0004, 'train_batch_size': 128, 'train_tensorboard': True, 'train_checkpoint': 'weights_best.h5', 'train_reduce_lr': {'factor': 0.5, 'patience': 10}, 'batch_norm': True, 'n2v_perc_pix': 1.6, 'n2v_patch_shape': (64, 64), 'n2v_manipulator': 'uniform_withCP', 'n2v_neighborhood_radius': 5, 'probabilistic': False}
+Setup done.
+N2VConfig(axes='YXC', batch_norm=True, means=['79.02383'], n2v_manipulator='uniform_withCP', n2v_neighborhood_radius=5, n2v_patch_shape=(64, 64), n2v_perc_pix=1.6, n_channel_in=1, n_channel_out=1, n_dim=2, probabilistic=False, stds=['21.078737'], train_batch_size=128, train_checkpoint='weights_best.h5', train_epochs=4, train_learning_rate=0.0004, train_loss='mse', train_reduce_lr={'factor': 0.5, 'patience': 10}, train_steps_per_epoch=4, train_tensorboard=True, unet_input_shape=(None, None, 1), unet_kern_size=3, unet_last_activation='linear', unet_n_depth=2, unet_n_first=32, unet_residual=False)
+65 blind-spots will be generated per training patch of size (64, 64).
+Epoch 1/4
+
+1/4 [======>.......................] - ETA: 14s - loss: 1.0632 - n2v_mse: 1.0632 - n2v_abs: 0.7080
+2/4 [==============>...............] - ETA: 4s - loss: 0.8932 - n2v_mse: 0.8932 - n2v_abs: 0.6529 
+3/4 [=====================>........] - ETA: 2s - loss: 0.8089 - n2v_mse: 0.8089 - n2v_abs: 0.6301
+4/4 [==============================] - 12s 3s/step - loss: 0.7406 - n2v_mse: 0.7406 - n2v_abs: 0.6089 - val_loss: 0.7272 - val_n2v_mse: 0.7272 - val_n2v_abs: 0.5905
+Epoch 2/4
+
+1/4 [======>.......................] - ETA: 10s - loss: 0.4718 - n2v_mse: 0.4718 - n2v_abs: 0.5121
+2/4 [==============>...............] - ETA: 3s - loss: 0.4374 - n2v_mse: 0.4374 - n2v_abs: 0.4933 
+3/4 [=====================>........] - ETA: 2s - loss: 0.4176 - n2v_mse: 0.4176 - n2v_abs: 0.4831
+4/4 [==============================] - 11s 3s/step - loss: 0.3989 - n2v_mse: 0.3989 - n2v_abs: 0.4728 - val_loss: 0.6335 - val_n2v_mse: 0.6335 - val_n2v_abs: 0.5393
+Epoch 3/4
+
+1/4 [======>.......................] - ETA: 0s - loss: 0.8457 - n2v_mse: 0.8457 - n2v_abs: 0.6374
+2/4 [==============>...............] - ETA: 3s - loss: 0.5817 - n2v_mse: 0.5817 - n2v_abs: 0.5279
+3/4 [=====================>........] - ETA: 2s - loss: 0.4825 - n2v_mse: 0.4825 - n2v_abs: 0.4861
+4/4 [==============================] - 11s 3s/step - loss: 0.4084 - n2v_mse: 0.4084 - n2v_abs: 0.4540 - val_loss: 0.8533 - val_n2v_mse: 0.8533 - val_n2v_abs: 0.5428
+Epoch 4/4
+
+1/4 [======>.......................] - ETA: 10s - loss: 0.2738 - n2v_mse: 0.2738 - n2v_abs: 0.3924
+2/4 [==============>...............] - ETA: 6s - loss: 0.2818 - n2v_mse: 0.2818 - n2v_abs: 0.3956 
+3/4 [=====================>........] - ETA: 3s - loss: 0.2712 - n2v_mse: 0.2712 - n2v_abs: 0.3900
+4/4 [==============================] - 11s 3s/step - loss: 0.3348 - n2v_mse: 0.3348 - n2v_abs: 0.4195 - val_loss: 0.4146 - val_n2v_mse: 0.4146 - val_n2v_abs: 0.4373
+
+
+Loading network weights from 'weights_best.h5'.
+Training done.
+loss 0.27524774393263085 validation loss 0.41458520466505094
+Time elapsed: 0.0 hour(s) 0.0 min(s) 50 sec(s)
+---training done---

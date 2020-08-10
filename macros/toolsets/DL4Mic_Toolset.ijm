@@ -1,3 +1,4 @@
+var _CONDA_ENV = "dl";
 var _NETWORKS_DIR = getDirectory("imagej") + "dl4mic"+File.separator +"networks";
 var _NETWORKS = getNetworks();
 var _CURRENT_NETWORK = 'None';
@@ -118,6 +119,7 @@ function about() {
 }
 
 function evaluate() {
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	inputFolder = "";
 	outputFolder = "";
 	workingOnOpenImage = false;
@@ -147,7 +149,6 @@ function evaluate() {
 		if (_EVALUATE_PARAMETER_NAME[i]=='output') _EVALUATE_PARAMETER_VALUE[i] = outputFolder;
 	}
 	saveEvaluateParameters();
-	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	script = "evaluate.py";
 	parameters = getEvaluateParameterString();
 	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_evaluation.txt";
@@ -198,12 +199,11 @@ function evaluate() {
 		}
 	}
 
-	baseDir = getValueOfEvaluateParameter('baseDir');
+	baseDir = baseFolder + '/' + getValueOfEvaluateParameter('baseDir');
 	name = getValueOfEvaluateParameter("name");
-	qcDir = baseDir + name + "/Quality Control/";
+	qcDir = baseDir + "/" + name + "/Quality Control/";
 	predictionsDir = qcDir + "Prediction/";
 	print("" + count + " result images have been written to: \n" + predictionsDir);
-	print(predictionsDir+"/"+files[index]);
 
 	targetID = loadResultSeries(outputFolder+"/"+files[index], "Target", "", 2);
 	sourceID = loadResultSeries(inputFolder+"/"+files[index], "Source", "", 2);
@@ -544,15 +544,15 @@ function showPythonInterpreterDialog() {
 
 function findPythonInterpreter() {
 	home = getDir("home");
-	interpreter = home + "anaconda3" + File.separator + "envs" + File.separator + "dl" + File.separator + "bin" + File.separator +"python3";
+	interpreter = home + "anaconda3" + File.separator + "envs" + File.separator + _CONDA_ENV + File.separator + "bin" + File.separator +"python3";
 	if (File.exists(interpreter)) {
 		return interpreter;
 	}
-	interpreter = home + "Anaconda3" + File.separator + "envs" + File.separator + "dl" + File.separator + "python.exe";
+	interpreter = home + "Anaconda3" + File.separator + "envs" + File.separator + _CONDA_ENV + File.separator + "python.exe";
 	if (File.exists(interpreter)) {
 		return interpreter;
 	}
-	interpreter = home + ".conda" + File.separator + "envs" + File.separator + "dl" + File.separator + "python.exe";
+	interpreter = home + ".conda" + File.separator + "envs" + File.separator + _CONDA_ENV + File.separator + "python.exe";
 	if (File.exists(interpreter)) {
 		return interpreter;
 	}
@@ -875,7 +875,7 @@ function writeBatchFile() {
 	parameters = getParameterString();
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_training.txt";
-	command = "conda activate dl && cd "+baseFolder+" && python.exe -u train.py "+parameters+" > log_training.txt";
+	command = "conda activate "+_CONDA_ENV+" && cd "+baseFolder+" && python.exe -u train.py "+parameters+" > log_training.txt";
 	folder = getDir("imagej");
 	File.saveString(command, folder + "train.bat");
 }
@@ -883,7 +883,7 @@ function writeBatchFile() {
 function writePredictBatchFile() {
 	parameters = getPredictParameterString();
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	command = "conda activate dl && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_prediction.txt";
+	command = "conda activate "+_CONDA_ENV+" && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_prediction.txt";
 	folder = getDir("imagej");
 	File.saveString(command, folder + "predict.bat");
 }
@@ -891,7 +891,7 @@ function writePredictBatchFile() {
 function writeEvaluateBatchFile() {
 	parameters = getEvaluateParameterString();
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	command = "conda activate dl && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_evaluation.txt";
+	command = "conda activate "+_CONDA_ENV+" && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_evaluation.txt";
 	folder = getDir("imagej");
 	File.saveString(command, folder + "evaluate.bat");
 }
