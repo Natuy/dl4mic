@@ -197,27 +197,65 @@ function evaluate() {
 			count++;
 		}
 	}
-	run("Image Sequence...", "open=["+outputFolder+"/"+files[index] + "] sort");
-	targetID = getImageID();
-	rename("Target");
-	run("Image Sequence...", "open=["+inputFolder+"/"+files[index] + "] sort");
-	sourceID = getImageID();
-	rename("Source");
+
 	baseDir = getValueOfEvaluateParameter('baseDir');
 	name = getValueOfEvaluateParameter("name");
-	predictionsDir = baseDir + name + "/Quality Control/Prediction/";
+	qcDir = baseDir + name + "/Quality Control/";
+	predictionsDir = qcDir + "Prediction/";
 	print("" + count + " result images have been written to: \n" + predictionsDir);
 	print(predictionsDir+"/"+files[index]);
-	run("Image Sequence...", "open=["+predictionsDir+"/"+files[index] + "] sort");
-	predictionID = getImageID();
-	rename("Prediction");
-	selectImage(targetID);
-	run("Out [-]");
-	selectImage(sourceID);
-	run("Out [-]");
-	selectImage(predictionID);
-	run("Out [-]");
+
+	targetID = loadResultSeries(outputFolder+"/"+files[index], "Target", "", 2);
+	sourceID = loadResultSeries(inputFolder+"/"+files[index], "Source", "", 2);
+	predictionID = loadResultSeries(predictionsDir+"/"+files[index], "Prediction", "", 2);
+	ssimTargetVSSourceID = loadResultSeries(qcDir+"/SSIM_GTvsSource_"+files[index], "Target vs. Source SSIM", "SSIM_GTvsSource_", 2);
+	run("Fire");
+	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
+	ssimTargetVSPredictionID = loadResultSeries(qcDir+"/SSIM_GTvsPrediction_"+files[index], "Target vs. Prediction SSIM", "SSIM_GTvsPrediction_", 2);
+	run("Fire");
+	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
+	rseTragetVSSourceID = loadResultSeries(qcDir+"/SSIM_GTvsSource_"+files[index], "Target vs. Source NRMSE", "RSE_GTvsSource_", 2);
+	run("Fire");
+	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
+	rseTragetVSPredictionID = loadResultSeries(qcDir+"/SSIM_GTvsPrediction_"+files[index], "Target vs. Prediction NRMSE", "RSE_GTvsPrediction_", 2);
+	run("Fire");
+	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
+	
+	name = getValueOfEvaluateParameter("name");
+	open(qcDir+'/'+'QC_metrics_'+name+'.csv') ;
+	wait(500);
+	Table.renameColumn('image #', 'image');
+	Table.sort('image');
+
+	setSubtitles(ssimTargetVSSourceID, "Input v. GT mSSIM", "Target vs. Source SSIM:");
+	setSubtitles(ssimTargetVSPredictionID, "Prediction v. GT mSSIM", "Target vs. Prediction SSIM:");
+	setSubtitles(rseTragetVSSourceID, "Input v. GT NRMSE", "Target vs. Source NRMSE:");
+	setSubtitles(rseTragetVSPredictionID, "Prediction v. GT NRMSE", "Target vs. Prediction NRMSE:");
+	
 	run("Tile");
+} 
+
+
+function loadResultSeries(path, name, file, zoomOut) {
+	parameter = "open=["+ path + "] sort ";
+	if(file!="") {
+		parameter = parameter + "file="+file; 
+	}
+	run("Image Sequence...", parameter);
+	id = getImageID();
+	rename(name);
+	for (i = 0; i < zoomOut; i++) {
+		run("Out [-]");
+	}
+	return id;
+}
+
+function setSubtitles(imageID, columnName, label) {
+	selectImage(imageID);
+	column = Table.getColumn(columnName);	
+	for (i = 0; i < column.length; i++) {
+			Property.setSliceLabel(label + " " + column[i],(i+1));
+	}
 }
 
 function predict() {
