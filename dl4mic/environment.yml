@@ -1,4 +1,4 @@
-name: dl4
+name: dl
 channels:
   - conda-forge
   - defaults
