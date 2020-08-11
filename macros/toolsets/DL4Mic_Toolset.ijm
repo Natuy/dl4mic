@@ -33,7 +33,7 @@ _CURRENT_NETWORK = "Noise2Void_2D";
 readParameters();
 readPredictParameter();
 readEvaluateParameter();
-evaluate();
+train();
 exit();
 
 macro "DL4Mic Action Tool (f2) - C666D00C555D10C444L2090C333Da0C777Db0CeeeDc0C777D01C666D11C555D21C444L31b1C888Dc1CeeeDd1C777L0222C555D32C666L42a2C555Lb2c2C999Dd2C777L0323C888D33CcccL43b3CaaaDc3C999Dd3C777L0424C999D34CdddL44b4CbbbDc4C999Dd4C777L0525C999D35CdddL45b5CbbbDc5C999Dd5C777L0626C999D36CdddL46b6CbbbDc6C999Dd6C777L0727C999D37CdddL47b7CbbbDc7C999Dd7C666D08C777L1828C999D38CdddL48b8CbbbDc8C999Dd8C666L0919C777D29C999D39CdddL49b9CbbbDc9C999Dd9CdddD0aC777D1aC666D2aC888D3aCdddL4abaCbbbDcaC999DdaCdddD1bC777D2bC888D3bCdddL4bbbCbbbDcbC999DdbCdddD2cC888D3cC999L4cbcC888DccC999DdcCeeeD3dCdddL4dcdCeeeDdd" {
@@ -465,8 +465,10 @@ function displayTrainingEvaluationPlot() {
 function getParameterString() {
 	string = "";
 	for (i = 0; i < _PARAMETER_GROUP.length; i++) {
-		if (_PARAMETER_TYPE[i]=="bool" && _PARAMETER_VALUE[i]=='True') {
-			string = string + "--" + _PARAMETER_NAME[i];
+		if (_PARAMETER_TYPE[i]=="bool") {
+			if (_PARAMETER_VALUE[i]=='True' || _PARAMETER_VALUE[i]=='1') {
+				string = string + "--" + _PARAMETER_NAME[i];
+			}
 		} else {
 			string = string + "--" + _PARAMETER_NAME[i] + " " + _PARAMETER_VALUE[i] + " ";
 		}
@@ -477,8 +479,10 @@ function getParameterString() {
 function getPredictParameterString() {
 	string = "";
 	for (i = 0; i < _PREDICT_PARAMETER_GROUP.length; i++) {
-		if (_PREDICT_PARAMETER_TYPE[i]=="bool" && _PREDICT_PARAMETER_VALUE[i]=='True') {
-			string = string + "--" + _PREDICT_PARAMETER_NAME[i];
+		if (_PREDICT_PARAMETER_TYPE[i]=="bool") {
+			if (_PREDICT_PARAMETER_VALUE[i]=='True' || _PARAMETER_VALUE[i]=='1') {
+				string = string + "--" + _PREDICT_PARAMETER_NAME[i];
+			}
 		} else {
 			string = string + "--" + _PREDICT_PARAMETER_NAME[i] + " " + _PREDICT_PARAMETER_VALUE[i] + " ";
 		}
@@ -489,8 +493,10 @@ function getPredictParameterString() {
 function getEvaluateParameterString() {
 	string = "";
 	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
-		if (_EVALUATE_PARAMETER_TYPE[i]=="bool" && _EVALUATE_PARAMETER_VALUE[i]=='True') {
-			string = string + "--" + _EVALUATE_PARAMETER_NAME[i];
+		if (_EVALUATE_PARAMETER_TYPE[i]=="bool") {
+			if (_EVALUATE_PARAMETER_VALUE[i]=='True' || _PARAMETER_VALUE[i]=='1') {
+				string = string + "--" + _EVALUATE_PARAMETER_NAME[i];
+			}
 		} else {
 			string = string + "--" + _EVALUATE_PARAMETER_NAME[i] + " " + _EVALUATE_PARAMETER_VALUE[i] + " ";
 		}
