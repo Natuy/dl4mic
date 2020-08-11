@@ -375,7 +375,7 @@ function train() {
 	outPath = baseDir + File.separator + name;
 	showMessageWithCancel("Training of "+_CURRENT_NETWORK+"\n"+"Epochs: " + epochs + "\n" + "Data path: "+dataPath + "\n" + "Result will be saved as " + outPath);
 	script = "train.py";
-	selectWindow("Log");
+	if (isOpen("Log")) selectWindow("Log");
 	parameters = getParameterString();
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_training.txt";
