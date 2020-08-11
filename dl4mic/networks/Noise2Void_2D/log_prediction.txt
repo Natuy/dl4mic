@@ -1,22 +1,19 @@
 Namespace(baseDir='../../models', dataPath='/media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/n2v-data/prediction-in/', name='new_n2v_model', output='/media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/n2v-data/prediction-out/', tileX=1, tileY=2)
-2020-08-03 17:32:44.856406: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
-2020-08-03 17:32:44.880072: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2899885000 Hz
-2020-08-03 17:32:44.880620: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55a6ef315540 executing computations on platform Host. Devices:
-2020-08-03 17:32:44.880641: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
-2020-08-03 17:32:44.880927: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Could not dlopen library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/lib/linux64:/media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/mm/linux64
-2020-08-03 17:32:44.880966: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: UNKNOWN ERROR (303)
-2020-08-03 17:32:44.880982: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (orion): /proc/driver/nvidia/version does not exist
-2020-08-03 17:32:44.904542: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+2020-08-11 14:28:46.174293: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2020-08-11 14:28:46.195559: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2899885000 Hz
+2020-08-11 14:28:46.196251: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55ee22400060 executing computations on platform Host. Devices:
+2020-08-11 14:28:46.196287: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+2020-08-11 14:28:46.216466: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
 Loading network weights from 'weights_best.h5'.
 The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00, 97541.95it/s]100%|██████████| 2/2 [00:00<00:00,  3.51it/s]   100%|██████████| 2/2 [00:00<00:00,  3.51it/s]100%|██████████| 2/2 [00:00<00:00,  3.51it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00, 34952.53it/s]100%|██████████| 2/2 [00:00<00:00,  3.30it/s]   100%|██████████| 2/2 [00:00<00:00,  3.30it/s]100%|██████████| 2/2 [00:00<00:00,  3.29it/s]
 The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00, 39199.10it/s]100%|██████████| 2/2 [00:00<00:00,  3.56it/s]   100%|██████████| 2/2 [00:00<00:00,  3.56it/s]100%|██████████| 2/2 [00:00<00:00,  3.56it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00, 149796.57it/s]100%|██████████| 2/2 [00:00<00:00,  3.33it/s]    100%|██████████| 2/2 [00:00<00:00,  3.33it/s]100%|██████████| 2/2 [00:00<00:00,  3.33it/s]
 The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00, 139810.13it/s]100%|██████████| 2/2 [00:00<00:00,  3.50it/s]    100%|██████████| 2/2 [00:00<00:00,  3.50it/s]100%|██████████| 2/2 [00:00<00:00,  3.50it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00, 149796.57it/s]100%|██████████| 2/2 [00:00<00:00,  3.42it/s]    100%|██████████| 2/2 [00:00<00:00,  3.42it/s]100%|██████████| 2/2 [00:00<00:00,  3.42it/s]
 The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00, 48770.98it/s]100%|██████████| 2/2 [00:00<00:00,  3.51it/s]   100%|██████████| 2/2 [00:00<00:00,  3.51it/s]100%|██████████| 2/2 [00:00<00:00,  3.51it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00, 144631.17it/s]100%|██████████| 2/2 [00:00<00:00,  3.28it/s]    100%|██████████| 2/2 [00:00<00:00,  3.28it/s]100%|██████████| 2/2 [00:00<00:00,  3.28it/s]
 The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00, 149796.57it/s]100%|██████████| 2/2 [00:00<00:00,  3.41it/s]    100%|██████████| 2/2 [00:00<00:00,  3.41it/s]100%|██████████| 2/2 [00:00<00:00,  3.41it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00, 144631.17it/s]100%|██████████| 2/2 [00:00<00:00,  3.27it/s]    100%|██████████| 2/2 [00:00<00:00,  3.27it/s]100%|██████████| 2/2 [00:00<00:00,  3.27it/s]
 Images saved into folder: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/n2v-data/prediction-out/
 ---predictions done---

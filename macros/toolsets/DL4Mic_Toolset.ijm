@@ -1,10 +1,10 @@
-var _CONDA_ENV = "dl";
+var _CONDA_ENV = "dl4";
 var _NETWORKS_DIR = getDirectory("imagej") + "dl4mic"+File.separator +"networks";
 var _NETWORKS = getNetworks();
 var _CURRENT_NETWORK = 'None';
 var _PYTHON_INTERPRETER = findPythonInterpreter();
 var networkMenuItems = newMenu("Select a network Menu Tool", _NETWORKS);
-var trainingParameterMenuItems = newMenu("Training Parameter Menu Tool", newArray("user parameters", "advanced parameters", "internal network parameters", "---", "python interpreter"));
+var trainingParameterMenuItems = newMenu("Training Parameter Menu Tool", newArray("user parameters", "advanced parameters", "internal network parameters", "---", "python interpreter", "install deep-learning env."));
 
 var _PARAMETER_GROUP = newArray(0);
 var _PARAMETER_NAME = newArray(0);
@@ -145,8 +145,8 @@ function evaluate() {
 		}
 	}
 	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
-		if (_EVALUATE_PARAMETER_NAME[i]=='dataPath') _EVALUATE_PARAMETER_VALUE[i] = inputFolder;
-		if (_EVALUATE_PARAMETER_NAME[i]=='output') _EVALUATE_PARAMETER_VALUE[i] = outputFolder;
+		if (_EVALUATE_PARAMETER_NAME[i]=='testInputPath') _EVALUATE_PARAMETER_VALUE[i] = inputFolder;
+		if (_EVALUATE_PARAMETER_NAME[i]=='testGroundTruthPath') _EVALUATE_PARAMETER_VALUE[i] = outputFolder;
 	}
 	saveEvaluateParameters();
 	script = "evaluate.py";
@@ -528,8 +528,47 @@ function setParameter() {
 		showPythonInterpreterDialog();
 		return;
 	}
+	if (item == 'install deep-learning env.') {
+		showInstallEnvDialog();
+		return;	
+	}
 	item = replace(item, " ", "_");
 	showParametersDialog(item);
+}
+
+function showInstallEnvDialog() {
+	oldEnv = _CONDA_ENV;
+	Dialog.create("Install deep-learning env.");
+	Dialog.addMessage("Pressing ok, will create a conda environment with the given name\nand install the packages needed by dl4mic in the environment.\nIf an environment with the given name already exists it will be deleted\nand a new one with the same name will be created.\n");
+	Dialog.addString("name: ", _CONDA_ENV);
+	Dialog.show();
+	_CONDA_ENV = Dialog.getString();
+	installEnv(oldEnv, _CONDA_ENV);	
+}
+
+function installEnv(oldEnv, newEnv) {
+	os = toLowerCase(getInfo("os.name"));
+	if (indexOf(os, "win")>-1) {
+		
+	} else {
+		cmd = getDirectory("home")+"anaconda3/condabin/conda";
+		command = cmd+" env remove -y -n "+newEnv;
+		print(command);
+		a = exec("gnome-terminal", "--geometry=80x20", "--", "bash", "-c", command);	
+		print(a);
+		envFile = getDirectory("imagej") + "dl4mic/environment.yml";
+		envContent = File.openAsString(envFile);
+		envContent = replace(envContent, "name: "+oldEnv, "name: "+newEnv);
+		File.saveString(envContent, envFile);
+		command = cmd+" env create -f " + envFile;
+		print(command);
+		a = exec("gnome-terminal", "--geometry=80x20", "--", "bash", "-c", command);	
+		print(a);
+		toolsetFile = getDirectory("imagej") + "macros/toolsets/DL4Mic_Toolset.ijm";
+		toolsetContent = File.openAsString(toolsetFile);
+		toolsetContent = replace(toolsetContent, 'var _CONDA_ENV = "'+oldEnv+'";', 'var _CONDA_ENV = "'+newEnv+'";');
+		File.saveString(toolsetContent, toolsetFile);
+	}
 }
 
 function showPythonInterpreterDialog() {

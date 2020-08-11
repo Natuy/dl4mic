@@ -1,4 +1,4 @@
-name: dl4
+name: dltest
 channels:
   - conda-forge
   - defaults

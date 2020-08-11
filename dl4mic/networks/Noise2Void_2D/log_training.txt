@@ -1,12 +1,11 @@
-2020-08-03 17:29:57.548970: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
-2020-08-03 17:29:57.584016: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2899885000 Hz
-2020-08-03 17:29:57.584700: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5652aa5b5c50 executing computations on platform Host. Devices:
-2020-08-03 17:29:57.584745: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
-2020-08-03 17:29:57.585023: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Could not dlopen library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/lib/linux64:/media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/mm/linux64
-2020-08-03 17:29:57.585057: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: UNKNOWN ERROR (303)
-2020-08-03 17:29:57.585069: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (orion): /proc/driver/nvidia/version does not exist
-2020-08-03 17:29:57.640657: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
-Preparing validation data:   0%|          | 0/43 [00:00<?, ?it/s]Preparing validation data: 100%|██████████| 43/43 [00:00<00:00, 536.73it/s]Namespace(baseDir='../../models', batchSize=128, dataPath='../../n2v-data/training', epochs=4, learningRate=0.0004, n2vPercPix=1.6, name='new_n2v_model', netDepth=2, netKernelSize=3, noAugment=True, patchSizeXY=64, stepsPerEpoch=0, unetNFirst=32, validationFraction=10.0)
+2020-08-11 14:10:04.423005: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2020-08-11 14:10:04.451649: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2899885000 Hz
+2020-08-11 14:10:04.452115: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x555ccce851c0 executing computations on platform Host. Devices:
+2020-08-11 14:10:04.452146: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+2020-08-11 14:10:04.525302: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+Preparing validation data:   0%|          | 0/43 [00:00<?, ?it/s]Preparing validation data: 100%|██████████| 43/43 [00:00<00:00, 525.10it/s]2020-08-11 14:10:09.088280: W tensorflow/core/framework/allocator.cc:107] Allocation of 134217728 exceeds 10% of system memory.
+2020-08-11 14:10:10.048267: W tensorflow/core/framework/allocator.cc:107] Allocation of 134217728 exceeds 10% of system memory.
+Namespace(baseDir='../../models', batchSize=128, dataPath='../../n2v-data/training', epochs=4, learningRate=0.0004, n2vPercPix=1.6, name='new_n2v_model', netDepth=2, netKernelSize=3, noAugment=True, patchSizeXY=64, stepsPerEpoch=0, unetNFirst=32, validationFraction=10.0)
 You do not have GPU access.
 Expect slow performance.
 Available devices:
@@ -15,14 +14,14 @@ device_type: "CPU"
 memory_limit: 268435456
 locality {
 }
-incarnation: 4154335776137457318
+incarnation: 1660107518676769940
 
 name: "/device:XLA_CPU:0"
 device_type: "XLA_CPU"
 memory_limit: 17179869184
 locality {
 }
-incarnation: 2827001155963227160
+incarnation: 16580644720809002444
 physical_device_desc: "device: XLA_CPU device"
 
 Using Tensorflow version  1.14.0
@@ -33,38 +32,41 @@ Generated patches: (144, 64, 64, 1)
 43 patch images for validation ( 10.0 %).
 346 patch images for training.
 4
-{'means': ['79.02383'], 'stds': ['21.078737'], 'n_dim': 2, 'axes': 'YXC', 'n_channel_in': 1, 'n_channel_out': 1, 'unet_residual': False, 'unet_n_depth': 2, 'unet_kern_size': 3, 'unet_n_first': 32, 'unet_last_activation': 'linear', 'unet_input_shape': (None, None, 1), 'train_loss': 'mse', 'train_epochs': 4, 'train_steps_per_epoch': 4, 'train_learning_rate': 0.0004, 'train_batch_size': 128, 'train_tensorboard': True, 'train_checkpoint': 'weights_best.h5', 'train_reduce_lr': {'factor': 0.5, 'patience': 10}, 'batch_norm': True, 'n2v_perc_pix': 1.6, 'n2v_patch_shape': (64, 64), 'n2v_manipulator': 'uniform_withCP', 'n2v_neighborhood_radius': 5, 'probabilistic': False}
+{'means': ['78.99956'], 'stds': ['21.15178'], 'n_dim': 2, 'axes': 'YXC', 'n_channel_in': 1, 'n_channel_out': 1, 'unet_residual': False, 'unet_n_depth': 2, 'unet_kern_size': 3, 'unet_n_first': 32, 'unet_last_activation': 'linear', 'unet_input_shape': (None, None, 1), 'train_loss': 'mse', 'train_epochs': 4, 'train_steps_per_epoch': 4, 'train_learning_rate': 0.0004, 'train_batch_size': 128, 'train_tensorboard': True, 'train_checkpoint': 'weights_best.h5', 'train_reduce_lr': {'factor': 0.5, 'patience': 10}, 'batch_norm': True, 'n2v_perc_pix': 1.6, 'n2v_patch_shape': (64, 64), 'n2v_manipulator': 'uniform_withCP', 'n2v_neighborhood_radius': 5, 'probabilistic': False}
 Setup done.
-N2VConfig(axes='YXC', batch_norm=True, means=['79.02383'], n2v_manipulator='uniform_withCP', n2v_neighborhood_radius=5, n2v_patch_shape=(64, 64), n2v_perc_pix=1.6, n_channel_in=1, n_channel_out=1, n_dim=2, probabilistic=False, stds=['21.078737'], train_batch_size=128, train_checkpoint='weights_best.h5', train_epochs=4, train_learning_rate=0.0004, train_loss='mse', train_reduce_lr={'factor': 0.5, 'patience': 10}, train_steps_per_epoch=4, train_tensorboard=True, unet_input_shape=(None, None, 1), unet_kern_size=3, unet_last_activation='linear', unet_n_depth=2, unet_n_first=32, unet_residual=False)
+N2VConfig(axes='YXC', batch_norm=True, means=['78.99956'], n2v_manipulator='uniform_withCP', n2v_neighborhood_radius=5, n2v_patch_shape=(64, 64), n2v_perc_pix=1.6, n_channel_in=1, n_channel_out=1, n_dim=2, probabilistic=False, stds=['21.15178'], train_batch_size=128, train_checkpoint='weights_best.h5', train_epochs=4, train_learning_rate=0.0004, train_loss='mse', train_reduce_lr={'factor': 0.5, 'patience': 10}, train_steps_per_epoch=4, train_tensorboard=True, unet_input_shape=(None, None, 1), unet_kern_size=3, unet_last_activation='linear', unet_n_depth=2, unet_n_first=32, unet_residual=False)
 65 blind-spots will be generated per training patch of size (64, 64).
 Epoch 1/4
 
-1/4 [======>.......................] - ETA: 14s - loss: 1.0632 - n2v_mse: 1.0632 - n2v_abs: 0.7080
-2/4 [==============>...............] - ETA: 4s - loss: 0.8932 - n2v_mse: 0.8932 - n2v_abs: 0.6529 
-3/4 [=====================>........] - ETA: 2s - loss: 0.8089 - n2v_mse: 0.8089 - n2v_abs: 0.6301
-4/4 [==============================] - 12s 3s/step - loss: 0.7406 - n2v_mse: 0.7406 - n2v_abs: 0.6089 - val_loss: 0.7272 - val_n2v_mse: 0.7272 - val_n2v_abs: 0.5905
+1/4 [======>.......................] - ETA: 13s - loss: 1.9980 - n2v_mse: 1.9980 - n2v_abs: 0.87202020-08-11 14:10:12.716972: W tensorflow/core/framework/allocator.cc:107] Allocation of 134217728 exceeds 10% of system memory.
+2020-08-11 14:10:13.601583: W tensorflow/core/framework/allocator.cc:107] Allocation of 134217728 exceeds 10% of system memory.
+
+2/4 [==============>...............] - ETA: 8s - loss: 1.4834 - n2v_mse: 1.4834 - n2v_abs: 0.7998 
+3/4 [=====================>........] - ETA: 2s - loss: 1.3811 - n2v_mse: 1.3811 - n2v_abs: 0.80432020-08-11 14:10:16.450399: W tensorflow/core/framework/allocator.cc:107] Allocation of 134217728 exceeds 10% of system memory.
+
+4/4 [==============================] - 12s 3s/step - loss: 1.1942 - n2v_mse: 1.1942 - n2v_abs: 0.7541 - val_loss: 0.5104 - val_n2v_mse: 0.5104 - val_n2v_abs: 0.5491
 Epoch 2/4
 
-1/4 [======>.......................] - ETA: 10s - loss: 0.4718 - n2v_mse: 0.4718 - n2v_abs: 0.5121
-2/4 [==============>...............] - ETA: 3s - loss: 0.4374 - n2v_mse: 0.4374 - n2v_abs: 0.4933 
-3/4 [=====================>........] - ETA: 2s - loss: 0.4176 - n2v_mse: 0.4176 - n2v_abs: 0.4831
-4/4 [==============================] - 11s 3s/step - loss: 0.3989 - n2v_mse: 0.3989 - n2v_abs: 0.4728 - val_loss: 0.6335 - val_n2v_mse: 0.6335 - val_n2v_abs: 0.5393
+1/4 [======>.......................] - ETA: 10s - loss: 0.6081 - n2v_mse: 0.6081 - n2v_abs: 0.6117
+2/4 [==============>...............] - ETA: 7s - loss: 0.6050 - n2v_mse: 0.6050 - n2v_abs: 0.6141 
+3/4 [=====================>........] - ETA: 3s - loss: 0.5594 - n2v_mse: 0.5594 - n2v_abs: 0.5883
+4/4 [==============================] - 11s 3s/step - loss: 0.5382 - n2v_mse: 0.5382 - n2v_abs: 0.5765 - val_loss: 0.5914 - val_n2v_mse: 0.5914 - val_n2v_abs: 0.5525
 Epoch 3/4
 
-1/4 [======>.......................] - ETA: 0s - loss: 0.8457 - n2v_mse: 0.8457 - n2v_abs: 0.6374
-2/4 [==============>...............] - ETA: 3s - loss: 0.5817 - n2v_mse: 0.5817 - n2v_abs: 0.5279
-3/4 [=====================>........] - ETA: 2s - loss: 0.4825 - n2v_mse: 0.4825 - n2v_abs: 0.4861
-4/4 [==============================] - 11s 3s/step - loss: 0.4084 - n2v_mse: 0.4084 - n2v_abs: 0.4540 - val_loss: 0.8533 - val_n2v_mse: 0.8533 - val_n2v_abs: 0.5428
+1/4 [======>.......................] - ETA: 10s - loss: 0.4286 - n2v_mse: 0.4286 - n2v_abs: 0.5177
+2/4 [==============>...............] - ETA: 7s - loss: 0.4158 - n2v_mse: 0.4158 - n2v_abs: 0.5100 
+3/4 [=====================>........] - ETA: 2s - loss: 0.4090 - n2v_mse: 0.4090 - n2v_abs: 0.5047
+4/4 [==============================] - 11s 3s/step - loss: 0.4034 - n2v_mse: 0.4034 - n2v_abs: 0.5001 - val_loss: 0.4898 - val_n2v_mse: 0.4898 - val_n2v_abs: 0.5151
 Epoch 4/4
 
-1/4 [======>.......................] - ETA: 10s - loss: 0.2738 - n2v_mse: 0.2738 - n2v_abs: 0.3924
-2/4 [==============>...............] - ETA: 6s - loss: 0.2818 - n2v_mse: 0.2818 - n2v_abs: 0.3956 
-3/4 [=====================>........] - ETA: 3s - loss: 0.2712 - n2v_mse: 0.2712 - n2v_abs: 0.3900
-4/4 [==============================] - 11s 3s/step - loss: 0.3348 - n2v_mse: 0.3348 - n2v_abs: 0.4195 - val_loss: 0.4146 - val_n2v_mse: 0.4146 - val_n2v_abs: 0.4373
+1/4 [======>.......................] - ETA: 0s - loss: 0.2896 - n2v_mse: 0.2896 - n2v_abs: 0.4281
+2/4 [==============>...............] - ETA: 3s - loss: 0.3083 - n2v_mse: 0.3083 - n2v_abs: 0.4383
+3/4 [=====================>........] - ETA: 2s - loss: 0.3186 - n2v_mse: 0.3186 - n2v_abs: 0.4429
+4/4 [==============================] - 11s 3s/step - loss: 0.3282 - n2v_mse: 0.3282 - n2v_abs: 0.4475 - val_loss: 0.3879 - val_n2v_mse: 0.3879 - val_n2v_abs: 0.4795
 
 
 Loading network weights from 'weights_best.h5'.
 Training done.
-loss 0.27524774393263085 validation loss 0.41458520466505094
+loss 0.33740944957365415 validation loss 0.387943297624588
 Time elapsed: 0.0 hour(s) 0.0 min(s) 50 sec(s)
 ---training done---
