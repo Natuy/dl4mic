@@ -1,4 +1,4 @@
-var _CONDA_ENV = "dl4";
+var _CONDA_ENV = "dl";
 var _NETWORKS_DIR = getDirectory("imagej") + "dl4mic"+File.separator +"networks";
 var _NETWORKS = getNetworks();
 var _CURRENT_NETWORK = 'None';
@@ -549,7 +549,16 @@ function showInstallEnvDialog() {
 function installEnv(oldEnv, newEnv) {
 	os = toLowerCase(getInfo("os.name"));
 	if (indexOf(os, "win")>-1) {
-		
+		a = exec("cmd", "/c", "start", "cmd", "/c", "conda env remove -y -n "+newEnv+" & sleep 5");
+		envFile = getDirectory("imagej") + "dl4mic/environment_win.yml";
+		envContent = File.openAsString(envFile);
+		envContent = replace(envContent, "name: "+oldEnv, "name: "+newEnv);
+		File.saveString(envContent, envFile);
+		exec("cmd", "/c", "start", "cmd", "/c", "conda env create -f D:\\MRI\\Fiji2.app\\dl4mic\\environment_win.yml & sleep 3");
+		toolsetFile = getDirectory("imagej") + "macros/toolsets/DL4Mic_Toolset.ijm";
+		toolsetContent = File.openAsString(toolsetFile);
+		toolsetContent = replace(toolsetContent, 'var _CONDA_ENV = "'+oldEnv+'";', 'var _CONDA_ENV = "'+newEnv+'";');
+		File.saveString(toolsetContent, toolsetFile);
 	} else {
 		cmd = getDirectory("home")+"anaconda3/condabin/conda";
 		command = cmd+" env remove -y -n "+newEnv;
