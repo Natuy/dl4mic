@@ -610,6 +610,10 @@ function findPythonInterpreter() {
 	if (File.exists(interpreter)) {
 		return interpreter;
 	}
+	interpreter = 'C:/ProgramData/Anaconda3/envs/dl/python.exe';
+	if (File.exists(interpreter)) {
+		return interpreter;
+	}
 	return '';
 }
 
