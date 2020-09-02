@@ -2,7 +2,9 @@ import sys
 import warnings
 from io import StringIO
 sys.stderr = StringIO()
-from dl4mic.n2v import N2VNetwork, ParserCreator
+sys.path.append(r'../lib/')
+from dl4mic.cliparser import ParserCreator
+from dl4mic.n2v import N2VNetwork
 sys.stderr = sys.__stderr__
 
 def main(argv):

@@ -11,7 +11,9 @@ from scipy import signal
 from skimage import io
 from sklearn.linear_model import LinearRegression
 from skimage.util import img_as_uint
-from dl4mic.n2v import N2VNetwork, ParserCreator
+sys.path.append(r'../lib/')
+from dl4mic.cliparser import ParserCreator
+from dl4mic.n2v import N2VNetwork
 
 def main(argv):
     parser = ParserCreator.createArgumentParser("./evaluate.yml")

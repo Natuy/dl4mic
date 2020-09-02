@@ -1,0 +1,99 @@
+user_parameters:
+- name: name
+  value: new_unet2D_model
+  type: string
+  default: new_unet2D_model
+  help: The name of the model. The model will be saved in a folder with this name. Using the name of an existing model will overwrite the data
+- name: baseDir
+  value: ../../models
+  type: string
+  default: ../../models
+  help: The base-folder under which the trained model will be saved.
+- name: dataSourcePath
+  value: ../../unet-data/training/source
+  type: string
+  default: ../../unet-data/training/source
+  help: The path to the folder containig the input images on which the model will be trained.
+- name: dataTargetPath
+  value: ../../unet-data/training/target
+  type: string
+  default: ../../unet-data/training/target
+  help: The path to the folder containig the gt-masks on which the model will be trained.
+- name: epochs
+  value: 2
+  type: int
+  default: 200
+  help: The number of epochs the network will be trained.
+- name: patchSizeXY
+  value: 512
+  type: int
+  default: 512
+  help: The image is divided into patches for training. Input the size of the patches (length of a side). Larger patches than 512x512 should NOT be selected for network stability.
+advanced_parameters:
+- name: stepsPerEpoch
+  value: 0
+  type: int
+  default: 0
+  help: Define the number of training steps by epoch. By default this parameter is calculated so that each image / patch is seen at least once per epoch. Enter 0 to use number_of_patches / batch_size.
+- name: batchSize
+  value: 4
+  type: int
+  default: 4
+  help: This parameter describes the amount of images that are loaded into the network per step. Smaller batchsizes may improve training performance slightly but may increase training time. If the notebook crashes while loading the dataset this can be due to a too large batch size. Decrease the number in this case.
+- name: validationFraction
+  value: 10
+  type: float
+  default: 10.0
+  help: The fraction of your training dataset in percent, you want to use to validate the network during the training.
+- name: learningRate
+  value: 0.001
+  type: float
+  default: 0.001
+  help: The initial learning rate. The learning rate controls how much the weights of the network with are adjusted with respect to the loss gradient.
+internal_network_parameters:
+- name: poolingSteps
+  value: 2
+  type: int
+  default: 2
+  help: Choosing a different number of pooling layers can affect the performance of the network. Each additional pooling step will also add two additional convolutions. The network can learn more complex information but is also more likely to overfit. Achieving best performance may require testing different values here.
+data_augmentation:
+- name: useDataAugmentation
+  value: True
+  type: bool
+  default: True
+  help: Data augmentation can improve training progress by amplifying differences in the dataset. This can be useful if the available dataset is small since, in this case, it is possible that a network could quickly learn every example in the dataset (overfitting), without augmentation. Augmentation is not necessary for training and if the dataset is large the values can be set to False.
+- name: horizontalShift
+  value: 10
+  type: int
+  default: 10
+  help: shift images horizontally up to the given percentage of the image width
+- name: verticalShift
+  value: 20
+  type: int
+  default: 20
+  help: shift images vertically up to the given percentage of the image height
+- name: zoomRange
+  value: 10
+  type: int
+  default: 10
+  help: apply random zooms in the range [100-zoomRange, 100+zoomRange]
+- name: shearRange
+  value: 10
+  type: int
+  default: 10
+  help: set the shear intensity (shear angle in counter-clockwise direction in degrees)
+- name: horizontalFlip
+  value: True
+  type: bool
+  default: True
+  help: use horizontal flips of the image
+- name: verticalFlip
+  value: True
+  type: bool
+  default: True
+  help: use vertical flips of the image
+- name: rotationRange
+  value: 180
+  type: int
+  default: 180
+  help: Degree range for random rotations

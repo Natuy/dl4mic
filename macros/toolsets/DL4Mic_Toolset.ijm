@@ -370,6 +370,9 @@ function train() {
 	}
 	epochs = getValueOfParameter('epochs');
 	dataPath = getValueOfParameter('dataPath');
+	if (dataPath == '') {
+		dataPath = getValueOfParameter('dataSourcePath');
+	}
 	baseDir = getValueOfParameter('baseDir');
 	name = getValueOfParameter("name");
 	outPath = baseDir + File.separator + name;
@@ -467,7 +470,7 @@ function getParameterString() {
 	for (i = 0; i < _PARAMETER_GROUP.length; i++) {
 		if (_PARAMETER_TYPE[i]=="bool") {
 			if (_PARAMETER_VALUE[i]=='True' || _PARAMETER_VALUE[i]=='1') {
-				string = string + "--" + _PARAMETER_NAME[i];
+				string = string + "--" + _PARAMETER_NAME[i] + " ";
 			}
 		} else {
 			string = string + "--" + _PARAMETER_NAME[i] + " " + _PARAMETER_VALUE[i] + " ";
@@ -505,27 +508,33 @@ function getEvaluateParameterString() {
 }
 
 function getValueOfParameter(aParameter) {
+	result = '';
 	for (i = 0; i < _PARAMETER_NAME.length; i++) {
 		if (_PARAMETER_NAME[i]==aParameter) {
 			return _PARAMETER_VALUE[i];
 		}
 	}
+	return result;
 }
 
 function getValueOfPredictParameter(aParameter) {
+	result = '';
 	for (i = 0; i < _PREDICT_PARAMETER_NAME.length; i++) {
 		if (_PREDICT_PARAMETER_NAME[i]==aParameter) {
 			return _PREDICT_PARAMETER_VALUE[i];
-		}
+		} 
 	}
+	return result;
 }
 
 function getValueOfEvaluateParameter(aParameter) {
+	result = '';
 	for (i = 0; i < _EVALUATE_PARAMETER_NAME.length; i++) {
 		if (_EVALUATE_PARAMETER_NAME[i]==aParameter) {
 			return _EVALUATE_PARAMETER_VALUE[i];
-		}
+		} 
 	}
+	return result;
 }
 
 function setParameter() {
@@ -905,7 +914,7 @@ function getNetworks() {
 	networks = newArray(0);
 	for (i = 0; i < files.length; i++) {
 			file = files[i];
-			if (File.isDirectory(_NETWORKS_DIR + "/"+ file)) {
+			if (File.isDirectory(_NETWORKS_DIR + "/"+ file) && file!='lib/') {
 				name = replace(file, '/', '');
 				networks = Array.concat(networks, name);
 			}

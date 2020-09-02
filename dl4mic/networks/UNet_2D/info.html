@@ -1,0 +1,36 @@
+<html>
+<h2>Image denoising using Noise2Void 2D</h2>
+<hr>
+<!--img-->
+<p>
+U-Net is an encoder-decoder network architecture originally used for image segmentation, first published by
+    <a href="https://arxiv.org/abs/1505.04597v1">
+        Ronneberger et al.</a>. The first half of the U-Net architecture is a downsampling convolutional neural network which
+    acts as a feature extractor from input images. The other half upsamples these results and restores an image by
+    combining results from downsampling with the upsampled images.
+</p>
+<p>
+This particular network enables image segmentation of 2D datasets. If you are interested in 3D datasets,
+    you should use the 3D U-Net instead.
+</p>
+<p>
+<em>Disclaimer:</em><br>
+
+DL4Mic (c) INSERM 2020, written by Volker Baecker.
+This code has been adapted from the <a href="https://github.com/HenriquesLab/DeepLearning_Collab/wiki">
+    Zero-Cost Deep-Learning to Enhance Microscopy</a>  project. Jointly developed by the <a href="https://cellmig.org/">
+    Jacquemet</a> and <a href="https://henriqueslab.github.io/">Henriques</a> laboratories.
+</p>
+<p>
+    It is largely based on the papers: <a href="https://arxiv.org/abs/1505.04597v1">
+    U-Net: Convolutional Networks for Biomedical Image Segmentation   </a>
+    by Ronneberger et al. published on arXiv in 2015 and
+    <a href="https://www.nature.com/articles/s41592-018-0261-2">
+    U-Net: deep learning for cell counting, detection, and morphometry </a> by Thorsten Falk et al. in Nature Methods 2019
+    and <a href="https://github.com/zhixuhao/unet">source code</a> by Zhixuhao.
+
+</p>
+<p>
+<em>Please also cite this original paper when using or developing this code.</em>
+</p>
+</html>
