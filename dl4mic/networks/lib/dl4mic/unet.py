@@ -505,4 +505,4 @@ def getIoUvsThreshold(prediction_filepath, groud_truth_filepath):
 # -------------- Other definitions -----------
 W  = '\033[0m'  # white (normal)
 R  = '\033[31m' # red
-prediction_prefix = 'Predicted_'
+prediction_prefix = ''

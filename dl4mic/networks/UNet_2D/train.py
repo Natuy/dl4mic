@@ -4,8 +4,8 @@ import time
 import math
 import warnings
 import shutil
+import csv
 import tensorflow as tf
-
 sys.path.append(r'../lib/')
 from dl4mic.cliparser import ParserCreator
 from dl4mic.unet import *
@@ -96,12 +96,22 @@ def main(argv):
                                   shuffle=True, verbose=1)
     # Save the last model
     model.save(os.path.join(full_model_path, 'weights_last.hdf5'))
+
+    lossDataCSVPath = os.path.join(full_model_path, 'Quality Control/training_evaluation.csv')
+    with open(lossDataCSVPath, 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(['loss', 'val_loss', 'learning rate'])
+        for i in range(len(history.history['loss'])):
+            writer.writerow([history.history['loss'][i], history.history['val_loss'][i], history.history['lr'][i]])
+
     print("------------------------------------------")
     dt = time.time() - start
     mins, sec = divmod(dt, 60)
     hour, mins = divmod(mins, 60)
     print("Time elapsed:", hour, "hour(s)", mins, "min(s)", round(sec), "sec(s)")
     print("------------------------------------------")
+
+    print("---training done---")
 
 
 if __name__ == '__main__':

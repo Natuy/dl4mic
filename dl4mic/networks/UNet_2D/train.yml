@@ -20,7 +20,7 @@ user_parameters:
   default: ../../unet-data/training/target
   help: The path to the folder containig the gt-masks on which the model will be trained.
 - name: epochs
-  value: 2
+  value: 10
   type: int
   default: 200
   help: The number of epochs the network will be trained.
@@ -31,7 +31,7 @@ user_parameters:
   help: The image is divided into patches for training. Input the size of the patches (length of a side). Larger patches than 512x512 should NOT be selected for network stability.
 advanced_parameters:
 - name: stepsPerEpoch
-  value: 0
+  value: 3
   type: int
   default: 0
   help: Define the number of training steps by epoch. By default this parameter is calculated so that each image / patch is seen at least once per epoch. Enter 0 to use number_of_patches / batch_size.

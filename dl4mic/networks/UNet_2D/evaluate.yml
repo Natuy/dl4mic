@@ -1,0 +1,21 @@
+user_parameters:
+- name: name
+  value: new_unet2D_model
+  type: string
+  default: new_unet2D_model
+  help: The name of the model. The model is read from a folder with this name.
+- name: baseDir
+  value: ../../models/
+  type: string
+  default: ../../models/
+  help: The base-folder under which the trained model is saved.
+- name: testInputPath
+  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/unet-data/quality/source/
+  type: string
+  default: ../../unet-data/quality/source/
+  help: The path to the folder containig the input images.
+- name: testGroundTruthPath
+  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/unet-data/quality/target/
+  type: string
+  default: ../../unet-data/quality/target/
+  help: The folder containing the ground-truth images.

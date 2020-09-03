@@ -205,19 +205,19 @@ function evaluate() {
 	predictionsDir = qcDir + "Prediction/";
 	print("" + count + " result images have been written to: \n" + predictionsDir);
 
-	targetID = loadResultSeries(outputFolder+"/"+files[index], "Target", "", 2);
-	sourceID = loadResultSeries(inputFolder+"/"+files[index], "Source", "", 2);
-	predictionID = loadResultSeries(predictionsDir+"/"+files[index], "Prediction", "", 2);
-	ssimTargetVSSourceID = loadResultSeries(qcDir+"/SSIM_GTvsSource_"+files[index], "Target vs. Source SSIM", "SSIM_GTvsSource_", 2);
+	targetID = loadResultSeries(outputFolder+"/", "Target", "", 2);
+	sourceID = loadResultSeries(inputFolder+"/", "Source", "", 2);
+	predictionID = loadResultSeries(predictionsDir+"/", "Prediction", "", 2);
+	ssimTargetVSSourceID = loadResultSeries(qcDir+"/", "Target vs. Source SSIM", "SSIM_GTvsSource_", 2);
 	run("Fire");
 	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
-	ssimTargetVSPredictionID = loadResultSeries(qcDir+"/SSIM_GTvsPrediction_"+files[index], "Target vs. Prediction SSIM", "SSIM_GTvsPrediction_", 2);
+	ssimTargetVSPredictionID = loadResultSeries(qcDir+"/", "Target vs. Prediction SSIM", "SSIM_GTvsPrediction_", 2);
 	run("Fire");
 	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
-	rseTragetVSSourceID = loadResultSeries(qcDir+"/SSIM_GTvsSource_"+files[index], "Target vs. Source NRMSE", "RSE_GTvsSource_", 2);
+	rseTragetVSSourceID = loadResultSeries(qcDir+"/", "Target vs. Source NRMSE", "RSE_GTvsSource_", 2);
 	run("Fire");
 	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
-	rseTragetVSPredictionID = loadResultSeries(qcDir+"/SSIM_GTvsPrediction_"+files[index], "Target vs. Prediction NRMSE", "RSE_GTvsPrediction_", 2);
+	rseTragetVSPredictionID = loadResultSeries(qcDir+"/", "Target vs. Prediction NRMSE", "RSE_GTvsPrediction_", 2);
 	run("Fire");
 	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
 	
@@ -239,8 +239,9 @@ function evaluate() {
 function loadResultSeries(path, name, file, zoomOut) {
 	parameter = "open=["+ path + "] sort ";
 	if(file!="") {
-		parameter = parameter + "file="+file; 
+		parameter = parameter + "filter="+file; 
 	}
+	print(parameter);
 	run("Image Sequence...", parameter);
 	id = getImageID();
 	rename(name);
