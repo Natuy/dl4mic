@@ -1,0 +1,26 @@
+user_parameters:
+- name: name
+  value: new_unet2D_model
+  type: string
+  default: new_unet2D_model
+  help: The name of the model. The model is read from a folder with this name.
+- name: baseDir
+  value: ../../models
+  type: string
+  default: ../../models
+  help: The base-folder under which the trained model is saved.
+- name: dataPath
+  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/tmp/in
+  type: string
+  default: ../../unet-data/data
+  help: The path to the folder containig the input images.
+- name: output
+  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/tmp/out
+  type: string
+  default: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/tmp/out
+  help: The folder into which the result images will be saved.
+- name: threshold
+  value: 127.5
+  type: float
+  default: 127.5
+  help: The threshold value used to create binary masks

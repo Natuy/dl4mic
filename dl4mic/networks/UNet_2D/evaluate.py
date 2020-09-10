@@ -39,6 +39,7 @@ def main(argv):
 
     predictions = []
     for i in tqdm(range(number_of_dataset)):
+        print("processing dataset " + str(i+1) + ", file: " + source_dir_list[i])
         predictions.append(predict_as_tiles(os.path.join(args.testInputPath, source_dir_list[i]), unet))
 
     # Save the results in the folder along with the masks according to the set threshold

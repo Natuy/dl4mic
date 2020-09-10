@@ -208,33 +208,75 @@ function evaluate() {
 	targetID = loadResultSeries(outputFolder+"/", "Target", "", 2);
 	sourceID = loadResultSeries(inputFolder+"/", "Source", "", 2);
 	predictionID = loadResultSeries(predictionsDir+"/", "Prediction", "", 2);
-	ssimTargetVSSourceID = loadResultSeries(qcDir+"/", "Target vs. Source SSIM", "SSIM_GTvsSource_", 2);
-	run("Fire");
-	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
-	ssimTargetVSPredictionID = loadResultSeries(qcDir+"/", "Target vs. Prediction SSIM", "SSIM_GTvsPrediction_", 2);
-	run("Fire");
-	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
-	rseTragetVSSourceID = loadResultSeries(qcDir+"/", "Target vs. Source NRMSE", "RSE_GTvsSource_", 2);
-	run("Fire");
-	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
-	rseTragetVSPredictionID = loadResultSeries(qcDir+"/", "Target vs. Prediction NRMSE", "RSE_GTvsPrediction_", 2);
-	run("Fire");
-	run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
 	
 	name = getValueOfEvaluateParameter("name");
 	open(qcDir+'/'+'QC_metrics_'+name+'.csv') ;
 	wait(500);
-	Table.renameColumn('image #', 'image');
-	Table.sort('image');
+	parts = split(Table.headings, "\t");
+	if (parts[0] == "image #") {
+		Table.renameColumn('image #', 'image');
+		Table.sort('image');
+	}
+	if (parts[1] == "IoU") {
+		selectImage("Prediction");
+		images = Table.getColumn("File name");
+		thresholds = Table.getColumn("IoU-optimised threshold");
+		positions = Array.rankPositions(images);
+		for (i = 0; i < positions.length; i++) {
+			Stack.setSlice(i+1);
+			run("Macro...", "code=v=(v>"+thresholds[positions[i]]+")*255 slice");	
+		}
+		run("Invert LUT");
+		Stack.setSlice(1);
+		ious = Table.getColumn("IoU");
+		Plot.create("IoU vs. Threshold", "IoU", "IoU-optimised threshold");
+		Plot.add("Circle", Table.getColumn("IoU", 'QC_metrics_'+name+'.csv'), Table.getColumn("IoU-optimised threshold", 'QC_metrics_'+name+'.csv'));
+		Plot.setStyle(0, "blue,#a0a0ff,1.0,Circle");
 
-	setSubtitles(ssimTargetVSSourceID, "Input v. GT mSSIM", "Target vs. Source SSIM:");
-	setSubtitles(ssimTargetVSPredictionID, "Prediction v. GT mSSIM", "Target vs. Prediction SSIM:");
-	setSubtitles(rseTragetVSSourceID, "Input v. GT NRMSE", "Target vs. Source NRMSE:");
-	setSubtitles(rseTragetVSPredictionID, "Prediction v. GT NRMSE", "Target vs. Prediction NRMSE:");
+		Array.getStatistics(thresholds, min, max, mean, stdDev);
+		
+		print("-----------------------");
+		print("Average best threshold:", mean);
+		print("-----------------------");
+	}
+	if (containsFileWithPrefix(qcDir+"/", "SSIM_GTvsSource_")) {
+		ssimTargetVSSourceID = loadResultSeries(qcDir+"/", "Target vs. Source SSIM", "SSIM_GTvsSource_", 2);
+		setSubtitles(ssimTargetVSSourceID, "Input v. GT mSSIM", "Target vs. Source SSIM:");
+		run("Fire");
+		run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
+	}
+	if (containsFileWithPrefix(qcDir+"/", "SSIM_GTvsPrediction_")) {
+		ssimTargetVSPredictionID = loadResultSeries(qcDir+"/", "Target vs. Prediction SSIM", "SSIM_GTvsPrediction_", 2);
+		setSubtitles(ssimTargetVSPredictionID, "Prediction v. GT mSSIM", "Target vs. Prediction SSIM:");
+		run("Fire");
+		run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
+	}
+	if (containsFileWithPrefix(qcDir+"/", "RSE_GTvsSource_")) {
+		rseTragetVSSourceID = loadResultSeries(qcDir+"/", "Target vs. Source NRMSE", "RSE_GTvsSource_", 2);
+		setSubtitles(rseTragetVSSourceID, "Input v. GT NRMSE", "Target vs. Source NRMSE:");
+		run("Fire");
+		run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
+	}
+	if (containsFileWithPrefix(qcDir+"/", "RSE_GTvsPrediction_")) {
+		rseTragetVSPredictionID = loadResultSeries(qcDir+"/", "Target vs. Prediction NRMSE", "RSE_GTvsPrediction_", 2);
+		setSubtitles(rseTragetVSPredictionID, "Prediction v. GT NRMSE", "Target vs. Prediction NRMSE:");
+		run("Fire");
+		run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
+	}
 	
 	run("Tile");
 } 
 
+function containsFileWithPrefix(folder, prefix) {
+	files = getFileList(folder);
+	for (i = 0; i < files.length; i++) {
+		file = files[i];
+		if(startsWith(file, prefix)) {
+			return true;
+		}
+	}
+	return false;
+}
 
 function loadResultSeries(path, name, file, zoomOut) {
 	parameter = "open=["+ path + "] sort ";
@@ -264,9 +306,12 @@ function predict() {
 	outputFolder = "";
 	workingOnOpenImage = false;
 	isStack = false;
+	nrOfImages = 0;
 	if (nImages==0) {
 		inputFolder = getDirectory("Input Folder");	
 		outputFolder = getDirectory("Output Folder");	
+		files = getFileList(inputFolder);
+		nrOfImages = files.length;
 	} else {
 		workingOnOpenImage = true;
 		emptyTmpFolder();
@@ -277,9 +322,10 @@ function predict() {
 		inputFolder = getDirectory("imagej") + "dl4mic" + File.separator + "tmp" + File.separator + "in";
 		File.makeDirectory(inputFolder);
 		outputFolder = getDirectory("imagej") + "dl4mic" + File.separator + "tmp" + File.separator + "out";
+		nrOfImages = nSlices;
 		if (nSlices>1) {
 			isStack = true;
-			run("Image Sequence... ", "format=TIFF save="+inputFolder+File.separator+title);	
+			run("Image Sequence... ", "format=TIFF save="+inputFolder);	
 		} else {
 			saveAs("tiff", inputFolder +File.separator+title);
 		}
@@ -342,7 +388,16 @@ function predict() {
 	print("" + count + " result images have been written to: \n" + outputFolder);
 	if (workingOnOpenImage) {
 		if (isStack) {
-			run("Image Sequence...", "open="+outputFolder+"/"+files[index] + " sort");
+			run("Image Sequence...", "select=" + outputFolder + " dir=" + outputFolder + " sort");
+			resID = getImageID();
+			resSlices = nSlices;
+			if (resSlices>nrOfImages) {
+				run("Duplicate...", "duplicate range=1-"+resSlices/2);
+				selectImage(resID);
+				run("Duplicate...", "duplicate range="+((resSlices/2)+1)+"-"+resSlices);
+				selectImage(resID);
+				close();
+			}
 		} else {
 			open(outputFolder +File.separator+title);
 		}
