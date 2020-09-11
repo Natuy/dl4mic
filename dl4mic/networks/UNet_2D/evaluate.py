@@ -38,7 +38,7 @@ def main(argv):
     print('Number of dataset found in the folder: '+str(number_of_dataset))
 
     predictions = []
-    for i in tqdm(range(number_of_dataset)):
+    for i in range(number_of_dataset):
         print("processing dataset " + str(i+1) + ", file: " + source_dir_list[i])
         predictions.append(predict_as_tiles(os.path.join(args.testInputPath, source_dir_list[i]), unet))
 
