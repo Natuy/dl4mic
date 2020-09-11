@@ -13,7 +13,6 @@ from keras import backend as keras
 # General import
 
 import numpy as np
-import pandas as pd
 import os
 import glob
 from skimage import img_as_ubyte, io, transform
@@ -37,11 +36,6 @@ from skimage.util import img_as_uint
 from skimage.metrics import structural_similarity
 from skimage.metrics import peak_signal_noise_ratio as psnr
 
-# For sliders and dropdown menu and progress bar
-from ipywidgets import interact
-import ipywidgets as widgets
-# from tqdm import tqdm
-from tqdm.notebook import tqdm
 
 from sklearn.feature_extraction import image
 from skimage import img_as_ubyte, io, transform
@@ -168,7 +162,7 @@ def getClassWeights(Training_target_path):
   number_of_dataset = len(Mask_dir_list)
 
   class_count = np.zeros(2, dtype=int)
-  for i in tqdm(range(number_of_dataset)):
+  for i in range(number_of_dataset):
     mask = io.imread(os.path.join(Training_target_path, Mask_dir_list[i]))
     mask = normalizeMinMax(mask)
     class_count[0] += mask.shape[0]*mask.shape[1] - mask.sum()
