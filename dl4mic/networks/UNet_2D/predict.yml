@@ -10,12 +10,12 @@ user_parameters:
   default: ../../models
   help: The base-folder under which the trained model is saved.
 - name: dataPath
-  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/tmp/in
+  value: D:\MRI\Fiji2.app\dl4mic\unet-data\data\
   type: string
   default: ../../unet-data/data
   help: The path to the folder containig the input images.
 - name: output
-  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/tmp/out
+  value: D:\MRI\Fiji2.app\dl4mic\unet-data\out\
   type: string
   default: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/tmp/out
   help: The folder into which the result images will be saved.

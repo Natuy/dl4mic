@@ -10,12 +10,12 @@ user_parameters:
   default: ../../models/
   help: The base-folder under which the trained model is saved.
 - name: testInputPath
-  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/unet-data/quality/source/
+  value: D:\MRI\volker\unet\quality\in\
   type: string
   default: ../../unet-data/quality/source/
   help: The path to the folder containig the input images.
 - name: testGroundTruthPath
-  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/unet-data/quality/target/
+  value: D:\MRI\volker\unet\quality\target\
   type: string
   default: ../../unet-data/quality/target/
   help: The folder containing the ground-truth images.
