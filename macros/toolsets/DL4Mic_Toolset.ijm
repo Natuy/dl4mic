@@ -33,7 +33,7 @@ _CURRENT_NETWORK = "Noise2Void_2D";
 readParameters();
 readPredictParameter();
 readEvaluateParameter();
-train();
+evaluate();
 exit();
 
 macro "DL4Mic Action Tool (f2) - C666D00C555D10C444L2090C333Da0C777Db0CeeeDc0C777D01C666D11C555D21C444L31b1C888Dc1CeeeDd1C777L0222C555D32C666L42a2C555Lb2c2C999Dd2C777L0323C888D33CcccL43b3CaaaDc3C999Dd3C777L0424C999D34CdddL44b4CbbbDc4C999Dd4C777L0525C999D35CdddL45b5CbbbDc5C999Dd5C777L0626C999D36CdddL46b6CbbbDc6C999Dd6C777L0727C999D37CdddL47b7CbbbDc7C999Dd7C666D08C777L1828C999D38CdddL48b8CbbbDc8C999Dd8C666L0919C777D29C999D39CdddL49b9CbbbDc9C999Dd9CdddD0aC777D1aC666D2aC888D3aCdddL4abaCbbbDcaC999DdaCdddD1bC777D2bC888D3bCdddL4bbbCbbbDcbC999DdbCdddD2cC888D3cC999L4cbcC888DccC999DdcCeeeD3dCdddL4dcdCeeeDdd" {
@@ -155,7 +155,7 @@ function evaluate() {
 	File.delete(logPath);
 	os = toLowerCase(getInfo("os.name"));
 	if (indexOf(os, "win")>-1) {
-		writePredictBatchFile();
+		writeEvaluateBatchFile();
 		setOption("WaitForCompletion", false);
 		a = exec("evaluate.bat");
 	} else {
@@ -322,6 +322,7 @@ function predict() {
 		inputFolder = getDirectory("imagej") + "dl4mic" + File.separator + "tmp" + File.separator + "in";
 		File.makeDirectory(inputFolder);
 		outputFolder = getDirectory("imagej") + "dl4mic" + File.separator + "tmp" + File.separator + "out";
+		File.makeDirectory(outputFolder);
 		nrOfImages = nSlices;
 		if (nSlices>1) {
 			isStack = true;
@@ -625,7 +626,7 @@ function installEnv(oldEnv, newEnv) {
 		envContent = File.openAsString(envFile);
 		envContent = replace(envContent, "name: "+oldEnv, "name: "+newEnv);
 		File.saveString(envContent, envFile);
-		exec("cmd", "/c", "start", "cmd", "/c", "conda env create -f D:\\MRI\\Fiji2.app\\dl4mic\\environment_win.yml & sleep 3");
+		exec("cmd", "/c", "start", "cmd", "/c", "conda env create -f "+envFile+" & sleep 3");
 		toolsetFile = getDirectory("imagej") + "macros/toolsets/DL4Mic_Toolset.ijm";
 		toolsetContent = File.openAsString(toolsetFile);
 		toolsetContent = replace(toolsetContent, 'var _CONDA_ENV = "'+oldEnv+'";', 'var _CONDA_ENV = "'+newEnv+'";');
@@ -996,25 +997,34 @@ function info() {
 
 function writeBatchFile() {
 	parameters = getParameterString();
+	dir = getDirectory("imagej");
+	parts = split(dir, "\\");
+	driveLetter = parts[0];
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_training.txt";
-	command = "conda activate "+_CONDA_ENV+" && cd "+baseFolder+" && python.exe -u train.py "+parameters+" > log_training.txt";
+	command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u train.py "+parameters+" > log_training.txt 2>&1";
 	folder = getDir("imagej");
 	File.saveString(command, folder + "train.bat");
 }
 
 function writePredictBatchFile() {
 	parameters = getPredictParameterString();
+	dir = getDirectory("imagej");
+	parts = split(dir, "\\");
+	driveLetter = parts[0];
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	command = "conda activate "+_CONDA_ENV+" && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_prediction.txt";
+	command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_prediction.txt 2>&1";
 	folder = getDir("imagej");
 	File.saveString(command, folder + "predict.bat");
 }
 
 function writeEvaluateBatchFile() {
 	parameters = getEvaluateParameterString();
+	dir = getDirectory("imagej");
+	parts = split(dir, "\\");
+	driveLetter = parts[0];
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	command = "conda activate "+_CONDA_ENV+" && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_evaluation.txt";
+	command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u evaluate.py "+parameters+" > log_evaluation.txt 2>&1";
 	folder = getDir("imagej");
 	File.saveString(command, folder + "evaluate.bat");
 }
