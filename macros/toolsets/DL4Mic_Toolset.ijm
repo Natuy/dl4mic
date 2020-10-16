@@ -1,4 +1,4 @@
-var _CONDA_ENV = "dl";
+var _CONDA_ENV = "derossi";
 var _NETWORKS_DIR = getDirectory("imagej") + "dl4mic"+File.separator +"networks";
 var _NETWORKS = getNetworks();
 var _CURRENT_NETWORK = 'None';
@@ -631,6 +631,7 @@ function installEnv(oldEnv, newEnv) {
 		toolsetContent = File.openAsString(toolsetFile);
 		toolsetContent = replace(toolsetContent, 'var _CONDA_ENV = "'+oldEnv+'";', 'var _CONDA_ENV = "'+newEnv+'";');
 		File.saveString(toolsetContent, toolsetFile);
+		exec("cmd", "/c", "start", "cmd", "/c", "conda init cmd.exe");
 	} else {
 		cmd = getDirectory("home")+"anaconda3/condabin/conda";
 		command = cmd+" env remove -y -n "+newEnv;
