@@ -1,4 +1,4 @@
-var _CONDA_ENV = "derossi";
+var _CONDA_ENV = "dl";
 var _NETWORKS_DIR = getDirectory("imagej") + "dl4mic"+File.separator +"networks";
 var _NETWORKS = getNetworks();
 var _CURRENT_NETWORK = 'None';
