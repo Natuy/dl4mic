@@ -1,4 +1,4 @@
-name: derossi
+name: dl
 channels:
   - anaconda
   - defaults

@@ -57,9 +57,9 @@ def create_patches(Training_source, Training_target, patch_width, patch_height):
   """
   DEBUG = False
 
-  Patch_source = os.path.join('../../unet-data','img_patches')
-  Patch_target = os.path.join('../../unet-data','mask_patches')
-  Patch_rejected = os.path.join('../../unet-data', 'rejected')
+  Patch_source = os.path.join(Training_source, '../img_patches')
+  Patch_target = os.path.join(Training_source, '../mask_patches')
+  Patch_rejected = os.path.join(Training_source, '../rejected')
   
 
   #Here we save the patches, in the /content directory as they will not usually be needed after training
