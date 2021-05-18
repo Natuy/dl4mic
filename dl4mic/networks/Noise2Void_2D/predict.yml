@@ -1,6 +1,6 @@
 user_parameters:
 - name: name
-  value: new_n2v_model
+  value: test
   type: string
   default: new n2v model
   help: The name of the model. The model is read from a folder with this name.
@@ -10,12 +10,12 @@ user_parameters:
   default: ../../models
   help: The base-folder under which the trained model is saved.
 - name: dataPath
-  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/n2v-data/prediction-in/
+  value: E
   type: string
   default: ../../n2v-data/prediction-in
   help: The path to the folder containig the noisy images..
 - name: output
-  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/n2v-data/prediction-out/
+  value: E
   type: string
   default: ../../n2v-data/prediction-out
   help: The folder into which the result images will be saved.

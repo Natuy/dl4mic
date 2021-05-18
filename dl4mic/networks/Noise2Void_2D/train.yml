@@ -1,6 +1,6 @@
 user_parameters:
 - name: name
-  value: new_n2v_model
+  value: test
   type: string
   default: new n2v model
   help: The name of the model. The model will be saved in a folder with this name. Using the name of an existing model will overwrite the data.
@@ -10,17 +10,17 @@ user_parameters:
   default: ../../models
   help: The base-folder under which the trained model will be saved.
 - name: dataPath
-  value: ../../n2v-data/training
+  value: ../../n2v-data/training2
   type: string
   default: ../../n2v-data/training
   help: The path to the folder containig the noisy images on which the model will be trained.
 - name: epochs
-  value: 4
+  value: 3
   type: int
   default: 30
   help: The number of epochs the network will be trained.
 - name: patchSizeXY
-  value: 64
+  value: 12
   type: int
   default: 64
   help: The image is divided into patches for training. Input the size of the patches (length of a side). The value should be between 64 and the dimensions of the image and divisible by 8.
@@ -31,7 +31,7 @@ advanced_parameters:
   default: 0
   help: Define the number of training steps by epoch. By default this parameter is calculated so that each image / patch is seen at least once per epoch. Enter 0 to use number_of_patches / batch_size.
 - name: batchSize
-  value: 128
+  value: 32
   type: int
   default: 128
   help: This parameter defines the number of patches seen in each training step. Noise2Void requires a large batch size for stable training. Reduce this parameter if your GPU runs out of memory.

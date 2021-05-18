@@ -5,18 +5,25 @@
 <p>
 U-Net is an encoder-decoder network architecture originally used for image segmentation, first published by
     <a href="https://arxiv.org/abs/1505.04597v1">
-        Ronneberger et al.</a>.
-    The first half of the U-Net architecture is a downsampling convolutional neural network which
+        Ronneberger et al.</a>. The first half of the U-Net architecture is a downsampling convolutional neural network which
     acts as a feature extractor from input images. The other half upsamples these results and restores an image by
     combining results from downsampling with the upsampled images.
 </p>
 <p>
-This particular network enables image segmentation of 2D datasets. If you are interested in 3D datasets,
-    you should use the 3D U-Net instead.
+    DenseNet is a network architecture which connects each layer to every other layer in a feed-forward fashion, first published by
+    <a href="https://arxiv.org/abs/1608.06993v5">
+        Gao Huang et al.</a>.
+</p>
+<p>
+    This network is an implementation of a Dense U-Net, an U-Net architecture where each layer is
+    densely connected with the other layers of the same downsampling or upsampling step
+</p>
+<p>
+    This particular network enables image segmentation of 2D datasets.
 </p>
 <p>
 <em>Disclaimer:</em><br>
-
+<h3>TODO</h3>
 DL4Mic (c) INSERM 2020, written by Volker Baecker.
 This code has been adapted from the <a href="https://github.com/HenriquesLab/DeepLearning_Collab/wiki">
     Zero-Cost Deep-Learning to Enhance Microscopy</a>  project. Jointly developed by the <a href="https://cellmig.org/">

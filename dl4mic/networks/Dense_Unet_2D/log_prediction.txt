@@ -1,0 +1,17 @@
+The turgomap_unet2D_model network will be used.
+2021-04-20 16:43:15.367430: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX AVX2
+2021-04-20 16:43:15.381943: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library nvcuda.dll
+2021-04-20 16:43:15.581236: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1640] Found device 0 with properties: 
+name: Quadro P400 major: 6 minor: 1 memoryClockRate(GHz): 1.2525
+pciBusID: 0000:73:00.0
+2021-04-20 16:43:15.583536: I tensorflow/stream_executor/platform/default/dlopen_checker_stub.cc:25] GPU libraries are statically linked, skip dlopen check.
+2021-04-20 16:43:15.587828: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1763] Adding visible gpu devices: 0
+2021-04-20 16:43:16.275408: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1181] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-04-20 16:43:16.276121: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1187]      0 
+2021-04-20 16:43:16.276504: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1200] 0:   N 
+2021-04-20 16:43:16.279900: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1326] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 1370 MB memory) -> physical GPU (device: 0, name: Quadro P400, pci bus id: 0000:73:00.0, compute capability: 6.1)
+Model input size: 256x256
+Number of dataset found in the folder: 1
+processing dataset 1, file: IoU vs.tif
+2021-04-20 16:43:25.062544: W tensorflow/core/common_runtime/bfc_allocator.cc:237] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.69GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+---predictions done---
