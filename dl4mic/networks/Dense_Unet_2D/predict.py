@@ -33,7 +33,7 @@ def main(argv):
     predictions = []
     for i in range(number_of_dataset):
         print("processing dataset " + str(i + 1) + ", file: " + source_dir_list[i])
-        predictions.append(predict_as_tiles(os.path.join(args.dataPath, source_dir_list[i]), denseunet))
+        predictions.append(predict_as_tiles(os.path.join(args.dataPath, source_dir_list[i]), denseUnet))
 
     # Save the results in the folder along with the masks according to the set threshold
     saveResult(args.output, predictions, source_dir_list, prefix=prediction_prefix, threshold=args.threshold)

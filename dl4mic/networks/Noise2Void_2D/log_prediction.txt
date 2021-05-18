@@ -1,391 +1,0 @@
-Namespace(baseDir='../../models', dataPath='E:\\MRI\\Fiji.app\\dl4mic\\n2v-data\\turgo_prediction-in\\', name='turgo_n2v_model', output='E:\\MRI\\Fiji.app\\dl4mic\\n2v-data\\turgo_prediction-out\\', tileX=1, tileY=2)
-2021-04-19 15:50:31.891059: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX AVX2
-2021-04-19 15:50:31.905621: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library nvcuda.dll
-2021-04-19 15:50:32.298683: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1640] Found device 0 with properties: 
-name: Quadro P400 major: 6 minor: 1 memoryClockRate(GHz): 1.2525
-pciBusID: 0000:73:00.0
-2021-04-19 15:50:32.301610: I tensorflow/stream_executor/platform/default/dlopen_checker_stub.cc:25] GPU libraries are statically linked, skip dlopen check.
-2021-04-19 15:50:32.304067: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1763] Adding visible gpu devices: 0
-2021-04-19 15:50:32.998582: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1181] Device interconnect StreamExecutor with strength 1 edge matrix:
-2021-04-19 15:50:32.999306: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1187]      0 
-2021-04-19 15:50:32.999703: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1200] 0:   N 
-2021-04-19 15:50:33.003039: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1326] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 1370 MB memory) -> physical GPU (device: 0, name: Quadro P400, pci bus id: 0000:73:00.0, compute capability: 6.1)
-Loading network weights from 'weights_best.h5'.
-The input image is of type uint8 and will be casted to float32 for prediction.
-2021-04-19 15:50:36.805418: W tensorflow/core/common_runtime/bfc_allocator.cc:237] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.05GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
-2021-04-19 15:50:38.471447: W tensorflow/core/common_runtime/bfc_allocator.cc:237] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.38GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.96it/s]100%|##########| 2/2 [00:00<00:00, 23.96it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.33it/s]100%|##########| 2/2 [00:00<00:00, 22.33it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.93it/s]100%|##########| 2/2 [00:00<00:00, 23.93it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.46it/s]100%|##########| 2/2 [00:00<00:00, 22.46it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.49it/s]100%|##########| 2/2 [00:00<00:00, 24.49it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.94it/s]100%|##########| 2/2 [00:00<00:00, 21.94it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.56it/s]100%|##########| 2/2 [00:00<00:00, 22.56it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.51it/s]100%|##########| 2/2 [00:00<00:00, 24.51it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]100%|##########| 2/2 [00:00<00:00, 21.00it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.22it/s]100%|##########| 2/2 [00:00<00:00, 22.22it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.75it/s]100%|##########| 2/2 [00:00<00:00, 21.75it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.91it/s]100%|##########| 2/2 [00:00<00:00, 23.91it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.29it/s]100%|##########| 2/2 [00:00<00:00, 22.29it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.51it/s]100%|##########| 2/2 [00:00<00:00, 24.51it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.90it/s]100%|##########| 2/2 [00:00<00:00, 23.90it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.88it/s]100%|##########| 2/2 [00:00<00:00, 23.88it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.86it/s]100%|##########| 2/2 [00:00<00:00, 21.85it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.54it/s]100%|##########| 2/2 [00:00<00:00, 24.54it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.65it/s]100%|##########| 2/2 [00:00<00:00, 21.65it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.75it/s]100%|##########| 2/2 [00:00<00:00, 21.75it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.55it/s]100%|##########| 2/2 [00:00<00:00, 22.34it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.53it/s]100%|##########| 2/2 [00:00<00:00, 24.53it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.35it/s]100%|##########| 2/2 [00:00<00:00, 22.35it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.75it/s]100%|##########| 2/2 [00:00<00:00, 21.75it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.74it/s]100%|##########| 2/2 [00:00<00:00, 21.74it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.54it/s]100%|##########| 2/2 [00:00<00:00, 24.54it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.98it/s]100%|##########| 2/2 [00:00<00:00, 21.98it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.61it/s]100%|##########| 2/2 [00:00<00:00, 21.61it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.45it/s]100%|##########| 2/2 [00:00<00:00, 22.45it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.10it/s]100%|##########| 2/2 [00:00<00:00, 24.10it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.95it/s]100%|##########| 2/2 [00:00<00:00, 21.95it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.08it/s]100%|##########| 2/2 [00:00<00:00, 24.08it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.00it/s]100%|##########| 2/2 [00:00<00:00, 22.00it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.98it/s]100%|##########| 2/2 [00:00<00:00, 21.98it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.93it/s]100%|##########| 2/2 [00:00<00:00, 21.93it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.94it/s]100%|##########| 2/2 [00:00<00:00, 21.94it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.07it/s]100%|##########| 2/2 [00:00<00:00, 21.94it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.99it/s]100%|##########| 2/2 [00:00<00:00, 21.99it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.95it/s]100%|##########| 2/2 [00:00<00:00, 21.95it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.08it/s]100%|##########| 2/2 [00:00<00:00, 24.08it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.47it/s]100%|##########| 2/2 [00:00<00:00, 22.47it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]100%|##########| 2/2 [00:00<00:00, 21.96it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.98it/s]100%|##########| 2/2 [00:00<00:00, 21.98it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.98it/s]100%|##########| 2/2 [00:00<00:00, 21.98it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.10it/s]100%|##########| 2/2 [00:00<00:00, 24.10it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.95it/s]100%|##########| 2/2 [00:00<00:00, 21.95it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.71it/s]100%|##########| 2/2 [00:00<00:00, 24.71it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.10it/s]100%|##########| 2/2 [00:00<00:00, 24.10it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.48it/s]100%|##########| 2/2 [00:00<00:00, 22.48it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.71it/s]100%|##########| 2/2 [00:00<00:00, 23.71it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.68it/s]100%|##########| 2/2 [00:00<00:00, 24.68it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.55it/s]100%|##########| 2/2 [00:00<00:00, 23.55it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.89it/s]100%|##########| 2/2 [00:00<00:00, 23.89it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.89it/s]100%|##########| 2/2 [00:00<00:00, 23.89it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.28it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.53it/s]100%|##########| 2/2 [00:00<00:00, 24.53it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.51it/s]100%|##########| 2/2 [00:00<00:00, 24.51it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.70it/s]100%|##########| 2/2 [00:00<00:00, 23.70it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.90it/s]100%|##########| 2/2 [00:00<00:00, 23.90it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.96it/s]100%|##########| 2/2 [00:00<00:00, 23.96it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.29it/s]100%|##########| 2/2 [00:00<00:00, 22.29it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.53it/s]100%|##########| 2/2 [00:00<00:00, 24.53it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.28it/s]100%|##########| 2/2 [00:00<00:00, 22.28it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.54it/s]100%|##########| 2/2 [00:00<00:00, 22.33it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]100%|##########| 2/2 [00:00<00:00, 21.77it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.95it/s]100%|##########| 2/2 [00:00<00:00, 23.95it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.30it/s]100%|##########| 2/2 [00:00<00:00, 22.30it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.31it/s]100%|##########| 2/2 [00:00<00:00, 22.31it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.83it/s]100%|##########| 2/2 [00:00<00:00, 21.83it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.51it/s]100%|##########| 2/2 [00:00<00:00, 24.51it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.90it/s]100%|##########| 2/2 [00:00<00:00, 23.90it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.50it/s]100%|##########| 2/2 [00:00<00:00, 22.30it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.92it/s]100%|##########| 2/2 [00:00<00:00, 23.92it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.88it/s]100%|##########| 2/2 [00:00<00:00, 23.88it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.93it/s]100%|##########| 2/2 [00:00<00:00, 23.93it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.94it/s]100%|##########| 2/2 [00:00<00:00, 23.94it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.35it/s]100%|##########| 2/2 [00:00<00:00, 22.35it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.82it/s]100%|##########| 2/2 [00:00<00:00, 21.82it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.73it/s]100%|##########| 2/2 [00:00<00:00, 21.73it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.95it/s]100%|##########| 2/2 [00:00<00:00, 23.95it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.30it/s]100%|##########| 2/2 [00:00<00:00, 22.30it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.34it/s]100%|##########| 2/2 [00:00<00:00, 22.34it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.30it/s]100%|##########| 2/2 [00:00<00:00, 22.30it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.84it/s]100%|##########| 2/2 [00:00<00:00, 23.84it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.27it/s]100%|##########| 2/2 [00:00<00:00, 22.27it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.32it/s]100%|##########| 2/2 [00:00<00:00, 21.82it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.89it/s]100%|##########| 2/2 [00:00<00:00, 21.89it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.26it/s]100%|##########| 2/2 [00:00<00:00, 22.26it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.55it/s]100%|##########| 2/2 [00:00<00:00, 24.55it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.83it/s]100%|##########| 2/2 [00:00<00:00, 21.83it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.93it/s]100%|##########| 2/2 [00:00<00:00, 23.93it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.53it/s]100%|##########| 2/2 [00:00<00:00, 22.31it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.66it/s]100%|##########| 2/2 [00:00<00:00, 21.66it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.91it/s]100%|##########| 2/2 [00:00<00:00, 23.91it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.90it/s]100%|##########| 2/2 [00:00<00:00, 23.90it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.76it/s]100%|##########| 2/2 [00:00<00:00, 21.76it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.53it/s]100%|##########| 2/2 [00:00<00:00, 24.53it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.82it/s]100%|##########| 2/2 [00:00<00:00, 21.82it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.83it/s]100%|##########| 2/2 [00:00<00:00, 21.83it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.91it/s]100%|##########| 2/2 [00:00<00:00, 23.91it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.52it/s]100%|##########| 2/2 [00:00<00:00, 24.52it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.16it/s]100%|##########| 2/2 [00:00<00:00, 22.16it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.83it/s]100%|##########| 2/2 [00:00<00:00, 21.83it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.94it/s]100%|##########| 2/2 [00:00<00:00, 23.94it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.76it/s]100%|##########| 2/2 [00:00<00:00, 21.76it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]100%|##########| 2/2 [00:00<00:00, 21.79it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.35it/s]100%|##########| 2/2 [00:00<00:00, 22.35it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.89it/s]100%|##########| 2/2 [00:00<00:00, 23.89it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.82it/s]100%|##########| 2/2 [00:00<00:00, 21.82it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.85it/s]100%|##########| 2/2 [00:00<00:00, 21.85it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.75it/s]100%|##########| 2/2 [00:00<00:00, 22.75it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.33it/s]100%|##########| 2/2 [00:00<00:00, 21.83it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.83it/s]100%|##########| 2/2 [00:00<00:00, 21.83it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.84it/s]100%|##########| 2/2 [00:00<00:00, 23.84it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.58it/s]100%|##########| 2/2 [00:00<00:00, 21.58it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.81it/s]100%|##########| 2/2 [00:00<00:00, 22.81it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 20.79it/s]100%|##########| 2/2 [00:00<00:00, 20.79it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]100%|##########| 2/2 [00:00<00:00, 21.84it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.51it/s]100%|##########| 2/2 [00:00<00:00, 24.51it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.10it/s]100%|##########| 2/2 [00:00<00:00, 21.09it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<00:00, 28728.11it/s]100%|##########| 2/2 [00:00<00:00, 22.72it/s]   100%|##########| 2/2 [00:00<00:00, 22.72it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.44it/s]100%|##########| 2/2 [00:00<00:00, 21.44it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.45it/s]100%|##########| 2/2 [00:00<00:00, 22.19it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.27it/s]100%|##########| 2/2 [00:00<00:00, 22.02it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.82it/s]100%|##########| 2/2 [00:00<00:00, 21.82it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.31it/s]100%|##########| 2/2 [00:00<00:00, 22.31it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.46it/s]100%|##########| 2/2 [00:00<00:00, 21.94it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.90it/s]100%|##########| 2/2 [00:00<00:00, 23.90it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 24.50it/s]100%|##########| 2/2 [00:00<00:00, 22.29it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.08it/s]100%|##########| 2/2 [00:00<00:00, 22.08it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.31it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.92it/s]100%|##########| 2/2 [00:00<00:00, 23.92it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]100%|##########| 2/2 [00:00<00:00, 21.81it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 22.34it/s]100%|##########| 2/2 [00:00<00:00, 22.34it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.75it/s]100%|##########| 2/2 [00:00<00:00, 21.75it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.82it/s]100%|##########| 2/2 [00:00<00:00, 21.82it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.74it/s]100%|##########| 2/2 [00:00<00:00, 21.74it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]100%|##########| 2/2 [00:00<00:00, 21.80it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]100%|##########| 2/2 [00:00<00:00, 21.78it/s]
-The input image is of type uint8 and will be casted to float32 for prediction.
-  0%|          | 0/2 [00:00<?, ?it/s] 50%|#####     | 1/2 [00:00<?, ?it/s]100%|##########| 2/2 [00:00<00:00, 23.88it/s]100%|##########| 2/2 [00:00<00:00, 23.88it/s]
-Images saved into folder: E:\MRI\Fiji.app\dl4mic\n2v-data\turgo_prediction-out\
----predictions done---

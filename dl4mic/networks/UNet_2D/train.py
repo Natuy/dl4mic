@@ -60,8 +60,6 @@ def main(argv):
                  learning_rate=args.learningRate,
                  class_weights=class_weights)
 
-    model = unet_3D()
-
     number_of_training_dataset = len(os.listdir(Patch_source))
 
     if args.stepsPerEpoch==0:

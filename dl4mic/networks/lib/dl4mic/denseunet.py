@@ -396,7 +396,7 @@ def denseUnet(pretrained_weights=None, input_size=(256,256,1), pooling_steps=4, 
             conv = denseBlock(merge, channels * pow(2, p - 1))
 
     out = Conv2D(32, 7, strides=1, activation='relu', padding='same', kernel_initializer='he_normal')(conv)
-    out = Conv2D(3, 1, activation='sigmoid')(out)
+    out = Conv2D(1, 1, activation='sigmoid')(out)
 
     model = Model(inputs=inputs, outputs=out)
     # model.compile(optimizer = Adam(lr = learning_rate), loss = 'binary_crossentropy', metrics = ['acc'])
@@ -447,9 +447,11 @@ def predict_as_tiles(Image_path, model):
             patch = Image[xi:xi + patch_size[0], yi:yi + patch_size[1]]
             patch = np.reshape(patch, patch.shape + (1,))
             patch = np.reshape(patch, (1,) + patch.shape)
+            print(patch.shape)
 
             # Get the prediction from the patch and paste it in the prediction in the right place
             predicted_patch = model.predict(patch, batch_size=1)
+            print(predicted_patch.shape)
             prediction[xi:xi + patch_size[0], yi:yi + patch_size[1]] = np.squeeze(predicted_patch)
 
     return prediction[0:Image_raw.shape[0], 0: Image_raw.shape[1]]
