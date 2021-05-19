@@ -6,37 +6,28 @@ var _NETWORKS = getNetworks();
 var _CURRENT_NETWORK = 'None';
 var _PYTHON_INTERPRETER = findPythonInterpreter();
 var networkMenuItems = newMenu("Select a network Menu Tool", _NETWORKS);
-var trainingParameterMenuItems = newMenu("Training Parameter Menu Tool", newArray("user parameters", "advanced parameters", "internal network parameters", "---", "python interpreter", "install deep-learning env."));
+var trainingParameterMenuArray = newArray("user parameters","advanced parameters","internal network parameters","---","python interpreter","install deep-learning env." );
+//var trainingParameterMenuItems = newMenu("Training Parameter Menu Tool", updateTrainingParameterMenu());
+var trainingParameterMenuItems = newMenu("Training Parameter Menu Tool", trainingParameterMenuArray);
 
-var _PARAMETER_GROUP = newArray(0);
-var _PARAMETER_NAME = newArray(0);
-var _PARAMETER_VALUE = newArray(0);
-var _PARAMETER_HELP = newArray(0);
-var _PARAMETER_TYPE = newArray(0);
-var _PARAMETER_DEFAULT = newArray(0);
 
-var _PREDICT_PARAMETER_GROUP = newArray(0);
-var _PREDICT_PARAMETER_NAME = newArray(0);
-var _PREDICT_PARAMETER_VALUE = newArray(0);
-var _PREDICT_PARAMETER_HELP = newArray(0);
-var _PREDICT_PARAMETER_TYPE = newArray(0);
-var _PREDICT_PARAMETER_DEFAULT = newArray(0);
+var _LOADED_PARAMETERS = -1;
 
-var _EVALUATE_PARAMETER_GROUP = newArray(0);
-var _EVALUATE_PARAMETER_NAME = newArray(0);
-var _EVALUATE_PARAMETER_VALUE = newArray(0);
-var _EVALUATE_PARAMETER_HELP = newArray(0);
-var _EVALUATE_PARAMETER_TYPE = newArray(0);
-var _EVALUATE_PARAMETER_DEFAULT = newArray(0);
+var _PT_TRAINING = 0;
+var _PT_PREDICT = 1;
+var _PT_EVALUATE = 2;
+
+var _CURRENT_PARAMETER_GROUP = newArray(0);
+var _CURRENT_PARAMETER_NAME = newArray(0);
+var _CURRENT_PARAMETER_VALUE = newArray(0);
+var _CURRENT_PARAMETER_HELP = newArray(0);
+var _CURRENT_PARAMETER_TYPE = newArray(0);
+var _CURRENT_PARAMETER_DEFAULT = newArray(0);
+
+
 
 var helpURL = "https://github.com/MontpellierRessourcesImagerie/dl4mic/wiki";
 
-_CURRENT_NETWORK = "Noise2Void_2D";
-readParameters();
-readPredictParameter();
-readEvaluateParameter();
-evaluate();
-exit();
 
 macro "DL4Mic Action Tool (f2) - C666D00C555D10C444L2090C333Da0C777Db0CeeeDc0C777D01C666D11C555D21C444L31b1C888Dc1CeeeDd1C777L0222C555D32C666L42a2C555Lb2c2C999Dd2C777L0323C888D33CcccL43b3CaaaDc3C999Dd3C777L0424C999D34CdddL44b4CbbbDc4C999Dd4C777L0525C999D35CdddL45b5CbbbDc5C999Dd5C777L0626C999D36CdddL46b6CbbbDc6C999Dd6C777L0727C999D37CdddL47b7CbbbDc7C999Dd7C666D08C777L1828C999D38CdddL48b8CbbbDc8C999Dd8C666L0919C777D29C999D39CdddL49b9CbbbDc9C999Dd9CdddD0aC777D1aC666D2aC888D3aCdddL4abaCbbbDcaC999DdaCdddD1bC777D2bC888D3bCdddL4bbbCbbbDcbC999DdbCdddD2cC888D3cC999L4cbcC888DccC999DdcCeeeD3dCdddL4dcdCeeeDdd" {
 	about();
@@ -87,7 +78,7 @@ macro "DL4Mic Evaluate [f7]" {
 }
 
 macro "Evaluate the model Action Tool (f7) Options" {
-	showEvaluateParametersDialog("user_parameters");
+	showParametersDialog(_PT_EVALUATE,"user_parameters");
 }
 
 macro "Predict Action Tool (f8) - C999D21C111D31C999D41C555D22C000L3242C333D52CdddD62C555D23C000L3363C888D73C555D24C000D34CaaaD44C777D54C000L6474C222D84CcccD94C555D25C000D35CbbbD45CcccD65C333D75C000L8595C666Da5C555D26C000D36CbbbD46C999D86C000L96a6C222Db6CbbbDc6C555D27C000D37CbbbD47CdddD97C333Da7C000Lb7c7C999Dd7C555D28C000D38CbbbD48CdddD98C333Da8C000Lb8c8C999Dd8C555D29C000D39CbbbD49C999D89C000L99a9C222Db9CbbbDc9C555D2aC000D3aCbbbD4aCcccD6aC333D7aC000L8a9aC666DaaC555D2bC000D3bCaaaD4bC777D5bC000L6b7bC222D8bCcccD9bC555D2cC000L3c6cC888D7cC555D2dC000L3d4dC333D5dCdddD6dC999D2eC111D3eC999D4e" {
@@ -99,7 +90,7 @@ macro "DL4Mic Predict [f8]" {
 }
 
 macro "Predict Action Tool (f8) Options" {
-	showPredictParametersDialog("user_parameters");
+	showParametersDialog(_PT_PREDICT,"user_parameters");
 }
 
 function showHelp() {
@@ -146,18 +137,19 @@ function evaluate() {
 			saveAs("tiff", inputFolder +File.separator+title);
 		}
 	}
-	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
-		if (_EVALUATE_PARAMETER_NAME[i]=='testInputPath') _EVALUATE_PARAMETER_VALUE[i] = inputFolder;
-		if (_EVALUATE_PARAMETER_NAME[i]=='testGroundTruthPath') _EVALUATE_PARAMETER_VALUE[i] = outputFolder;
+	readParameters(_PT_EVALUATE);
+	for (i = 0; i < _CURRENT_PARAMETER_GROUP.length; i++) {
+		if (_CURRENT_PARAMETER_NAME[i]=='testInputPath') _CURRENT_PARAMETER_VALUE[i] = inputFolder;
+		if (_CURRENT_PARAMETER_NAME[i]=='testGroundTruthPath') _CURRENT_PARAMETER_VALUE[i] = outputFolder;
 	}
-	saveEvaluateParameters();
+	saveParameters(_PT_EVALUATE);
 	script = "evaluate.py";
-	parameters = getEvaluateParameterString();
+	parameters = getParameterString(_PT);
 	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_evaluation.txt";
 	File.delete(logPath);
 	os = toLowerCase(getInfo("os.name"));
 	if (indexOf(os, "win")>-1) {
-		writeEvaluateBatchFile();
+		writeBatchFile(_PT_EVALUATE);
 		setOption("WaitForCompletion", false);
 		a = exec("evaluate.bat");
 	} else {
@@ -204,8 +196,8 @@ function evaluate() {
 		}
 	}
 
-	baseDir = baseFolder + File.separator  + getValueOfEvaluateParameter('baseDir');
-	name = getValueOfEvaluateParameter("name");
+	baseDir = baseFolder + File.separator  + getValueOfParameter(_PT_EVALUATE,'baseDir');
+	name = getValueOfParameter(_PT_EVALUATE,"name");
 	qcDir = baseDir + File.separator + name + File.separator +"Quality Control"+File.separator ;
 	predictionsDir = qcDir + "Prediction"+File.separator ;
 	print("" + count + " result images have been written to: \n" + predictionsDir);
@@ -214,7 +206,7 @@ function evaluate() {
 	sourceID = loadResultSeries(inputFolder+File.separator, "Source", "", 2);
 	predictionID = loadResultSeries(predictionsDir+File.separator, "Prediction", "", 2);
 	
-	name = getValueOfEvaluateParameter("name");
+	name = getValueOfParameter(_PT_EVALUATE,"name");
 	Table.open(qcDir+File.separator+'QC_metrics_'+name+'.csv') ;
 	
 	wait(500);
@@ -337,19 +329,20 @@ function predict() {
 			saveAs("tiff", inputFolder +File.separator+title);
 		}
 	}
-	for (i = 0; i < _PREDICT_PARAMETER_GROUP.length; i++) {
-		if (_PREDICT_PARAMETER_NAME[i]=='dataPath') _PREDICT_PARAMETER_VALUE[i] = inputFolder;
-		if (_PREDICT_PARAMETER_NAME[i]=='output') _PREDICT_PARAMETER_VALUE[i] = outputFolder;
+	readParameters(_PT_PREDICT);
+	for (i = 0; i < _CURRENT_PARAMETER_GROUP.length; i++) {
+		if (_CURRENT_PARAMETER_NAME[i]=='dataPath') _CURRENT_PARAMETER_VALUE[i] = inputFolder;
+		if (_CURRENT_PARAMETER_NAME[i]=='output') _CURRENT_PARAMETER_VALUE[i] = outputFolder;
 	}
-	savePredictParameters();
+	saveParameters(_PT_PREDICT);
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	script = "predict.py";
-	parameters = getPredictParameterString();
+	parameters = getParameterString(_PT_PREDICT);
 	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_prediction.txt";
 	File.delete(logPath);
 	os = toLowerCase(getInfo("os.name"));
 	if (indexOf(os, "win")>-1) {
-		writePredictBatchFile();
+		writeBatchFile(_PT_PREDICT);
 		setOption("WaitForCompletion", false);
 		a = exec("predict.bat");
 	} else {
@@ -431,24 +424,24 @@ function train() {
 		showMessage("Error", "Could not find the python environment. Please install the dl4mic-python-environment or set the path to the interpreter.");
 		return;
 	}
-	epochs = getValueOfParameter('epochs');
-	dataPath = getValueOfParameter('dataPath');
+	epochs = getValueOfParameter(_PT_TRAINING,'epochs');
+	dataPath = getValueOfParameter(_PT_TRAINING,'dataPath');
 	if (dataPath == '') {
-		dataPath = getValueOfParameter('dataSourcePath');
+		dataPath = getValueOfParameter(_PT_TRAINING,'dataSourcePath');
 	}
-	baseDir = getValueOfParameter('baseDir');
-	name = getValueOfParameter("name");
+	baseDir = getValueOfParameter(_PT_TRAINING,'baseDir');
+	name = getValueOfParameter(_PT_TRAINING,"name");
 	outPath = baseDir + File.separator + name;
 	showMessageWithCancel("Training of "+_CURRENT_NETWORK+"\n"+"Epochs: " + epochs + "\n" + "Data path: "+dataPath + "\n" + "Result will be saved as " + outPath);
 	script = "train.py";
 	if (isOpen("Log")) selectWindow("Log");
-	parameters = getParameterString();
+	parameters = getParameterString(_PT_TRAINING);
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_training.txt";
 	File.delete(logPath);
 	os = toLowerCase(getInfo("os.name"));
 	if (indexOf(os, "win")>-1) {
-		writeBatchFile();
+		writeBatchFile(_PT_TRAINING);
 		setOption("WaitForCompletion", false);
 		a = exec("train.bat");
 	} else {
@@ -486,7 +479,7 @@ function train() {
 }
 
 function displayTrainingEvaluationPlot() {
-	path = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + getValueOfParameter('baseDir') + File.separator + getValueOfParameter("name") + File.separator + "Quality Control" + File.separator + "training_evaluation.csv";
+	path = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + getValueOfParameter(_PT_TRAINING,'baseDir') + File.separator + getValueOfParameter(_PT_TRAINING,"name") + File.separator + "Quality Control" + File.separator + "training_evaluation.csv";
 	os = toLowerCase(getInfo("os.name"));
 	if (indexOf(os, "win")>-1) {
 		text = File.openAsString(path);
@@ -516,7 +509,7 @@ function displayTrainingEvaluationPlot() {
 	for (i = 1; i <= xValues.length; i++) {
 		xValues[i-1] = i; 
 	}
-	Plot.create("training evaluation "+_CURRENT_NETWORK + "(" +getValueOfParameter("name") + ")", "epoch", "loss");
+	Plot.create("training evaluation "+_CURRENT_NETWORK + "(" +getValueOfParameter(_PT_TRAINING,"name") + ")", "epoch", "loss");
 	Plot.setColor("orange");
 	Plot.setLineWidth(2);
 	Plot.add("line", xValues, loss, "training loss");
@@ -528,74 +521,33 @@ function displayTrainingEvaluationPlot() {
 	Plot.show();
 }
 
-function getParameterString() {
+function getParameterString(_PT){
+	if(_LOADED_PARAMETERS != _PT){
+		readParameters(_PT);
+	}
 	string = "";
-	for (i = 0; i < _PARAMETER_GROUP.length; i++) {
-		if (_PARAMETER_TYPE[i]=="bool") {
-			if (_PARAMETER_VALUE[i]=='True' || _PARAMETER_VALUE[i]=='1') {
-				string = string + "--" + _PARAMETER_NAME[i] + " ";
+	for (i = 0; i < _CURRENT_PARAMETER_GROUP.length; i++) {
+		if (_CURRENT_PARAMETER_TYPE[i]=="bool") {
+			if (_CURRENT_PARAMETER_VALUE[i]=='True' || _CURRENT_PARAMETER_VALUE[i]=='1') {
+				string = string + "--" + _CURRENT_PARAMETER_NAME[i] + " ";
 			}
 		} else {
-			string = string + "--" + _PARAMETER_NAME[i] + " " + _PARAMETER_VALUE[i] + " ";
+			string = string + "--" + _CURRENT_PARAMETER_NAME[i] + " " + _CURRENT_PARAMETER_VALUE[i] + " ";
 		}
 	}
 	return string;
 }
 
-function getPredictParameterString() {
-	string = "";
-	for (i = 0; i < _PREDICT_PARAMETER_GROUP.length; i++) {
-		if (_PREDICT_PARAMETER_TYPE[i]=="bool") {
-			if (_PREDICT_PARAMETER_VALUE[i]=='True' || _PARAMETER_VALUE[i]=='1') {
-				string = string + "--" + _PREDICT_PARAMETER_NAME[i];
-			}
-		} else {
-			string = string + "--" + _PREDICT_PARAMETER_NAME[i] + " " + _PREDICT_PARAMETER_VALUE[i] + " ";
-		}
-	}
-	return string;
-}
 
-function getEvaluateParameterString() {
-	string = "";
-	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
-		if (_EVALUATE_PARAMETER_TYPE[i]=="bool") {
-			if (_EVALUATE_PARAMETER_VALUE[i]=='True' || _PARAMETER_VALUE[i]=='1') {
-				string = string + "--" + _EVALUATE_PARAMETER_NAME[i];
-			}
-		} else {
-			string = string + "--" + _EVALUATE_PARAMETER_NAME[i] + " " + _EVALUATE_PARAMETER_VALUE[i] + " ";
-		}
+function getValueOfParameter(_PT,aParameter) {
+	if(_LOADED_PARAMETERS != _PT){
+		readParameters(_PT);
 	}
-	return string;
-}
-
-function getValueOfParameter(aParameter) {
 	result = '';
-	for (i = 0; i < _PARAMETER_NAME.length; i++) {
-		if (_PARAMETER_NAME[i]==aParameter) {
-			return _PARAMETER_VALUE[i];
+	for (i = 0; i < _CURRENT_PARAMETER_NAME.length; i++) {
+		if (_CURRENT_PARAMETER_NAME[i]==aParameter) {
+			return _CURRENT_PARAMETER_VALUE[i];
 		}
-	}
-	return result;
-}
-
-function getValueOfPredictParameter(aParameter) {
-	result = '';
-	for (i = 0; i < _PREDICT_PARAMETER_NAME.length; i++) {
-		if (_PREDICT_PARAMETER_NAME[i]==aParameter) {
-			return _PREDICT_PARAMETER_VALUE[i];
-		} 
-	}
-	return result;
-}
-
-function getValueOfEvaluateParameter(aParameter) {
-	result = '';
-	for (i = 0; i < _EVALUATE_PARAMETER_NAME.length; i++) {
-		if (_EVALUATE_PARAMETER_NAME[i]==aParameter) {
-			return _EVALUATE_PARAMETER_VALUE[i];
-		} 
 	}
 	return result;
 }
@@ -611,7 +563,7 @@ function setParameter() {
 		return;	
 	}
 	item = replace(item, " ", "_");
-	showParametersDialog(item);
+	showParametersDialog(_PT_TRAINING,item);
 }
 
 function showInstallEnvDialog() {
@@ -690,143 +642,87 @@ function findPythonInterpreter() {
 	return '';
 }
 
-function showEvaluateParametersDialog(parameterGroup) {
-	Dialog.create("Evaluate Options");	
-	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
-		if (_EVALUATE_PARAMETER_GROUP[i]!=parameterGroup) continue;
-		help = replace(_EVALUATE_PARAMETER_HELP[i], '\\. ', ".\n");
-		if (_EVALUATE_PARAMETER_TYPE[i]=="string") {
-			Dialog.addMessage(help);
-			Dialog.addString(_EVALUATE_PARAMETER_NAME[i], _EVALUATE_PARAMETER_VALUE[i], 20);
+function showParametersDialog(_PT,parameterGroup) {
+	if(_PT == _PT_TRAINING){
+		dialog_title = "";
+		title_split = split(parameterGroup,"_");
+		for(i=0;i<title_split.length;i++){
+			dialog_title=dialog_title+toUpperCase(substring(title_split[i],0,1))+substring(title_split[i],1)+" ";
 		}
-		if (_EVALUATE_PARAMETER_TYPE[i]=="int" || _EVALUATE_PARAMETER_TYPE[i]=="float") {
-			if (_EVALUATE_PARAMETER_TYPE[i]=="int") 
-				Dialog.addNumber(_EVALUATE_PARAMETER_NAME[i], _EVALUATE_PARAMETER_VALUE[i], 0, 20, '');
+		Dialog.create(dialog_title);	
+	}else if(_PT == _PT_EVALUATE){
+		Dialog.create("Evaluation Parameters");	
+	}else if(_PT == _PT_PREDICT){
+		Dialog.create("Prediction Parameters");	
+	}else{
+		print("Unable to create Parameters Dialog ! Incorrect type");
+		exit();
+	}
+	
+	readParameters(_PT);
+	
+	for (i = 0; i < _CURRENT_PARAMETER_GROUP.length; i++) {
+		if (_CURRENT_PARAMETER_GROUP[i]!=parameterGroup) continue;
+		help = replace(_CURRENT_PARAMETER_HELP[i], '\\. ', ".\n");
+		if (_CURRENT_PARAMETER_TYPE[i]=="string") {
+			Dialog.addMessage(help);
+			Dialog.addString(_CURRENT_PARAMETER_NAME[i], _CURRENT_PARAMETER_VALUE[i], 20);
+		}
+		if (_CURRENT_PARAMETER_TYPE[i]=="int" || _CURRENT_PARAMETER_TYPE[i]=="float") {
+			if (_CURRENT_PARAMETER_TYPE[i]=="int") 
+				Dialog.addNumber(_CURRENT_PARAMETER_NAME[i], _CURRENT_PARAMETER_VALUE[i], 0, 20, '');
 			else
-			 	Dialog.addNumber(_EVALUATE_PARAMETER_NAME[i], _EVALUATE_PARAMETER_VALUE[i], 8, 20, '');
+			 	Dialog.addNumber(_CURRENT_PARAMETER_NAME[i], _CURRENT_PARAMETER_VALUE[i], 8, 20, '');
 			Dialog.addToSameRow();
 			Dialog.addMessage(help);
 		}
-		if (_EVALUATE_PARAMETER_TYPE[i]=="bool") {
-			Dialog.addCheckbox(_EVALUATE_PARAMETER_NAME[i], (_EVALUATE_PARAMETER_VALUE[i]=='True'));
+		if (_CURRENT_PARAMETER_TYPE[i]=="bool") {
+			Dialog.addCheckbox(_CURRENT_PARAMETER_NAME[i], (_CURRENT_PARAMETER_VALUE[i]=='True'));
 			Dialog.addToSameRow();
 			Dialog.addMessage(help);
 		}
 	}
 	Dialog.show();
-	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
-		if (_EVALUATE_PARAMETER_GROUP[i]!=parameterGroup) continue;
-		if (_EVALUATE_PARAMETER_TYPE[i]=="string") {
-			_EVALUATE_PARAMETER_VALUE[i] = Dialog.getString();
+	for (i = 0; i < _CURRENT_PARAMETER_GROUP.length; i++) {
+		if (_CURRENT_PARAMETER_GROUP[i]!=parameterGroup) continue;
+		if (_CURRENT_PARAMETER_TYPE[i]=="string") {
+			_CURRENT_PARAMETER_VALUE[i] = Dialog.getString();
 		}
-		if (_EVALUATE_PARAMETER_TYPE[i]=="int" || _PARAMETER_TYPE[i]=="float") {
-			_EVALUATE_PARAMETER_VALUE[i] = Dialog.getNumber();
+		if (_CURRENT_PARAMETER_TYPE[i]=="int" || _CURRENT_PARAMETER_TYPE[i]=="float") {
+			_CURRENT_PARAMETER_VALUE[i] = Dialog.getNumber();
 		}
-		if (_EVALUATE_PARAMETER_TYPE[i]=="bool") {
-			_EVALUATE_PARAMETER_VALUE[i] = Dialog.getCheckbox();
+		if (_CURRENT_PARAMETER_TYPE[i]=="bool") {
+			_CURRENT_PARAMETER_VALUE[i] = Dialog.getCheckbox();
 		}
 	}
-	saveEvaluateParameters();
-}
+	saveParameters(_PT);
 
-function showPredictParametersDialog(parameterGroup) {
-	Dialog.create("Predict Options");	
-	for (i = 0; i < _PREDICT_PARAMETER_GROUP.length; i++) {
-		if (_PREDICT_PARAMETER_GROUP[i]!=parameterGroup) continue;
-		help = replace(_PREDICT_PARAMETER_HELP[i], '\\. ', ".\n");
-		if (_PREDICT_PARAMETER_TYPE[i]=="string") {
-			Dialog.addMessage(help);
-			Dialog.addString(_PREDICT_PARAMETER_NAME[i], _PREDICT_PARAMETER_VALUE[i], 20);
-		}
-		if (_PREDICT_PARAMETER_TYPE[i]=="int" || _PREDICT_PARAMETER_TYPE[i]=="float") {
-			if (_PREDICT_PARAMETER_TYPE[i]=="int") 
-				Dialog.addNumber(_PREDICT_PARAMETER_NAME[i], _PREDICT_PARAMETER_VALUE[i], 0, 20, '');
-			else
-			 	Dialog.addNumber(_PREDICT_PARAMETER_NAME[i], _PREDICT_PARAMETER_VALUE[i], 8, 20, '');
-			Dialog.addToSameRow();
-			Dialog.addMessage(help);
-		}
-		if (_PREDICT_PARAMETER_TYPE[i]=="bool") {
-			Dialog.addCheckbox(_PREDICT_PARAMETER_NAME[i], (_PREDICT_PARAMETER_VALUE[i]=='True'));
-			Dialog.addToSameRow();
-			Dialog.addMessage(help);
-		}
-	}
-	Dialog.show();
-	for (i = 0; i < _PREDICT_PARAMETER_GROUP.length; i++) {
-		if (_PREDICT_PARAMETER_GROUP[i]!=parameterGroup) continue;
-		if (_PREDICT_PARAMETER_TYPE[i]=="string") {
-			_PREDICT_PARAMETER_VALUE[i] = Dialog.getString();
-		}
-		if (_PREDICT_PARAMETER_TYPE[i]=="int" || _PARAMETER_TYPE[i]=="float") {
-			_PREDICT_PARAMETER_VALUE[i] = Dialog.getNumber();
-		}
-		if (_PREDICT_PARAMETER_TYPE[i]=="bool") {
-			_PREDICT_PARAMETER_VALUE[i] = Dialog.getCheckbox();
-		}
-	}
-	savePredictParameters();
-}
 
-function showParametersDialog(parameterGroup) {
-	Dialog.create(parameterGroup);	
-	for (i = 0; i < _PARAMETER_GROUP.length; i++) {
-		if (_PARAMETER_GROUP[i]!=parameterGroup) continue;
-		help = replace(_PARAMETER_HELP[i], '\\. ', ".\n");
-		if (_PARAMETER_TYPE[i]=="string") {
-			Dialog.addMessage(help);
-			Dialog.addString(_PARAMETER_NAME[i], _PARAMETER_VALUE[i], 20);
-		}
-		if (_PARAMETER_TYPE[i]=="int" || _PARAMETER_TYPE[i]=="float") {
-			if (_PARAMETER_TYPE[i]=="int") 
-				Dialog.addNumber(_PARAMETER_NAME[i], _PARAMETER_VALUE[i], 0, 20, '');
-			else
-			 	Dialog.addNumber(_PARAMETER_NAME[i], _PARAMETER_VALUE[i], 8, 20, '');
-			Dialog.addToSameRow();
-			Dialog.addMessage(help);
-		}
-		if (_PARAMETER_TYPE[i]=="bool") {
-			Dialog.addCheckbox(_PARAMETER_NAME[i], (_PARAMETER_VALUE[i]=='True'));
-			Dialog.addToSameRow();
-			Dialog.addMessage(help);
-		}
+function readParameters(_PT){
+	if (_CURRENT_NETWORK=='None') {
+		showMessage("Please select a network first!");
+		exit();
 	}
-	Dialog.show();
-	for (i = 0; i < _PARAMETER_GROUP.length; i++) {
-		if (_PARAMETER_GROUP[i]!=parameterGroup) continue;
-		if (_PARAMETER_TYPE[i]=="string") {
-			_PARAMETER_VALUE[i] = Dialog.getString();
-		}
-		if (_PARAMETER_TYPE[i]=="int" || _PARAMETER_TYPE[i]=="float") {
-			_PARAMETER_VALUE[i] = Dialog.getNumber();
-		}
-		if (_PARAMETER_TYPE[i]=="bool") {
-			_PARAMETER_VALUE[i] = Dialog.getCheckbox();
-		}
-	}
-	saveParameters();
-	for (i = 0; i < _PREDICT_PARAMETER_GROUP.length; i++) {
-		if (_PREDICT_PARAMETER_NAME[i]=="name") {
-			name = getValueOfParameter("name");
-			_PREDICT_PARAMETER_VALUE[i] = name;
-		}
-		if (_PREDICT_PARAMETER_NAME[i]=="baseDir") {
-			baseDir = getValueOfParameter("baseDir");
-			_PREDICT_PARAMETER_VALUE[i] = baseDir;
-		}
-	}
-	savePredictParameters();
-}
-
-function readPredictParameter() {
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	_PREDICT_PARAMETER_NAME = newArray(0);
-	_PREDICT_PARAMETER_VALUE = newArray(0);
-	_PREDICT_PARAMETER_HELP = newArray(0);
-	_PREDICT_PARAMETER_DEFAULT = newArray(0);
-	_PREDICT_PARAMETER_TYPE = newArray(0);
-	_PREDICT_PARAMETER_GROUP = newArray(0);
-	parameterFile = File.openAsString(baseFolder + "/predict.yml");
+	_CURRENT_PARAMETER_GROUP = newArray(0);
+	_CURRENT_PARAMETER_NAME = newArray(0);
+	_CURRENT_PARAMETER_VALUE = newArray(0);
+	_CURRENT_PARAMETER_HELP = newArray(0);
+	_CURRENT_PARAMETER_DEFAULT = newArray(0);
+	_CURRENT_PARAMETER_TYPE = newArray(0);
+	
+	//PT Dependent
+	if(_PT == _PT_TRAINING){
+		parameterFile = File.openAsString(baseFolder + "/train.yml");
+	}else if(_PT == _PT_EVALUATE){
+		parameterFile = File.openAsString(baseFolder + "/evaluate.yml");
+	}else if(_PT == _PT_PREDICT){
+		parameterFile = File.openAsString(baseFolder + "/predict.yml");
+	}else{
+		print("Unable to read parameter! Incorrect type");
+		exit();
+	}
+	
 	parameterLines = split(parameterFile, "\n");
 	for (i = 0; i < parameterLines.length; i++) {
 		line = String.trim(parameterLines[i]);
@@ -840,140 +736,51 @@ function readPredictParameter() {
 		name = String.trim(name);
 		value = String.trim(nameAndValue[1]);
 		if (name=='name') {
-			_PREDICT_PARAMETER_NAME = Array.concat(_PREDICT_PARAMETER_NAME, value);
-			_PREDICT_PARAMETER_GROUP = Array.concat(_PREDICT_PARAMETER_GROUP, currentGroup);
+			_CURRENT_PARAMETER_NAME  = Array.concat(_CURRENT_PARAMETER_NAME  , value);
+			_CURRENT_PARAMETER_GROUP = Array.concat(_CURRENT_PARAMETER_GROUP, currentGroup);
 		}
-		if (name=='value') _PREDICT_PARAMETER_VALUE = Array.concat(_PREDICT_PARAMETER_VALUE, value);
-		if (name=='help') _PREDICT_PARAMETER_HELP = Array.concat(_PREDICT_PARAMETER_HELP, value);
-		if (name=='type') _PREDICT_PARAMETER_TYPE = Array.concat(_PREDICT_PARAMETER_TYPE, value);
-		if (name=='default') _PREDICT_PARAMETER_DEFAULT  = Array.concat(_PREDICT_PARAMETER_DEFAULT, value);
+		if (name=='value')	 _CURRENT_PARAMETER_VALUE 	= Array.concat(_CURRENT_PARAMETER_VALUE	 , value);
+		if (name=='help')	 _CURRENT_PARAMETER_HELP 	= Array.concat(_CURRENT_PARAMETER_HELP	 , value);
+		if (name=='type') 	 _CURRENT_PARAMETER_TYPE 	= Array.concat(_CURRENT_PARAMETER_TYPE	 , value);
+		if (name=='default') _CURRENT_PARAMETER_DEFAULT	= Array.concat(_CURRENT_PARAMETER_DEFAULT, value);
 	}
+	_LOADED_PARAMETERS = _PT;
 }
 
-function readEvaluateParameter() {
-	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	_EVALUATE_PARAMETER_NAME = newArray(0);
-	_EVALUATE_PARAMETER_VALUE = newArray(0);
-	_EVALUATE_PARAMETER_HELP = newArray(0);
-	_EVALUATE_PARAMETER_DEFAULT = newArray(0);
-	_EVALUATE_PARAMETER_TYPE = newArray(0);
-	_EVALUATE_PARAMETER_GROUP = newArray(0);
-	parameterFile = File.openAsString(baseFolder + "/evaluate.yml");
-	parameterLines = split(parameterFile, "\n");
-	for (i = 0; i < parameterLines.length; i++) {
-		line = String.trim(parameterLines[i]);
-		if (line.length<1) continue;
-		nameAndValue = split(line, ":");
-		if (nameAndValue.length==1) {
-			currentGroup = replace(line, ":", '');
-			continue;
-		} 
-		name = replace(nameAndValue[0], "-", "");
-		name = String.trim(name);
-		value = String.trim(nameAndValue[1]);
-		if (name=='name') {
-			_EVALUATE_PARAMETER_NAME = Array.concat(_EVALUATE_PARAMETER_NAME, value);
-			_EVALUATE_PARAMETER_GROUP = Array.concat(_EVALUATE_PARAMETER_GROUP, currentGroup);
-		}
-		if (name=='value') _EVALUATE_PARAMETER_VALUE = Array.concat(_EVALUATE_PARAMETER_VALUE, value);
-		if (name=='help') _EVALUATE_PARAMETER_HELP = Array.concat(_EVALUATE_PARAMETER_HELP, value);
-		if (name=='type') _EVALUATE_PARAMETER_TYPE = Array.concat(_EVALUATE_PARAMETER_TYPE, value);
-		if (name=='default') _EVALUATE_PARAMETER_DEFAULT  = Array.concat(_EVALUATE_PARAMETER_DEFAULT, value);
-	}
-}
-
-function readParameters() {
-	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	_PARAMETER_GROUP = newArray(0);
-	_PARAMETER_NAME = newArray(0);
-	_PARAMETER_VALUE = newArray(0);
-	_PARAMETER_HELP = newArray(0);
-	_PARAMETER_DEFAULT = newArray(0);
-	_PARAMETER_TYPE = newArray(0);
-	parameterFile = File.openAsString(baseFolder + "/train.yml");
-	parameterLines = split(parameterFile, "\n");
-	for (i = 0; i < parameterLines.length; i++) {
-		line = String.trim(parameterLines[i]);
-		if (line.length<1) continue;
-		nameAndValue = split(line, ":");
-		if (nameAndValue.length==1) {
-			currentGroup = replace(line, ":", '');
-			continue;
-		} 
-		name = replace(nameAndValue[0], "-", "");
-		name = String.trim(name);
-		value = String.trim(nameAndValue[1]);
-		if (name=='name') {
-			_PARAMETER_NAME = Array.concat(_PARAMETER_NAME, value);
-			_PARAMETER_GROUP = Array.concat(_PARAMETER_GROUP, currentGroup);
-		}
-		if (name=='value') _PARAMETER_VALUE = Array.concat(_PARAMETER_VALUE, value);
-		if (name=='help') _PARAMETER_HELP = Array.concat(_PARAMETER_HELP, value);
-		if (name=='type') _PARAMETER_TYPE = Array.concat(_PARAMETER_TYPE, value);
-		if (name=='default') _PARAMETER_DEFAULT  = Array.concat(_PARAMETER_DEFAULT, value);
-	}
-}
-
-function saveParameters() {
+function saveParameters(_PT){
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	group = "";
 	content = "";
-	for (i = 0; i < _PARAMETER_GROUP.length; i++) {
-		if (group!=_PARAMETER_GROUP[i]) {
-			group = _PARAMETER_GROUP[i];
+	for (i = 0; i < _CURRENT_PARAMETER_GROUP.length; i++) {
+		if (group!= _CURRENT_PARAMETER_GROUP[i]) {
+			group = _CURRENT_PARAMETER_GROUP[i];
 			content = content + group + ":\n";
 		}
-		content = content + '- name: ' + _PARAMETER_NAME[i] + "\n";
-		content = content + '  value: ' + _PARAMETER_VALUE[i] + "\n";
-		content = content + '  type: ' + _PARAMETER_TYPE[i] + "\n";
-		content = content + '  default: ' + _PARAMETER_DEFAULT[i] + "\n";
-		content = content + '  help: ' + _PARAMETER_HELP[i] + "\n";
+		content = content + '- name: ' 		+ _CURRENT_PARAMETER_NAME[i] + "\n";
+		content = content + '  value: ' 	+ _CURRENT_PARAMETER_VALUE[i] + "\n";
+		content = content + '  type: ' 		+ _CURRENT_PARAMETER_TYPE[i] + "\n";
+		content = content + '  default: '	+ _CURRENT_PARAMETER_DEFAULT[i] + "\n";
+		content = content + '  help: ' 	  	+ _CURRENT_PARAMETER_HELP[i] + "\n";
 	}
-	File.saveString(content, baseFolder + "/train.yml");
-}
-
-function savePredictParameters() {
-	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	group = "";
-	content = "";
-	for (i = 0; i < _PREDICT_PARAMETER_GROUP.length; i++) {
-		if (group!=_PREDICT_PARAMETER_GROUP[i]) {
-			group = _PREDICT_PARAMETER_GROUP[i];
-			content = content + group + ":\n";
-		}
-		content = content + '- name: ' + _PREDICT_PARAMETER_NAME[i] + "\n";
-		content = content + '  value: ' + _PREDICT_PARAMETER_VALUE[i] + "\n";
-		content = content + '  type: ' + _PREDICT_PARAMETER_TYPE[i] + "\n";
-		content = content + '  default: ' + _PREDICT_PARAMETER_DEFAULT[i] + "\n";
-		content = content + '  help: ' + _PREDICT_PARAMETER_HELP[i] + "\n";
+	
+	//_PT Dependent
+	if(_PT == _PT_TRAINING){
+		File.saveString(content, baseFolder + "/train.yml");
+	}else if(_PT == _PT_EVALUATE){
+		File.saveString(content, baseFolder + "/evaluate.yml");
+	}else if(_PT == _PT_PREDICT){
+		File.saveString(content, baseFolder + "/predict.yml");
+	}else{
+		print("Unable to save parameter! Incorrect type");
+		exit();
 	}
-	File.saveString(content, baseFolder + "/predict.yml");
-}
-
-function saveEvaluateParameters() {
-	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	group = "";
-	content = "";
-	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
-		if (group!=_EVALUATE_PARAMETER_GROUP[i]) {
-			group = _EVALUATE_PARAMETER_GROUP[i];
-			content = content + group + ":\n";
-		}
-		content = content + '- name: ' + _EVALUATE_PARAMETER_NAME[i] + "\n";
-		content = content + '  value: ' + _EVALUATE_PARAMETER_VALUE[i] + "\n";
-		content = content + '  type: ' + _EVALUATE_PARAMETER_TYPE[i] + "\n";
-		content = content + '  default: ' + _EVALUATE_PARAMETER_DEFAULT[i] + "\n";
-		content = content + '  help: ' + _EVALUATE_PARAMETER_HELP[i] + "\n";
-	}
-	File.saveString(content, baseFolder + "/evaluate.yml");
 }
 
 function selectNetwork() {
    _CURRENT_NETWORK = getArgument();
+   _LOADED_PARAMETERS = -1;
+   //updateTrainingParameterMenu();
    print("DL4Mic - Current network: ", _CURRENT_NETWORK);
-   readParameters();
-   readPredictParameter();
-   readEvaluateParameter();
 }
 
 function getNetworks() {
@@ -1002,36 +809,45 @@ function info() {
 	showMessage("Info: "+_CURRENT_NETWORK, message);
 }
 
-function writeBatchFile() {
-	parameters = getParameterString();
+function writeBatchFile(_PT) {
+	parameters = getParameterString(_PT);
 	dir = getDirectory("imagej");
 	parts = split(dir, "\\");
 	driveLetter = parts[0];
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_training.txt";
-	command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u train.py "+parameters+" > log_training.txt 2>&1";
-	folder = getDir("imagej");
-	File.saveString(command, folder + "train.bat");
+	
+	if(_PT == _PT_TRAINING){
+		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u train.py "+parameters+" > log_training.txt 2>&1";
+		File.saveString(command, dir + "train.bat");
+	}else if(_PT == _PT_EVALUATE){
+		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u evaluate.py "+parameters+" > log_evaluation.txt 2>&1";
+		File.saveString(command, dir + "evaluate.bat");
+	}else if(_PT == _PT_PREDICT){
+		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_prediction.txt 2>&1";
+		File.saveString(command, dir + "predict.bat");
+	}else{
+		print("Unable to write Batch Files! Incorrect type");
+		exit();
+	}
 }
 
-function writePredictBatchFile() {
-	parameters = getPredictParameterString();
-	dir = getDirectory("imagej");
-	parts = split(dir, "\\");
-	driveLetter = parts[0];
-	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_prediction.txt 2>&1";
-	folder = getDir("imagej");
-	File.saveString(command, folder + "predict.bat");
-}
-
-function writeEvaluateBatchFile() {
-	parameters = getEvaluateParameterString();
-	dir = getDirectory("imagej");
-	parts = split(dir, "\\");
-	driveLetter = parts[0];
-	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u evaluate.py "+parameters+" > log_evaluation.txt 2>&1";
-	folder = getDir("imagej");
-	File.saveString(command, folder + "evaluate.bat");
+function updateTrainingParameterMenu(){
+	readParameters(_PT_TRAINING);
+	res = newArray();
+	res[0]=_CURRENT_PARAMETER_GROUP[0];
+	j=0;
+	for (i = 1; i < _CURRENT_PARAMETER_GROUP.length; i++) {
+		if(_CURRENT_PARAMETER_GROUP[i]!=res[j]){
+			res[j+1]=_CURRENT_PARAMETER_GROUP[i];
+			j++;
+		}
+	}
+	res[++j]="---";
+	res[++j]="python interpreter"; 
+	res[++j]="install deep-learning env.";
+	
+	for(j=0;j<res.length;j++){
+		print(res[j]);
+	}
+	return res;
 }

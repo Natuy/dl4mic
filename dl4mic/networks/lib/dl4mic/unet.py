@@ -334,7 +334,7 @@ def normalizeMinMax(x, dtype=np.float32):
 #   return resized_predictions
 
 
-'''
+
 #My Version
 def unet(pretrained_weights=None, input_size=(256, 256, 1), pooling_steps=4, learning_rate=1e-4, verbose=True,class_weights=np.ones(2)):
     inputs = Input(input_size)
@@ -383,7 +383,6 @@ def unet(pretrained_weights=None, input_size=(256, 256, 1), pooling_steps=4, lea
 
     return model
 '''
-
 #Notebook Version
 # This is code outlines the architecture of U-net. The choice of pooling steps decides the depth of the network. 
 def unet(pretrained_weights = None, input_size = (256,256,1), pooling_steps = 4, learning_rate = 1e-4, verbose=True, class_weights=np.ones(2)):
@@ -457,6 +456,7 @@ def unet(pretrained_weights = None, input_size = (256,256,1), pooling_steps = 4,
         model.load_weights(pretrained_weights)
 
     return model
+'''
 
 def predict_as_tiles(Image_path, model):
 

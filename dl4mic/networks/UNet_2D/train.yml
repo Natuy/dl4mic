@@ -1,6 +1,6 @@
 user_parameters:
 - name: name
-  value: turgomap_unet2D_model_trash
+  value: turgomap_unet2D_model_4
   type: string
   default: new_unet2D_model
   help: The name of the model. The model will be saved in a folder with this name. Using the name of an existing model will overwrite the data
@@ -20,7 +20,7 @@ user_parameters:
   default: ../../unet-data/training/target
   help: The path to the folder containing the gt-masks on which the model will be trained.
 - name: epochs
-  value: 1
+  value: 100
   type: int
   default: 200
   help: The number of epochs the network will be trained.
@@ -68,9 +68,9 @@ data_augmentation:
   default: 10
   help: shift images horizontally up to the given percentage of the image width
 - name: verticalShift
-  value: 200
+  value: 100
   type: int
-  default: 20
+  default: 10
   help: shift images vertically up to the given percentage of the image height
 - name: zoomRange
   value: 2

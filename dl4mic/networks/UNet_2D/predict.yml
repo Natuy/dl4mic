@@ -1,6 +1,6 @@
 user_parameters:
 - name: name
-  value: turgomap_unet2D_model_trash
+  value: turgomap_unet2D_model_4
   type: string
   default: turgomap_unet2D_model
   help: The name of the model. The model is read from a folder with this name.
