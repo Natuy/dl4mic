@@ -1,6 +1,6 @@
 user_parameters:
 - name: name
-  value: turgomap_Denseunet2D_model_4_256_long
+  value: turgomap_Denseunet2D_model_2_256
   type: string
   default: new_unet2D_model
   help: The name of the model. The model will be saved in a folder with this name. Using the name of an existing model will overwrite the data
@@ -20,7 +20,7 @@ user_parameters:
   default: ../../unet-data/training/target
   help: The path to the folder containing the gt-masks on which the model will be trained.
 - name: epochs
-  value: 240
+  value: 300
   type: int
   default: 200
   help: The number of epochs the network will be trained.
@@ -52,7 +52,7 @@ advanced_parameters:
   help: The initial learning rate. The learning rate controls how much the weights of the network with are adjusted with respect to the loss gradient.
 internal_network_parameters:
 - name: poolingSteps
-  value: 4
+  value: 2
   type: int
   default: 2
   help: Choosing a different number of pooling layers can affect the performance of the network. Each additional pooling step will also add two additional convolutions. The network can learn more complex information but is also more likely to overfit. Achieving best performance may require testing different values here.

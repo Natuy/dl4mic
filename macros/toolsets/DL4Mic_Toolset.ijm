@@ -1,3 +1,5 @@
+var _TMP_PRINT = 0;
+
 var _CONDA_ENV = "dl";
 var _NETWORKS_DIR = getDirectory("imagej") + "dl4mic"+File.separator +"networks";
 var _NETWORKS = getNetworks();
@@ -169,6 +171,7 @@ function evaluate() {
 			break;
 		}
 		wait(500);
+		//File.saveString("", logPath);
 		exists = File.exists(logPath);
 	}
 	out = File.openAsString(logPath);
@@ -187,10 +190,12 @@ function evaluate() {
 		endFound = indexOf(out, "---evaluation done---")!=-1;
 		if (File.exists(logPath)) out = File.openAsString(logPath);
 		wait(500);
+//break;
 	}
 	files = getFileList(outputFolder);
 	count = 0;
 	index = 0;
+	
 	for (i = 0; i < files.length; i++) {
 		file = files[i];
 		if (endsWith(file, ".tif")) {
@@ -199,18 +204,19 @@ function evaluate() {
 		}
 	}
 
-	baseDir = baseFolder + '/' + getValueOfEvaluateParameter('baseDir');
+	baseDir = baseFolder + File.separator  + getValueOfEvaluateParameter('baseDir');
 	name = getValueOfEvaluateParameter("name");
-	qcDir = baseDir + "/" + name + "/Quality Control/";
-	predictionsDir = qcDir + "Prediction/";
+	qcDir = baseDir + File.separator + name + File.separator +"Quality Control"+File.separator ;
+	predictionsDir = qcDir + "Prediction"+File.separator ;
 	print("" + count + " result images have been written to: \n" + predictionsDir);
 
-	targetID = loadResultSeries(outputFolder+"/", "Target", "", 2);
-	sourceID = loadResultSeries(inputFolder+"/", "Source", "", 2);
-	predictionID = loadResultSeries(predictionsDir+"/", "Prediction", "", 2);
+	targetID = loadResultSeries(outputFolder+File.separator, "Target", "", 2);
+	sourceID = loadResultSeries(inputFolder+File.separator, "Source", "", 2);
+	predictionID = loadResultSeries(predictionsDir+File.separator, "Prediction", "", 2);
 	
 	name = getValueOfEvaluateParameter("name");
-	open(qcDir+'/'+'QC_metrics_'+name+'.csv') ;
+	Table.open(qcDir+File.separator+'QC_metrics_'+name+'.csv') ;
+	
 	wait(500);
 	parts = split(Table.headings, "\t");
 	if (parts[0] == "image #") {
@@ -510,7 +516,7 @@ function displayTrainingEvaluationPlot() {
 	for (i = 1; i <= xValues.length; i++) {
 		xValues[i-1] = i; 
 	}
-	Plot.create("trainig evaluation "+_CURRENT_NETWORK + "(" +getValueOfParameter("name") + ")", "epoch", "loss");
+	Plot.create("training evaluation "+_CURRENT_NETWORK + "(" +getValueOfParameter("name") + ")", "epoch", "loss");
 	Plot.setColor("orange");
 	Plot.setLineWidth(2);
 	Plot.add("line", xValues, loss, "training loss");
@@ -813,7 +819,7 @@ function showParametersDialog(parameterGroup) {
 }
 
 function readPredictParameter() {
-	baseFolder = _NETWORKS_DIR + "/" + _CURRENT_NETWORK;
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	_PREDICT_PARAMETER_NAME = newArray(0);
 	_PREDICT_PARAMETER_VALUE = newArray(0);
 	_PREDICT_PARAMETER_HELP = newArray(0);
@@ -845,7 +851,7 @@ function readPredictParameter() {
 }
 
 function readEvaluateParameter() {
-	baseFolder = _NETWORKS_DIR + "/" + _CURRENT_NETWORK;
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	_EVALUATE_PARAMETER_NAME = newArray(0);
 	_EVALUATE_PARAMETER_VALUE = newArray(0);
 	_EVALUATE_PARAMETER_HELP = newArray(0);
@@ -877,7 +883,7 @@ function readEvaluateParameter() {
 }
 
 function readParameters() {
-	baseFolder = _NETWORKS_DIR + "/" + _CURRENT_NETWORK;
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	_PARAMETER_GROUP = newArray(0);
 	_PARAMETER_NAME = newArray(0);
 	_PARAMETER_VALUE = newArray(0);
@@ -909,7 +915,7 @@ function readParameters() {
 }
 
 function saveParameters() {
-	baseFolder = _NETWORKS_DIR + "/" + _CURRENT_NETWORK;
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	group = "";
 	content = "";
 	for (i = 0; i < _PARAMETER_GROUP.length; i++) {
@@ -927,7 +933,7 @@ function saveParameters() {
 }
 
 function savePredictParameters() {
-	baseFolder = _NETWORKS_DIR + "/" + _CURRENT_NETWORK;
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	group = "";
 	content = "";
 	for (i = 0; i < _PREDICT_PARAMETER_GROUP.length; i++) {
@@ -945,7 +951,7 @@ function savePredictParameters() {
 }
 
 function saveEvaluateParameters() {
-	baseFolder = _NETWORKS_DIR + "/" + _CURRENT_NETWORK;
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	group = "";
 	content = "";
 	for (i = 0; i < _EVALUATE_PARAMETER_GROUP.length; i++) {
@@ -976,7 +982,7 @@ function getNetworks() {
 	networks = newArray(0);
 	for (i = 0; i < files.length; i++) {
 			file = files[i];
-			if (File.isDirectory(_NETWORKS_DIR + "/"+ file) && file!='lib/') {
+			if (File.isDirectory(_NETWORKS_DIR + File.separator+ file) && file!='lib/') {
 				name = replace(file, '/', '');
 				networks = Array.concat(networks, name);
 			}
@@ -989,8 +995,8 @@ function info() {
 		showMessage("Please select a network first!");
 		return;
 	}
-	message = File.openAsString(_NETWORKS_DIR + "/" + _CURRENT_NETWORK + "/info.html");
-	imagePath = "file:///"+_NETWORKS_DIR + "/" + _CURRENT_NETWORK + "/picture.png";
+	message = File.openAsString(_NETWORKS_DIR + File.separator + _CURRENT_NETWORK + "/info.html");
+	imagePath = "file:///"+_NETWORKS_DIR + File.separator + _CURRENT_NETWORK + "/picture.png";
 	imagePath = replace(imagePath, '\\', '/');
 	message = replace(message, "<!--img-->", "<img src='"+imagePath+"'>");
 	showMessage("Info: "+_CURRENT_NETWORK, message);

@@ -363,7 +363,7 @@ def denseUnet(pretrained_weights=None, input_size=(256,256,1), pooling_steps=4, 
         return x3
 
     inputs = Input(input_size)
-    channels = 32
+    channels = 64
     convs = []
 
     conv1 = Conv2D(32, 7, activation='relu', padding='same', kernel_initializer='he_normal')(inputs)
@@ -373,7 +373,7 @@ def denseUnet(pretrained_weights=None, input_size=(256,256,1), pooling_steps=4, 
         if p == 0:
             convs.append(denseBlock(conv1, channels))
         else:
-            convs.append(denseBlock(pool, channels * pow(2, p - 1)))
+            convs.append(denseBlock(pool, channels * pow(2,p)))
 
         pool = MaxPooling2D(pool_size=(2, 2))(convs[p])
 
@@ -393,7 +393,7 @@ def denseUnet(pretrained_weights=None, input_size=(256,256,1), pooling_steps=4, 
         if p == 0:
             conv = denseBlock(merge, channels)
         else:
-            conv = denseBlock(merge, channels * pow(2, p - 1))
+            conv = denseBlock(merge, channels * pow(2, p))
 
     out = Conv2D(32, 7, strides=1, activation='relu', padding='same', kernel_initializer='he_normal')(conv)
     out = Conv2D(1, 1, activation='sigmoid')(out)
@@ -447,11 +447,9 @@ def predict_as_tiles(Image_path, model):
             patch = Image[xi:xi + patch_size[0], yi:yi + patch_size[1]]
             patch = np.reshape(patch, patch.shape + (1,))
             patch = np.reshape(patch, (1,) + patch.shape)
-            print(patch.shape)
 
             # Get the prediction from the patch and paste it in the prediction in the right place
             predicted_patch = model.predict(patch, batch_size=1)
-            print(predicted_patch.shape)
             prediction[xi:xi + patch_size[0], yi:yi + patch_size[1]] = np.squeeze(predicted_patch)
 
     return prediction[0:Image_raw.shape[0], 0: Image_raw.shape[1]]

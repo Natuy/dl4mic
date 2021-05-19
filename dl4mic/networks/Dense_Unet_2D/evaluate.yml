@@ -1,6 +1,6 @@
 user_parameters:
 - name: name
-  value: turgomap_unet2D_model_4_256_long
+  value: turgomap_denseunet2D_model_4_256_night
   type: string
   default: new_unet2D_model
   help: The name of the model. The model is read from a folder with this name.
