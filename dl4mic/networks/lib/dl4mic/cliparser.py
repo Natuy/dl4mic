@@ -1,6 +1,5 @@
 import argparse
 import yaml
-
 class ParserCreator(object):
 
     @classmethod

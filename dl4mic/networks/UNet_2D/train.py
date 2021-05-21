@@ -52,6 +52,9 @@ def main(argv):
     print('Getting class weights...')
     class_weights = getClassWeights(args.dataTargetPath)
     h5_file_path = None
+    if(args.resumeTraining):
+        h5_file_path = args.startingWeigth
+
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, verbose=1, mode='auto',
                                   patience=10, min_lr=0)
     model = unet(pretrained_weights=h5_file_path,

@@ -1,15 +1,9 @@
-var _TMP_PRINT = 0;
-
 var _CONDA_ENV = "dl";
 var _NETWORKS_DIR = getDirectory("imagej") + "dl4mic"+File.separator +"networks";
 var _NETWORKS = getNetworks();
 var _CURRENT_NETWORK = 'None';
 var _PYTHON_INTERPRETER = findPythonInterpreter();
 var networkMenuItems = newMenu("Select a network Menu Tool", _NETWORKS);
-var trainingParameterMenuArray = newArray("user parameters","advanced parameters","internal network parameters","---","python interpreter","install deep-learning env." );
-//var trainingParameterMenuItems = newMenu("Training Parameter Menu Tool", updateTrainingParameterMenu());
-var trainingParameterMenuItems = newMenu("Training Parameter Menu Tool", trainingParameterMenuArray);
-
 
 var _LOADED_PARAMETERS = -1;
 
@@ -17,13 +11,24 @@ var _PT_TRAINING = 0;
 var _PT_PREDICT = 1;
 var _PT_EVALUATE = 2;
 
+var _LOG_FILENAME = newArray(
+		"log_training.txt",
+		"log_prediction.txt",
+		"log_evaluation.txt"
+		);
+
 var _CURRENT_PARAMETER_GROUP = newArray(0);
 var _CURRENT_PARAMETER_NAME = newArray(0);
+var _CURRENT_PARAMETER_DISPLAY = newArray(0);
 var _CURRENT_PARAMETER_VALUE = newArray(0);
 var _CURRENT_PARAMETER_HELP = newArray(0);
 var _CURRENT_PARAMETER_TYPE = newArray(0);
 var _CURRENT_PARAMETER_DEFAULT = newArray(0);
 
+
+var trainingParameterMenuArray = newArray("user parameters","advanced parameters","internal network parameters","data augmentation","---","python interpreter","install deep-learning env." );
+//var trainingParameterMenuItems = newMenu("Training Parameter Menu Tool", updateTrainingParameterMenu());
+var trainingParameterMenuItems = newMenu("Training Parameter Menu Tool", trainingParameterMenuArray);
 
 
 var helpURL = "https://github.com/MontpellierRessourcesImagerie/dl4mic/wiki";
@@ -144,8 +149,8 @@ function evaluate() {
 	}
 	saveParameters(_PT_EVALUATE);
 	script = "evaluate.py";
-	parameters = getParameterString(_PT);
-	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_evaluation.txt";
+	parameters = getParameterString(_PT_EVALUATE);
+	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + _LOG_FILENAME[_PT_EVALUATE];
 	File.delete(logPath);
 	os = toLowerCase(getInfo("os.name"));
 	if (indexOf(os, "win")>-1) {
@@ -153,37 +158,12 @@ function evaluate() {
 		setOption("WaitForCompletion", false);
 		a = exec("evaluate.bat");
 	} else {
-		command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" -u "+script+" "+parameters+" 2>&1 | tee log_evaluation.txt";
+		command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" -u "+script+" "+parameters+" 2>&1 | tee "++ _LOG_FILENAME[_PT_EVALUATE];
 		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);
 	}
-	exists = File.exists(logPath);
-	print("log path", logPath);
-	for (i = 0; i < 1000; i++) {
-		if (exists) {
-			break;
-		}
-		wait(500);
-		//File.saveString("", logPath);
-		exists = File.exists(logPath);
-	}
-	out = File.openAsString(logPath);
-	count = 0;
-	finished = false;
-	endFound = false;
-	while (!finished){
-		if (endFound) finished = true;
-		lines = split(out, "\n");
-		start = count;
-		end = lines.length;
-		for (i = start; i < end; i++) {
-			print(lines[i]);
-			count=end;
-		}
-		endFound = indexOf(out, "---evaluation done---")!=-1;
-		if (File.exists(logPath)) out = File.openAsString(logPath);
-		wait(500);
-//break;
-	}
+	
+	catchLog(_PT_EVALUATE);
+	
 	files = getFileList(outputFolder);
 	count = 0;
 	index = 0;
@@ -222,7 +202,12 @@ function evaluate() {
 		positions = Array.rankPositions(images);
 		for (i = 0; i < positions.length; i++) {
 			Stack.setSlice(i+1);
-			run("Macro...", "code=v=(v>"+thresholds[positions[i]]+")*255 slice");	
+			if(thresholds[positions[i]]>255){
+				threshold = 255-(thresholds[positions[i]]-255);
+				run("Macro...", "code=v=(v<="+threshold+")*255 slice");	
+			}else{
+				run("Macro...", "code=v=(v>"+thresholds[positions[i]]+")*255 slice");	
+			}
 		}
 		run("Invert LUT");
 		Stack.setSlice(1);
@@ -338,7 +323,7 @@ function predict() {
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	script = "predict.py";
 	parameters = getParameterString(_PT_PREDICT);
-	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_prediction.txt";
+	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + _LOG_FILENAME[_PT_PREDICT];
 	File.delete(logPath);
 	os = toLowerCase(getInfo("os.name"));
 	if (indexOf(os, "win")>-1) {
@@ -346,35 +331,12 @@ function predict() {
 		setOption("WaitForCompletion", false);
 		a = exec("predict.bat");
 	} else {
-		command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" -u "+script+" "+parameters+" 2>&1 | tee log_prediction.txt";
+		command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" -u "+script+" "+parameters+" 2>&1 | tee "+ _LOG_FILENAME[_PT_PREDICT];
 		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);
 	}
-	exists = File.exists(logPath);
-	print("log path", logPath);
-	for (i = 0; i < 1000; i++) {
-		if (exists) {
-			break;
-		}
-		wait(500);
-		exists = File.exists(logPath);
-	}
-	out = File.openAsString(logPath);
-	count = 0;
-	finished = false;
-	endFound = false;
-	while (!finished){
-		if (endFound) finished = true;
-		lines = split(out, "\n");
-		start = count;
-		end = lines.length;
-		for (i = start; i < end; i++) {
-			print(lines[i]);
-			count=end;
-		}
-		endFound = indexOf(out, "---predictions done---")!=-1;
-		if (File.exists(logPath)) out = File.openAsString(logPath);
-		wait(500);
-	}
+
+	catchLog(_PT_PREDICT);
+	
 	files = getFileList(outputFolder);
 	count = 0;
 	index = 0;
@@ -419,6 +381,7 @@ function emptyTmpFolder() {
 		File.delete(outFolder + File.separator + file);
 	}
 }
+
 function train() {
 	if (!File.exists(_PYTHON_INTERPRETER)) {
 		showMessage("Error", "Could not find the python environment. Please install the dl4mic-python-environment or set the path to the interpreter.");
@@ -437,44 +400,21 @@ function train() {
 	if (isOpen("Log")) selectWindow("Log");
 	parameters = getParameterString(_PT_TRAINING);
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + "log_training.txt";
+	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + _LOG_FILENAME[_PT_TRAINING];
 	File.delete(logPath);
 	os = toLowerCase(getInfo("os.name"));
+	print("Training Start");
 	if (indexOf(os, "win")>-1) {
 		writeBatchFile(_PT_TRAINING);
 		setOption("WaitForCompletion", false);
 		a = exec("train.bat");
 	} else {
-		command = "cd "+baseFolder+" && "+_PYTHON_INTERPRETER+" "+script+" "+parameters+" 2>&1 | tee log_training.txt";
+		command = "cd "+baseFolder+" && "+_PYTHON_INTERPRETER+" "+script+" "+parameters+" 2>&1 | tee "+ _LOG_FILENAME[_PT_TRAINING];
 		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);	
 	}
-	exists = File.exists(logPath);
-	print("log path", logPath);
-	for (i = 0; i < 1000; i++) {
-		if (exists) {
-			break;
-		}
-		wait(500);
-		exists = File.exists(logPath);
-	}
-	out = File.openAsString(logPath);
-	count = 0;
-	finished = false;
-	endFound = false;
-
-	while (!finished){
-		if (endFound) finished = true;
-		lines = split(out, "\n");
-		start = count;
-		end = lines.length;
-		for (i = start; i < end; i++) {
-			print(lines[i]);
-			count=end;
-		}
-		endFound = indexOf(out, "---training done---")!=-1;
-		out = File.openAsString(logPath);
-		wait(500);
-	}
+	
+	catchLog(_PT_TRAINING);
+	
 	displayTrainingEvaluationPlot();
 }
 
@@ -579,13 +519,19 @@ function showInstallEnvDialog() {
 function installEnv(oldEnv, newEnv) {
 	os = toLowerCase(getInfo("os.name"));
 	if (indexOf(os, "win")>-1) {
+		print("Installing a window env");
 		a = exec("cmd", "/c", "start", "cmd", "/c", "conda env remove -y -n "+newEnv+" & sleep 5");
-		envFile = getDirectory("imagej") + "dl4mic/environment_win.yml";
+		envFile = getDirectory("imagej") + "dl4mic"+File.separator+"environment_win.yml";
+		
+		print("Env File ="+ envFile);
 		envContent = File.openAsString(envFile);
 		envContent = replace(envContent, "name: "+oldEnv, "name: "+newEnv);
 		File.saveString(envContent, envFile);
-		exec("cmd", "/c", "start", "cmd", "/c", "conda env create -f "+envFile+" & sleep 3");
-		toolsetFile = getDirectory("imagej") + "macros/toolsets/DL4Mic_Toolset.ijm";
+		envPosition = "C:"+File.separator+"ProgramData"+File.separator+"Anaconda3"+File.separator+"envs";
+		
+		print("Env Position ="+ envPosition);
+		exec("cmd", "/c", "start", "cmd", "/c", "conda env create -p "+envPosition+" -f "+envFile+" & sleep 3");
+		toolsetFile = getDirectory("imagej") + "macros"+File.separator+"toolsets"+File.separator+"DL4Mic_Toolset.ijm";
 		toolsetContent = File.openAsString(toolsetFile);
 		toolsetContent = replace(toolsetContent, 'var _CONDA_ENV = "'+oldEnv+'";', 'var _CONDA_ENV = "'+newEnv+'";');
 		File.saveString(toolsetContent, toolsetFile);
@@ -610,6 +556,8 @@ function installEnv(oldEnv, newEnv) {
 		File.saveString(toolsetContent, toolsetFile);
 	}
 }
+
+//conda env create -f ./environment_win.yml -p ./
 
 function showPythonInterpreterDialog() {
 	if (_PYTHON_INTERPRETER=='') {
@@ -643,6 +591,7 @@ function findPythonInterpreter() {
 }
 
 function showParametersDialog(_PT,parameterGroup) {
+	requires("1.53d");
 	if(_PT == _PT_TRAINING){
 		dialog_title = "";
 		title_split = split(parameterGroup,"_");
@@ -666,18 +615,25 @@ function showParametersDialog(_PT,parameterGroup) {
 		help = replace(_CURRENT_PARAMETER_HELP[i], '\\. ', ".\n");
 		if (_CURRENT_PARAMETER_TYPE[i]=="string") {
 			Dialog.addMessage(help);
-			Dialog.addString(_CURRENT_PARAMETER_NAME[i], _CURRENT_PARAMETER_VALUE[i], 20);
+			Dialog.addString(_CURRENT_PARAMETER_DISPLAY[i], _CURRENT_PARAMETER_VALUE[i], 20);
+		}
+		if (_CURRENT_PARAMETER_TYPE[i]=="file") {
+			Dialog.addMessage(help);
+			Dialog.addFile(_CURRENT_PARAMETER_DISPLAY[i], _CURRENT_PARAMETER_VALUE[i]);
+		}if (_CURRENT_PARAMETER_TYPE[i]=="directory") {
+			Dialog.addMessage(help);
+			Dialog.addDirectory(_CURRENT_PARAMETER_DISPLAY[i], _CURRENT_PARAMETER_VALUE[i]);
 		}
 		if (_CURRENT_PARAMETER_TYPE[i]=="int" || _CURRENT_PARAMETER_TYPE[i]=="float") {
 			if (_CURRENT_PARAMETER_TYPE[i]=="int") 
-				Dialog.addNumber(_CURRENT_PARAMETER_NAME[i], _CURRENT_PARAMETER_VALUE[i], 0, 20, '');
+				Dialog.addNumber(_CURRENT_PARAMETER_DISPLAY[i], _CURRENT_PARAMETER_VALUE[i], 0, 20, '');
 			else
-			 	Dialog.addNumber(_CURRENT_PARAMETER_NAME[i], _CURRENT_PARAMETER_VALUE[i], 8, 20, '');
+			 	Dialog.addNumber(_CURRENT_PARAMETER_DISPLAY[i], _CURRENT_PARAMETER_VALUE[i], 8, 20, '');
 			Dialog.addToSameRow();
 			Dialog.addMessage(help);
 		}
 		if (_CURRENT_PARAMETER_TYPE[i]=="bool") {
-			Dialog.addCheckbox(_CURRENT_PARAMETER_NAME[i], (_CURRENT_PARAMETER_VALUE[i]=='True'));
+			Dialog.addCheckbox(_CURRENT_PARAMETER_DISPLAY[i], (_CURRENT_PARAMETER_VALUE[i]=='True'));
 			Dialog.addToSameRow();
 			Dialog.addMessage(help);
 		}
@@ -685,7 +641,7 @@ function showParametersDialog(_PT,parameterGroup) {
 	Dialog.show();
 	for (i = 0; i < _CURRENT_PARAMETER_GROUP.length; i++) {
 		if (_CURRENT_PARAMETER_GROUP[i]!=parameterGroup) continue;
-		if (_CURRENT_PARAMETER_TYPE[i]=="string") {
+		if (_CURRENT_PARAMETER_TYPE[i]=="string" || _CURRENT_PARAMETER_TYPE[i]=="file" || _CURRENT_PARAMETER_TYPE[i]=="directory") {
 			_CURRENT_PARAMETER_VALUE[i] = Dialog.getString();
 		}
 		if (_CURRENT_PARAMETER_TYPE[i]=="int" || _CURRENT_PARAMETER_TYPE[i]=="float") {
@@ -706,6 +662,7 @@ function readParameters(_PT){
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	_CURRENT_PARAMETER_GROUP = newArray(0);
 	_CURRENT_PARAMETER_NAME = newArray(0);
+	_CURRENT_PARAMETER_DISPLAY = newArray(0);
 	_CURRENT_PARAMETER_VALUE = newArray(0);
 	_CURRENT_PARAMETER_HELP = newArray(0);
 	_CURRENT_PARAMETER_DEFAULT = newArray(0);
@@ -739,6 +696,7 @@ function readParameters(_PT){
 			_CURRENT_PARAMETER_NAME  = Array.concat(_CURRENT_PARAMETER_NAME  , value);
 			_CURRENT_PARAMETER_GROUP = Array.concat(_CURRENT_PARAMETER_GROUP, currentGroup);
 		}
+		if (name=='display') _CURRENT_PARAMETER_DISPLAY = Array.concat(_CURRENT_PARAMETER_DISPLAY, value);
 		if (name=='value')	 _CURRENT_PARAMETER_VALUE 	= Array.concat(_CURRENT_PARAMETER_VALUE	 , value);
 		if (name=='help')	 _CURRENT_PARAMETER_HELP 	= Array.concat(_CURRENT_PARAMETER_HELP	 , value);
 		if (name=='type') 	 _CURRENT_PARAMETER_TYPE 	= Array.concat(_CURRENT_PARAMETER_TYPE	 , value);
@@ -757,6 +715,7 @@ function saveParameters(_PT){
 			content = content + group + ":\n";
 		}
 		content = content + '- name: ' 		+ _CURRENT_PARAMETER_NAME[i] + "\n";
+		content = content + '  display: ' 	+ _CURRENT_PARAMETER_DISPLAY[i] + "\n";
 		content = content + '  value: ' 	+ _CURRENT_PARAMETER_VALUE[i] + "\n";
 		content = content + '  type: ' 		+ _CURRENT_PARAMETER_TYPE[i] + "\n";
 		content = content + '  default: '	+ _CURRENT_PARAMETER_DEFAULT[i] + "\n";
@@ -817,13 +776,13 @@ function writeBatchFile(_PT) {
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	
 	if(_PT == _PT_TRAINING){
-		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u train.py "+parameters+" > log_training.txt 2>&1";
+		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u train.py "+parameters+" > "+ _LOG_FILENAME[_PT_TRAINING]+" 2>&1";
 		File.saveString(command, dir + "train.bat");
 	}else if(_PT == _PT_EVALUATE){
-		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u evaluate.py "+parameters+" > log_evaluation.txt 2>&1";
+		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u evaluate.py "+parameters+" > "+ _LOG_FILENAME[_PT_EVALUATE] +" 2>&1";
 		File.saveString(command, dir + "evaluate.bat");
 	}else if(_PT == _PT_PREDICT){
-		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > log_prediction.txt 2>&1";
+		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > "+ _LOG_FILENAME[_PT_PREDICT] +" 2>&1";
 		File.saveString(command, dir + "predict.bat");
 	}else{
 		print("Unable to write Batch Files! Incorrect type");
@@ -832,22 +791,84 @@ function writeBatchFile(_PT) {
 }
 
 function updateTrainingParameterMenu(){
-	readParameters(_PT_TRAINING);
+	setOption("ExpandableArrays",true);
 	res = newArray();
-	res[0]=_CURRENT_PARAMETER_GROUP[0];
+	_CURRENT_NETWORK = _NETWORKS[0];
+	print(_CURRENT_NETWORK);
+	readParameters(_PT_TRAINING);
+	
 	j=0;
-	for (i = 1; i < _CURRENT_PARAMETER_GROUP.length; i++) {
-		if(_CURRENT_PARAMETER_GROUP[i]!=res[j]){
-			res[j+1]=_CURRENT_PARAMETER_GROUP[i];
+	for (i = 0; i < _CURRENT_PARAMETER_GROUP.length; i++) {
+		if(j!=0 && _CURRENT_PARAMETER_GROUP[i]!=res[j-1]){
+			res[j]=_CURRENT_PARAMETER_GROUP[i];
 			j++;
 		}
 	}
-	res[++j]="---";
-	res[++j]="python interpreter"; 
-	res[++j]="install deep-learning env.";
+	res[j++]="---";
+	res[j++]="python interpreter"; 
+	res[j++]="install deep-learning env.";
 	
 	for(j=0;j<res.length;j++){
 		print(res[j]);
 	}
 	return res;
+}
+
+function catchLog(_PT){
+	logPath="";
+	if(_PT == _PT_TRAINING){
+		logPath = getDirectory("imagej") + "dl4mic"+File.separator +"networks"+File.separator+_CURRENT_NETWORK+File.separator+_LOG_FILENAME[_PT_TRAINING];
+	}else if(_PT == _PT_EVALUATE){
+		logPath = getDirectory("imagej") + "dl4mic"+File.separator +"networks"+File.separator+_CURRENT_NETWORK+File.separator+_LOG_FILENAME[_PT_EVALUATE];
+	}else if(_PT == _PT_PREDICT){
+		logPath = getDirectory("imagej") + "dl4mic"+File.separator +"networks"+File.separator+_CURRENT_NETWORK+File.separator+_LOG_FILENAME[_PT_PREDICT];
+	}else{
+		print("Unable to catch log! Incorrect type");
+		exit();
+	}
+	
+	exists = File.exists(logPath);
+	print("log path", logPath);
+	for (i = 0; i < 1000; i++) {
+		if (exists) {
+			break;
+		}
+		wait(500);
+		exists = File.exists(logPath);
+	}
+	out = File.openAsString(logPath);
+	count = 0;
+	finished = false;
+	endFound = false;
+
+	endString = "";
+	if(_PT == _PT_TRAINING){
+		endString = "---training done---";
+	}else if(_PT == _PT_EVALUATE){
+		endString = "---evaluation done---";
+	}else if(_PT == _PT_PREDICT){
+		endString = "---predictions done---";
+	}else{
+		print("Unable to catch log! Incorrect type");
+		exit();
+	}
+		
+	while (!finished){
+		if (endFound) finished = true;
+		lines = split(out, "\n");
+		start = count;
+		end = lines.length;
+		for (i = start; i < end; i++) {
+			print(lines[i]);
+			count=end;
+		}
+		endFound = indexOf(out, endString)!=-1;
+		wait(500);
+		if (File.exists(logPath)){
+		    out = File.openAsString(logPath);
+	    }else{
+	        print("Log File lost");
+	        exit();
+	    }
+	}
 }

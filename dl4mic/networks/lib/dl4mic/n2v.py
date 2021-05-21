@@ -12,7 +12,6 @@ from n2v.models import N2VConfig, N2V
 from tensorflow.python.client import device_lib
 from tifffile import imread
 
-
 class N2VNetwork(object):
 
     @classmethod

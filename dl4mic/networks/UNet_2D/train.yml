@@ -1,98 +1,129 @@
 user_parameters:
 - name: name
-  value: turgomap_unet2D_model_4
+  display: Name
+  value: turgomap_unet2D_model_trash
   type: string
   default: new_unet2D_model
   help: The name of the model. The model will be saved in a folder with this name. Using the name of an existing model will overwrite the data
 - name: baseDir
+  display: Base Directory
   value: ../../models
-  type: string
+  type: directory
   default: ../../models
   help: The base-folder under which the trained model will be saved.
 - name: dataSourcePath
+  display: Path to the Source Data
   value: ../../unet-data/training_source
-  type: string
+  type: directory
   default: ../../unet-data/training/source
   help: The path to the folder containing the input images on which the model will be trained.
 - name: dataTargetPath
+  display: Path to the Target Data
   value: ../../unet-data/training_gt
-  type: string
+  type: directory
   default: ../../unet-data/training/target
   help: The path to the folder containing the gt-masks on which the model will be trained.
 - name: epochs
-  value: 100
+  display: Epochs
+  value: 1
   type: int
   default: 200
   help: The number of epochs the network will be trained.
 - name: patchSizeXY
+  display: Patch Size XY
   value: 256
   type: int
   default: 512
   help: The image is divided into patches for training. Input the size of the patches (length of a side). Larger patches than 512x512 should NOT be selected for network stability.
 advanced_parameters:
 - name: stepsPerEpoch
+  display: Steps Per Epoch
   value: 0
   type: int
   default: 0
   help: Define the number of training steps by epoch. By default this parameter is calculated so that each image / patch is seen at least once per epoch. Enter 0 to use number_of_patches / batch_size.
 - name: batchSize
+  display: Batch Size
   value: 1
   type: int
   default: 4
   help: This parameter describes the amount of images that are loaded into the network per step. Smaller batchsizes may improve training performance slightly but may increase training time. If the notebook crashes while loading the dataset this can be due to a too large batch size. Decrease the number in this case.
 - name: validationFraction
+  display: Validation Fraction
   value: 10
   type: float
   default: 10.0
   help: The fraction of your training dataset in percent, you want to use to validate the network during the training.
 - name: learningRate
+  display: Initial Learning Rate
   value: 0.0001
   type: float
   default: 0.001
   help: The initial learning rate. The learning rate controls how much the weights of the network with are adjusted with respect to the loss gradient.
+- name: resumeTraining
+  display: Resume Training
+  value: false
+  type: bool
+  default: false
+  help: If enabled, the training will take as starting weight the weigths specified in the startingWeight field
+- name: startingWeigth
+  display: Imported Weigth File
+  value: None
+  type: file
+  default: None
+  help: The training will take as starting weight the weigths of that file
 internal_network_parameters:
 - name: poolingSteps
+  display: Pooling Steps
   value: 4
   type: int
   default: 2
   help: Choosing a different number of pooling layers can affect the performance of the network. Each additional pooling step will also add two additional convolutions. The network can learn more complex information but is also more likely to overfit. Achieving best performance may require testing different values here.
 data_augmentation:
 - name: useDataAugmentation
-  value: True
+  display: Use Data Augmentation
+  value: 0
   type: bool
   default: True
   help: Data augmentation can improve training progress by amplifying differences in the dataset. This can be useful if the available dataset is small since, in this case, it is possible that a network could quickly learn every example in the dataset (overfitting), without augmentation. Augmentation is not necessary for training and if the dataset is large the values can be set to False.
 - name: horizontalShift
+  display: Horizontal Shift
   value: 100
   type: int
   default: 10
   help: shift images horizontally up to the given percentage of the image width
 - name: verticalShift
+  display: Vertical Shift
   value: 100
   type: int
-  default: 10
+  default: 20
   help: shift images vertically up to the given percentage of the image height
 - name: zoomRange
+  display: Zoom Range
   value: 2
   type: int
   default: 10
   help: apply random zooms in the range [100-zoomRange, 100+zoomRange]
 - name: shearRange
+  display: Shear Range
   value: 10
   type: int
   default: 10
   help: set the shear intensity (shear angle in counter-clockwise direction in degrees)
 - name: horizontalFlip
-  value: True
+  display: Horizontal Flip
+  value: 1
   type: bool
   default: True
   help: use horizontal flips of the image
 - name: verticalFlip
-  value: True
+  display: Vertical Flip
+  value: 1
   type: bool
   default: True
   help: use vertical flips of the image
 - name: rotationRange
+  display: Rotation Range
   value: 90
   type: int
   default: 180

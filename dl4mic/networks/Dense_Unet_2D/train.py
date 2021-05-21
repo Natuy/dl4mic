@@ -11,6 +11,8 @@ from dl4mic.cliparser import ParserCreator
 from dl4mic.denseunet import *
 
 def main(argv):
+    print("py:entered Main")
+
     parser = ParserCreator.createArgumentParser("./train.yml")
     if len(argv) == 1:
         parser.print_help(sys.stderr)

@@ -1,31 +1,37 @@
 user_parameters:
 - name: name
-  value: test
+  display: Name
+  value: new_n2v_model
   type: string
   default: new n2v model
   help: The name of the model. The model is read from a folder with this name.
 - name: baseDir
+  display: Base Directory
   value: ../../models
-  type: string
+  type: directory
   default: ../../models
   help: The base-folder under which the trained model is saved.
 - name: dataPath
-  value: E
-  type: string
+  display: Path to the Input Data
+  value: D:\MRI\Fiji2.app\dl4mic\tmp\in
+  type: directory
   default: ../../n2v-data/prediction-in
-  help: The path to the folder containig the noisy images..
+  help: The path to the folder containig the noisy images.
 - name: output
-  value: E
-  type: string
+  display: Path to the Output Data
+  value: D:\MRI\Fiji2.app\dl4mic\tmp\out
+  type: directory
   default: ../../n2v-data/prediction-out
   help: The folder into which the result images will be saved.
 - name: tileX
+  display: Tile X
   value: 1
   type: int
   default: 1
-  help: The image will be cut into tileX tiles in the x-dimension if necessary to fit into the GPU memory.
+  help: The image will be cut into Tile X tiles in the x-dimension if necessary to fit into the GPU memory.
 - name: tileY
+  display: Tile Y
   value: 2
   type: int
   default: 2
-  help: The image will be cut into tileY tiles in the y-dimension if necessary to fit into the GPU memory.
+  help: The image will be cut into Tile Y tiles in the y-dimension if necessary to fit into the GPU memory.

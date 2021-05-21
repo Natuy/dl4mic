@@ -1,26 +1,31 @@
 user_parameters:
 - name: name
+  display: Name
   value: turgomap_unet2D_model_4
   type: string
   default: turgomap_unet2D_model
   help: The name of the model. The model is read from a folder with this name.
 - name: baseDir
+  display: Base Directory
   value: ../../models
-  type: string
+  type: directory
   default: ../../models
   help: The base-folder under which the trained model is saved.
 - name: dataPath
-  value: E
-  type: string
+  display: Path to the Input Data
+  value: D:\MRI\Fiji2.app\dl4mic\unet-data\data_Turgo\IN\
+  type: directory
   default: ../../unet-data/data
   help: The path to the folder containig the input images.
 - name: output
-  value: E
-  type: string
+  display: Path to the Output Data
+  value: D:\MRI\Fiji2.app\dl4mic\unet-data\data_Turgo\OUT\
+  type: directory
   default: ../../unet-data/tmp_out
   help: The folder into which the result images will be saved.
 - name: threshold
-  value: 127.5
+  display: Threshold
+  value: 180
   type: float
   default: 127.5
   help: The threshold value used to create binary masks
