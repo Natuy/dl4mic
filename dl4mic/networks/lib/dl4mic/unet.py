@@ -401,7 +401,54 @@ def unet(pretrained_weights = None, input_size = (256,256,1), pooling_steps = 4,
 
     return model
 
+'''Personal Version of the model, Still WIP
+def unet(pretrained_weights=None, input_size=(256, 256, 1), pooling_steps=4, learning_rate=1e-4, verbose=True,class_weights=np.ones(2)):
+    inputs = Input(input_size)
+    channels = 64
+    convs = []
+    dropout_steps = 2
 
+    # Downsampling
+    for p in range(0, pooling_steps + 1):
+        if p == 0:
+            convs.append(Conv2D(channels * pow(2, p), 3, activation='relu', padding='same', kernel_initializer='he_normal')(inputs))
+        else:
+            convs.append(Conv2D(channels * pow(2, p), 3, activation='relu', padding='same', kernel_initializer='he_normal')(pool))
+        convs[p] = Conv2D(channels * pow(2, p), 3, activation='relu', padding='same', kernel_initializer='he_normal')(convs[p])
+        if p != pooling_steps:
+            if p > pooling_steps-dropout_steps:
+                convs[p] = Dropout(0.5)(convs[p])
+            pool = MaxPooling2D(pool_size=(2, 2))(convs[p])
+        else:
+            drop = Dropout(0.5)(convs[p])
+
+    # Upsampling
+    for p in range(pooling_steps - 1, -1, -1):
+        if p == pooling_steps - 1:
+            up = Conv2D(channels * pow(2, p), 2, activation='relu', padding='same', kernel_initializer='he_normal')(UpSampling2D(size=(2, 2))(drop))
+        else:
+            up = Conv2D(channels * pow(2, p), 2, activation='relu', padding='same', kernel_initializer='he_normal')(UpSampling2D(size=(2, 2))(convs[-1]))
+
+        merge = concatenate([convs[p], up], axis=3)
+        convs.append(Conv2D(channels * pow(2, p), 3, activation='relu', padding='same', kernel_initializer='he_normal')(merge))
+        convs[-1] = Conv2D(channels * pow(2, p), 3, activation='relu', padding='same', kernel_initializer='he_normal')(convs[-1])
+
+
+    conv = Conv2D(2, 3, padding='same', kernel_initializer='he_normal')(convs[-1])  # activation = 'relu'
+    conv = Conv2D(1, 1, activation='sigmoid')(conv)
+
+    model = Model(inputs=inputs, outputs=conv)
+    # model.compile(optimizer = Adam(lr = learning_rate), loss = 'binary_crossentropy', metrics = ['acc'])
+    model.compile(optimizer=Adam(lr=learning_rate), loss=weighted_binary_crossentropy(class_weights))
+
+    if verbose:
+        model.summary()
+        
+    if (pretrained_weights):
+        model.load_weights(pretrained_weights)
+
+    return model
+'''
 
 def predict_as_tiles(Image_path, model):
 

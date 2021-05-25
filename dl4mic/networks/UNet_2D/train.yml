@@ -65,13 +65,13 @@ advanced_parameters:
   value: false
   type: bool
   default: false
-  help: If enabled, the training will take as starting weight the weigths specified in the startingWeight field
+  help: If enabled, the training will take as starting weight the weigths of the Original Model
 - name: startingWeigth
-  display: Imported Weigth File
+  display: Original model
   value: None
   type: file
   default: None
-  help: The training will take as starting weight the weigths of that file
+  help: The training will take as starting weight the weigths of that hdf5 file
 internal_network_parameters:
 - name: poolingSteps
   display: Pooling Steps

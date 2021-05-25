@@ -7,19 +7,19 @@ user_parameters:
   help: The name of the model. The model is read from a folder with this name.
 - name: baseDir
   display: Base Directory
-  value: ../../models
+  value: ../../models/
   type: directory
   default: ../../models
   help: The base-folder under which the trained model is saved.
 - name: dataPath
   display: Path to the Input Data
-  value: D:\MRI\Fiji2.app\dl4mic\unet-data\data_Turgo\IN\
+  value: E:\MRI\eaudissect\Soukaina\DL-Prediction\180515-ch1\
   type: directory
   default: ../../unet-data/data
   help: The path to the folder containig the input images.
 - name: output
   display: Path to the Output Data
-  value: D:\MRI\Fiji2.app\dl4mic\unet-data\data_Turgo\OUT\
+  value: E:\MRI\eaudissect\Soukaina\DL-Prediction\180515-ch1-predicted\
   type: directory
   default: ../../unet-data/tmp_out
   help: The folder into which the result images will be saved.
