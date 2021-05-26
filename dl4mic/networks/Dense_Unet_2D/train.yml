@@ -1,7 +1,7 @@
 user_parameters:
 - name: name
   display: Name
-  value: turgomap_unet2D_model_trash
+  value: turgomap_Denseunet2D_model_4_128
   type: string
   default: new_unet2D_model
   help: The name of the model. The model will be saved in a folder with this name. Using the name of an existing model will overwrite the data
@@ -25,13 +25,13 @@ user_parameters:
   help: The path to the folder containing the gt-masks on which the model will be trained.
 - name: epochs
   display: Epochs
-  value: 1
+  value: 200
   type: int
   default: 200
   help: The number of epochs the network will be trained.
 - name: patchSizeXY
   display: Patch Size XY
-  value: 256
+  value: 128
   type: int
   default: 512
   help: The image is divided into patches for training. Input the size of the patches (length of a side). Larger patches than 512x512 should NOT be selected for network stability.
@@ -50,28 +50,16 @@ advanced_parameters:
   help: This parameter describes the amount of images that are loaded into the network per step. Smaller batchsizes may improve training performance slightly but may increase training time. If the notebook crashes while loading the dataset this can be due to a too large batch size. Decrease the number in this case.
 - name: validationFraction
   display: Validation Fraction
-  value: 10
+  value: 12
   type: float
   default: 10.0
   help: The fraction of your training dataset in percent, you want to use to validate the network during the training.
 - name: learningRate
   display: Initial Learning Rate
-  value: 0.0001
+  value: 0.00015
   type: float
   default: 0.001
   help: The initial learning rate. The learning rate controls how much the weights of the network with are adjusted with respect to the loss gradient.
-- name: resumeTraining
-  display: Resume Training
-  value: false
-  type: bool
-  default: false
-  help: If enabled, the training will take as starting weight the weigths of the Original Model
-- name: startingWeigth
-  display: Original model
-  value: None
-  type: file
-  default: None
-  help: The training will take as starting weight the weigths of that hdf5 file
 internal_network_parameters:
 - name: poolingSteps
   display: Pooling Steps
@@ -82,7 +70,7 @@ internal_network_parameters:
 data_augmentation:
 - name: useDataAugmentation
   display: Use Data Augmentation
-  value: 0
+  value: True
   type: bool
   default: True
   help: Data augmentation can improve training progress by amplifying differences in the dataset. This can be useful if the available dataset is small since, in this case, it is possible that a network could quickly learn every example in the dataset (overfitting), without augmentation. Augmentation is not necessary for training and if the dataset is large the values can be set to False.
@@ -94,7 +82,7 @@ data_augmentation:
   help: shift images horizontally up to the given percentage of the image width
 - name: verticalShift
   display: Vertical Shift
-  value: 100
+  value: 200
   type: int
   default: 20
   help: shift images vertically up to the given percentage of the image height
@@ -112,13 +100,13 @@ data_augmentation:
   help: set the shear intensity (shear angle in counter-clockwise direction in degrees)
 - name: horizontalFlip
   display: Horizontal Flip
-  value: 1
+  value: True
   type: bool
   default: True
   help: use horizontal flips of the image
 - name: verticalFlip
   display: Vertical Flip
-  value: 1
+  value: True
   type: bool
   default: True
   help: use vertical flips of the image

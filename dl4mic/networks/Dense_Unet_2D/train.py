@@ -8,9 +8,11 @@ import csv
 import tensorflow as tf
 sys.path.append(r'../lib/')
 from dl4mic.cliparser import ParserCreator
-from dl4mic.unet import *
+from dl4mic.denseunet import *
 
 def main(argv):
+    print("py:entered Main")
+
     parser = ParserCreator.createArgumentParser("./train.yml")
     if len(argv) == 1:
         parser.print_help(sys.stderr)
@@ -52,12 +54,9 @@ def main(argv):
     print('Getting class weights...')
     class_weights = getClassWeights(args.dataTargetPath)
     h5_file_path = None
-    if(args.resumeTraining):
-        h5_file_path = args.startingWeigth
-
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, verbose=1, mode='auto',
                                   patience=10, min_lr=0)
-    model = unet(pretrained_weights=h5_file_path,
+    model = denseUnet(pretrained_weights=h5_file_path,
                  input_size=(args.patchSizeXY, args.patchSizeXY, 1),
                  pooling_steps=args.poolingSteps,
                  learning_rate=args.learningRate,

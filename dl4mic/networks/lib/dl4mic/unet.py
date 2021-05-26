@@ -57,9 +57,9 @@ def create_patches(Training_source, Training_target, patch_width, patch_height):
   """
   DEBUG = False
 
-  Patch_source = os.path.join(Training_source, '../img_patches')
-  Patch_target = os.path.join(Training_source, '../mask_patches')
-  Patch_rejected = os.path.join(Training_source, '../rejected')
+  Patch_source = os.path.join('../../unet-data','img_patches')
+  Patch_target = os.path.join('../../unet-data','mask_patches')
+  Patch_rejected = os.path.join('../../unet-data', 'rejected')
   
 
   #Here we save the patches, in the /content directory as they will not usually be needed after training
@@ -106,9 +106,9 @@ def create_patches(Training_source, Training_target, patch_width, patch_height):
     img_save_path = os.path.join(Patch_source,'patch_'+str(i)+'.tif')
     mask_save_path = os.path.join(Patch_target,'patch_'+str(i)+'.tif')
 
-    # if the mask conatins at least 2% of its total number pixels as mask, then go ahead and save the images
+    # if the mask conatins at least 1% of its total number pixels as mask, then go ahead and save the images
     pixel_threshold_array = sorted(all_patches_mask[i].flatten())
-    if pixel_threshold_array[int(round(len(pixel_threshold_array)*0.98))]>0:
+    if pixel_threshold_array[int(round(len(pixel_threshold_array)*0.99))]>0:
       io.imsave(img_save_path, img_as_ubyte(normalizeMinMax(all_patches_img[i])))
       io.imsave(mask_save_path, convert2Mask(normalizeMinMax(all_patches_mask[i]),0))
     else:
@@ -401,7 +401,54 @@ def unet(pretrained_weights = None, input_size = (256,256,1), pooling_steps = 4,
 
     return model
 
+'''Personal Version of the model, Still WIP
+def unet(pretrained_weights=None, input_size=(256, 256, 1), pooling_steps=4, learning_rate=1e-4, verbose=True,class_weights=np.ones(2)):
+    inputs = Input(input_size)
+    channels = 64
+    convs = []
+    dropout_steps = 2
 
+    # Downsampling
+    for p in range(0, pooling_steps + 1):
+        if p == 0:
+            convs.append(Conv2D(channels * pow(2, p), 3, activation='relu', padding='same', kernel_initializer='he_normal')(inputs))
+        else:
+            convs.append(Conv2D(channels * pow(2, p), 3, activation='relu', padding='same', kernel_initializer='he_normal')(pool))
+        convs[p] = Conv2D(channels * pow(2, p), 3, activation='relu', padding='same', kernel_initializer='he_normal')(convs[p])
+        if p != pooling_steps:
+            if p > pooling_steps-dropout_steps:
+                convs[p] = Dropout(0.5)(convs[p])
+            pool = MaxPooling2D(pool_size=(2, 2))(convs[p])
+        else:
+            drop = Dropout(0.5)(convs[p])
+
+    # Upsampling
+    for p in range(pooling_steps - 1, -1, -1):
+        if p == pooling_steps - 1:
+            up = Conv2D(channels * pow(2, p), 2, activation='relu', padding='same', kernel_initializer='he_normal')(UpSampling2D(size=(2, 2))(drop))
+        else:
+            up = Conv2D(channels * pow(2, p), 2, activation='relu', padding='same', kernel_initializer='he_normal')(UpSampling2D(size=(2, 2))(convs[-1]))
+
+        merge = concatenate([convs[p], up], axis=3)
+        convs.append(Conv2D(channels * pow(2, p), 3, activation='relu', padding='same', kernel_initializer='he_normal')(merge))
+        convs[-1] = Conv2D(channels * pow(2, p), 3, activation='relu', padding='same', kernel_initializer='he_normal')(convs[-1])
+
+
+    conv = Conv2D(2, 3, padding='same', kernel_initializer='he_normal')(convs[-1])  # activation = 'relu'
+    conv = Conv2D(1, 1, activation='sigmoid')(conv)
+
+    model = Model(inputs=inputs, outputs=conv)
+    # model.compile(optimizer = Adam(lr = learning_rate), loss = 'binary_crossentropy', metrics = ['acc'])
+    model.compile(optimizer=Adam(lr=learning_rate), loss=weighted_binary_crossentropy(class_weights))
+
+    if verbose:
+        model.summary()
+        
+    if (pretrained_weights):
+        model.load_weights(pretrained_weights)
+
+    return model
+'''
 
 def predict_as_tiles(Image_path, model):
 
@@ -481,6 +528,21 @@ def getIoUvsThreshold(prediction_filepath, groud_truth_filepath):
   for threshold in range(0,256): 
     # Convert to 8-bit for calculating the IoU
     mask = img_as_ubyte(prediction, force_copy=True)
+    mask[mask > threshold] = 255
+    mask[mask <= threshold] = 0
+
+    # Intersection over Union metric
+    intersection = np.logical_and(ground_truth_image, np.squeeze(mask))
+    union = np.logical_or(ground_truth_image, np.squeeze(mask))
+    iou_score = np.sum(intersection) / np.sum(union)
+
+    threshold_list.append(threshold)
+    IoU_scores_list.append(iou_score)
+
+  for threshold in range(0, 256):
+    # Convert to 8-bit for calculating the IoU
+    mask = img_as_ubyte(prediction, force_copy=True)
+    mask = 255-mask
     mask[mask > threshold] = 255
     mask[mask <= threshold] = 0
 

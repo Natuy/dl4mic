@@ -11,7 +11,7 @@ class ParserCreator(object):
             for key in params.keys():
                 parameterSet = params[key]
                 for parameter in parameterSet:
-                    if parameter['type'] == 'string':
+                    if parameter['type'] == 'string' or parameter['type'] == 'file' or parameter['type'] == 'directory':
                         parser.add_argument('--' + parameter['name'], help=parameter['help'],
                                             default=parameter['default'])
                     if parameter['type'] == 'int':
