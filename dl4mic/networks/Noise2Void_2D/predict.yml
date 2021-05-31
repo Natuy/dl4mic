@@ -13,13 +13,13 @@ user_parameters:
   help: The base-folder under which the trained model is saved.
 - name: dataPath
   display: Path to the Input Data
-  value: D:\MRI\Fiji2.app\dl4mic\tmp\in
+  value: E:\MRI\Fiji.app\dl4mic\n2v-data\prediction-in\
   type: directory
   default: ../../n2v-data/prediction-in
   help: The path to the folder containig the noisy images.
 - name: output
   display: Path to the Output Data
-  value: D:\MRI\Fiji2.app\dl4mic\tmp\out
+  value: E:\MRI\Fiji.app\dl4mic\n2v-data\tmp\
   type: directory
   default: ../../n2v-data/prediction-out
   help: The folder into which the result images will be saved.

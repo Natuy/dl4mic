@@ -17,6 +17,12 @@ var _LOG_FILENAME = newArray(
 		"log_evaluation.txt"
 		);
 
+var _PT_ACTION = newArray(
+	"train",
+	"predict",
+	"evaluate"
+	);
+
 var _CURRENT_PARAMETER_GROUP = newArray(0);
 var _CURRENT_PARAMETER_NAME = newArray(0);
 var _CURRENT_PARAMETER_DISPLAY = newArray(0);
@@ -117,7 +123,11 @@ function about() {
 }
 
 function evaluate() {
-	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
+	if (!File.exists(_PYTHON_INTERPRETER)) {
+		showMessage("Error", "Could not find the python environment. Please install the dl4mic-python-environment or set the path to the interpreter.");
+		return;
+	}
+
 	inputFolder = "";
 	outputFolder = "";
 	workingOnOpenImage = false;
@@ -148,45 +158,30 @@ function evaluate() {
 		if (_CURRENT_PARAMETER_NAME[i]=='testGroundTruthPath') _CURRENT_PARAMETER_VALUE[i] = outputFolder;
 	}
 	saveParameters(_PT_EVALUATE);
-	script = "evaluate.py";
-	parameters = getParameterString(_PT_EVALUATE);
-	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + _LOG_FILENAME[_PT_EVALUATE];
-	File.delete(logPath);
-	os = toLowerCase(getInfo("os.name"));
-	if (indexOf(os, "win")>-1) {
-		writeBatchFile(_PT_EVALUATE);
-		setOption("WaitForCompletion", false);
-		a = exec("evaluate.bat");
-	} else {
-		command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" -u "+script+" "+parameters+" 2>&1 | tee "++ _LOG_FILENAME[_PT_EVALUATE];
-		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);
-	}
 	
+	launchPythonExecution(_PT_EVALUATE);
 	catchLog(_PT_EVALUATE);
 	
 	files = getFileList(outputFolder);
 	count = 0;
-	index = 0;
-	
 	for (i = 0; i < files.length; i++) {
-		file = files[i];
-		if (endsWith(file, ".tif")) {
-			index = i;
+		if (endsWith(files[i], ".tif")) {
 			count++;
 		}
 	}
 
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	baseDir = baseFolder + File.separator  + getValueOfParameter(_PT_EVALUATE,'baseDir');
 	name = getValueOfParameter(_PT_EVALUATE,"name");
 	qcDir = baseDir + File.separator + name + File.separator +"Quality Control"+File.separator ;
 	predictionsDir = qcDir + "Prediction"+File.separator ;
+	
 	print("" + count + " result images have been written to: \n" + predictionsDir);
 
 	targetID = loadResultSeries(outputFolder+File.separator, "Target", "", 2);
 	sourceID = loadResultSeries(inputFolder+File.separator, "Source", "", 2);
 	predictionID = loadResultSeries(predictionsDir+File.separator, "Prediction", "", 2);
 	
-	name = getValueOfParameter(_PT_EVALUATE,"name");
 	Table.open(qcDir+File.separator+'QC_metrics_'+name+'.csv') ;
 	
 	wait(500);
@@ -222,26 +217,26 @@ function evaluate() {
 		print("Average best threshold:", mean);
 		print("-----------------------");
 	}
-	if (containsFileWithPrefix(qcDir+"/", "SSIM_GTvsSource_")) {
-		ssimTargetVSSourceID = loadResultSeries(qcDir+"/", "Target vs. Source SSIM", "SSIM_GTvsSource_", 2);
+	if (containsFileWithPrefix(qcDir+File.separator, "SSIM_GTvsSource_")) {
+		ssimTargetVSSourceID = loadResultSeries(qcDir+File.separator, "Target vs. Source SSIM", "SSIM_GTvsSource_", 2);
 		setSubtitles(ssimTargetVSSourceID, "Input v. GT mSSIM", "Target vs. Source SSIM:");
 		run("Fire");
 		run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
 	}
-	if (containsFileWithPrefix(qcDir+"/", "SSIM_GTvsPrediction_")) {
-		ssimTargetVSPredictionID = loadResultSeries(qcDir+"/", "Target vs. Prediction SSIM", "SSIM_GTvsPrediction_", 2);
+	if (containsFileWithPrefix(qcDir+File.separator, "SSIM_GTvsPrediction_")) {
+		ssimTargetVSPredictionID = loadResultSeries(qcDir+File.separator, "Target vs. Prediction SSIM", "SSIM_GTvsPrediction_", 2);
 		setSubtitles(ssimTargetVSPredictionID, "Prediction v. GT mSSIM", "Target vs. Prediction SSIM:");
 		run("Fire");
 		run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
 	}
-	if (containsFileWithPrefix(qcDir+"/", "RSE_GTvsSource_")) {
-		rseTragetVSSourceID = loadResultSeries(qcDir+"/", "Target vs. Source NRMSE", "RSE_GTvsSource_", 2);
+	if (containsFileWithPrefix(qcDir+File.separator, "RSE_GTvsSource_")) {
+		rseTragetVSSourceID = loadResultSeries(qcDir+File.separator, "Target vs. Source NRMSE", "RSE_GTvsSource_", 2);
 		setSubtitles(rseTragetVSSourceID, "Input v. GT NRMSE", "Target vs. Source NRMSE:");
 		run("Fire");
 		run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
 	}
-	if (containsFileWithPrefix(qcDir+"/", "RSE_GTvsPrediction_")) {
-		rseTragetVSPredictionID = loadResultSeries(qcDir+"/", "Target vs. Prediction NRMSE", "RSE_GTvsPrediction_", 2);
+	if (containsFileWithPrefix(qcDir+File.separator, "RSE_GTvsPrediction_")) {
+		rseTragetVSPredictionID = loadResultSeries(qcDir+File.separator, "Target vs. Prediction NRMSE", "RSE_GTvsPrediction_", 2);
 		setSubtitles(rseTragetVSPredictionID, "Prediction v. GT NRMSE", "Target vs. Prediction NRMSE:");
 		run("Fire");
 		run("Calibration Bar...", "location=[Lower Right] fill=White label=Black number=6 decimal=1 font=12 zoom=1.4 overlay");
@@ -285,6 +280,11 @@ function setSubtitles(imageID, columnName, label) {
 }
 
 function predict() {
+	if (!File.exists(_PYTHON_INTERPRETER)) {
+		showMessage("Error", "Could not find the python environment. Please install the dl4mic-python-environment or set the path to the interpreter.");
+		return;
+	}
+
 	inputFolder = "";
 	outputFolder = "";
 	workingOnOpenImage = false;
@@ -320,33 +320,19 @@ function predict() {
 		if (_CURRENT_PARAMETER_NAME[i]=='output') _CURRENT_PARAMETER_VALUE[i] = outputFolder;
 	}
 	saveParameters(_PT_PREDICT);
-	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	script = "predict.py";
-	parameters = getParameterString(_PT_PREDICT);
-	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + _LOG_FILENAME[_PT_PREDICT];
-	File.delete(logPath);
-	os = toLowerCase(getInfo("os.name"));
-	if (indexOf(os, "win")>-1) {
-		writeBatchFile(_PT_PREDICT);
-		setOption("WaitForCompletion", false);
-		a = exec("predict.bat");
-	} else {
-		command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" -u "+script+" "+parameters+" 2>&1 | tee "+ _LOG_FILENAME[_PT_PREDICT];
-		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);
-	}
 
+	
+	launchPythonExecution(_PT_PREDICT);
 	catchLog(_PT_PREDICT);
 	
 	files = getFileList(outputFolder);
 	count = 0;
-	index = 0;
 	for (i = 0; i < files.length; i++) {
-		file = files[i];
-		if (endsWith(file, ".tif")) {
-			index = i;
+		if (endsWith(files[i], ".tif")) {
 			count++;
 		}
 	}
+
 	print("" + count + " result images have been written to: \n" + outputFolder);
 	if (workingOnOpenImage) {
 		if (isStack) {
@@ -396,23 +382,9 @@ function train() {
 	name = getValueOfParameter(_PT_TRAINING,"name");
 	outPath = baseDir + File.separator + name;
 	showMessageWithCancel("Training of "+_CURRENT_NETWORK+"\n"+"Epochs: " + epochs + "\n" + "Data path: "+dataPath + "\n" + "Result will be saved as " + outPath);
-	script = "train.py";
 	if (isOpen("Log")) selectWindow("Log");
-	parameters = getParameterString(_PT_TRAINING);
-	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
-	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + _LOG_FILENAME[_PT_TRAINING];
-	File.delete(logPath);
-	os = toLowerCase(getInfo("os.name"));
-	print("Training Start");
-	if (indexOf(os, "win")>-1) {
-		writeBatchFile(_PT_TRAINING);
-		setOption("WaitForCompletion", false);
-		a = exec("train.bat");
-	} else {
-		command = "cd "+baseFolder+" && "+_PYTHON_INTERPRETER+" "+script+" "+parameters+" 2>&1 | tee "+ _LOG_FILENAME[_PT_TRAINING];
-		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);	
-	}
 	
+	launchPythonExecution(_PT_TRAINING);
 	catchLog(_PT_TRAINING);
 	
 	displayTrainingEvaluationPlot();
@@ -564,7 +536,7 @@ function showPythonInterpreterDialog() {
 		_PYTHON_INTERPRETER = findPythonInterpreter();
 	}
 	Dialog.create("Python interpreter");
-	Dialog.addString("python interpreter: ", _PYTHON_INTERPRETER, 40);
+	Dialog.addFile("Python interpreter: ", _PYTHON_INTERPRETER, 40);
 	Dialog.show();
 	_PYTHON_INTERPRETER = Dialog.getString();
 }
@@ -620,10 +592,12 @@ function showParametersDialog(_PT,parameterGroup) {
 		if (_CURRENT_PARAMETER_TYPE[i]=="file") {
 			Dialog.addMessage(help);
 			Dialog.addFile(_CURRENT_PARAMETER_DISPLAY[i], _CURRENT_PARAMETER_VALUE[i]);
-		}if (_CURRENT_PARAMETER_TYPE[i]=="directory") {
+		}
+		if (_CURRENT_PARAMETER_TYPE[i]=="directory") {
 			Dialog.addMessage(help);
 			Dialog.addDirectory(_CURRENT_PARAMETER_DISPLAY[i], _CURRENT_PARAMETER_VALUE[i]);
 		}
+		
 		if (_CURRENT_PARAMETER_TYPE[i]=="int" || _CURRENT_PARAMETER_TYPE[i]=="float") {
 			if (_CURRENT_PARAMETER_TYPE[i]=="int") 
 				Dialog.addNumber(_CURRENT_PARAMETER_DISPLAY[i], _CURRENT_PARAMETER_VALUE[i], 0, 20, '');
@@ -633,7 +607,7 @@ function showParametersDialog(_PT,parameterGroup) {
 			Dialog.addMessage(help);
 		}
 		if (_CURRENT_PARAMETER_TYPE[i]=="bool") {
-			Dialog.addCheckbox(_CURRENT_PARAMETER_DISPLAY[i], (_CURRENT_PARAMETER_VALUE[i]=='True'));
+			Dialog.addCheckbox(_CURRENT_PARAMETER_DISPLAY[i], _CURRENT_PARAMETER_VALUE[i]);
 			Dialog.addToSameRow();
 			Dialog.addMessage(help);
 		}
@@ -669,16 +643,7 @@ function readParameters(_PT){
 	_CURRENT_PARAMETER_TYPE = newArray(0);
 	
 	//PT Dependent
-	if(_PT == _PT_TRAINING){
-		parameterFile = File.openAsString(baseFolder + "/train.yml");
-	}else if(_PT == _PT_EVALUATE){
-		parameterFile = File.openAsString(baseFolder + "/evaluate.yml");
-	}else if(_PT == _PT_PREDICT){
-		parameterFile = File.openAsString(baseFolder + "/predict.yml");
-	}else{
-		print("Unable to read parameter! Incorrect type");
-		exit();
-	}
+	parameterFile = File.openAsString(baseFolder + File.separator+_PT_ACTION[_PT]+".yml");
 	
 	parameterLines = split(parameterFile, "\n");
 	for (i = 0; i < parameterLines.length; i++) {
@@ -723,16 +688,7 @@ function saveParameters(_PT){
 	}
 	
 	//_PT Dependent
-	if(_PT == _PT_TRAINING){
-		File.saveString(content, baseFolder + "/train.yml");
-	}else if(_PT == _PT_EVALUATE){
-		File.saveString(content, baseFolder + "/evaluate.yml");
-	}else if(_PT == _PT_PREDICT){
-		File.saveString(content, baseFolder + "/predict.yml");
-	}else{
-		print("Unable to save parameter! Incorrect type");
-		exit();
-	}
+	File.saveString(content, baseFolder + File.separator+_PT_ACTION[_PT]+".yml");
 }
 
 function selectNetwork() {
@@ -775,19 +731,8 @@ function writeBatchFile(_PT) {
 	driveLetter = parts[0];
 	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
 	
-	if(_PT == _PT_TRAINING){
-		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u train.py "+parameters+" > "+ _LOG_FILENAME[_PT_TRAINING]+" 2>&1";
-		File.saveString(command, dir + "train.bat");
-	}else if(_PT == _PT_EVALUATE){
-		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u evaluate.py "+parameters+" > "+ _LOG_FILENAME[_PT_EVALUATE] +" 2>&1";
-		File.saveString(command, dir + "evaluate.bat");
-	}else if(_PT == _PT_PREDICT){
-		command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u predict.py "+parameters+" > "+ _LOG_FILENAME[_PT_PREDICT] +" 2>&1";
-		File.saveString(command, dir + "predict.bat");
-	}else{
-		print("Unable to write Batch Files! Incorrect type");
-		exit();
-	}
+	command = "conda activate "+_CONDA_ENV+" && "+driveLetter+" && cd "+baseFolder+" && python.exe -u "+_PT_ACTION[_PT]+".py "+parameters+" > "+ _LOG_FILENAME[_PT]+" 2>&1";
+	File.saveString(command, dir+_PT_ACTION[_PT]+".bat");
 }
 
 function updateTrainingParameterMenu(){
@@ -804,6 +749,7 @@ function updateTrainingParameterMenu(){
 			j++;
 		}
 	}
+	
 	res[j++]="---";
 	res[j++]="python interpreter"; 
 	res[j++]="install deep-learning env.";
@@ -814,19 +760,30 @@ function updateTrainingParameterMenu(){
 	return res;
 }
 
-function catchLog(_PT){
-	logPath="";
-	if(_PT == _PT_TRAINING){
-		logPath = getDirectory("imagej") + "dl4mic"+File.separator +"networks"+File.separator+_CURRENT_NETWORK+File.separator+_LOG_FILENAME[_PT_TRAINING];
-	}else if(_PT == _PT_EVALUATE){
-		logPath = getDirectory("imagej") + "dl4mic"+File.separator +"networks"+File.separator+_CURRENT_NETWORK+File.separator+_LOG_FILENAME[_PT_EVALUATE];
-	}else if(_PT == _PT_PREDICT){
-		logPath = getDirectory("imagej") + "dl4mic"+File.separator +"networks"+File.separator+_CURRENT_NETWORK+File.separator+_LOG_FILENAME[_PT_PREDICT];
-	}else{
-		print("Unable to catch log! Incorrect type");
-		exit();
+function launchPythonExecution(_PT){
+	if (!File.exists(_PYTHON_INTERPRETER)) {
+		showMessage("Error", "Could not find the python environment. Please install the dl4mic-python-environment or set the path to the interpreter.");
+		return;
 	}
-	
+
+	baseFolder = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK;
+	script = _PT_ACTION[_PT]+".py";
+	parameters = getParameterString(_PT);
+	logPath = _NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator + _LOG_FILENAME[_PT];
+	File.delete(logPath);
+	os = toLowerCase(getInfo("os.name"));
+	if (indexOf(os, "win")>-1) {
+		writeBatchFile(_PT);
+		setOption("WaitForCompletion", false);
+		a = exec(_PT_ACTION[_PT]+".bat");
+	} else {
+		command = "cd "+baseFolder+"; "+_PYTHON_INTERPRETER+" -u "+script+" "+parameters+" 2>&1 | tee "++ _LOG_FILENAME[_PT];
+		a = exec("gnome-terminal", "--geometry=0x0", "-x", "sh", "-c", command);
+	}
+}
+
+function catchLog(_PT){
+	logPath = getDirectory("imagej") + "dl4mic"+File.separator +"networks"+File.separator+_CURRENT_NETWORK+File.separator+_LOG_FILENAME[_PT];
 	exists = File.exists(logPath);
 	print("log path", logPath);
 	for (i = 0; i < 1000; i++) {
@@ -842,12 +799,9 @@ function catchLog(_PT){
 	endFound = false;
 
 	endString = "";
-	if(_PT == _PT_TRAINING){
-		endString = "---training done---";
-	}else if(_PT == _PT_EVALUATE){
-		endString = "---evaluation done---";
-	}else if(_PT == _PT_PREDICT){
-		endString = "---predictions done---";
+	if(_PT == _PT_TRAINING){		endString = "---training done---";
+	}else if(_PT == _PT_EVALUATE){	endString = "---evaluation done---";
+	}else if(_PT == _PT_PREDICT){	endString = "---predictions done---";
 	}else{
 		print("Unable to catch log! Incorrect type");
 		exit();
@@ -866,9 +820,6 @@ function catchLog(_PT){
 		wait(500);
 		if (File.exists(logPath)){
 		    out = File.openAsString(logPath);
-	    }else{
-	        print("Log File lost");
-	        exit();
 	    }
 	}
 }

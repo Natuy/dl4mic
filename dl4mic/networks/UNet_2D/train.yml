@@ -82,7 +82,7 @@ internal_network_parameters:
 data_augmentation:
 - name: useDataAugmentation
   display: Use Data Augmentation
-  value: 0
+  value: 1
   type: bool
   default: True
   help: Data augmentation can improve training progress by amplifying differences in the dataset. This can be useful if the available dataset is small since, in this case, it is possible that a network could quickly learn every example in the dataset (overfitting), without augmentation. Augmentation is not necessary for training and if the dataset is large the values can be set to False.
@@ -112,7 +112,7 @@ data_augmentation:
   help: set the shear intensity (shear angle in counter-clockwise direction in degrees)
 - name: horizontalFlip
   display: Horizontal Flip
-  value: 1
+  value: 0
   type: bool
   default: True
   help: use horizontal flips of the image

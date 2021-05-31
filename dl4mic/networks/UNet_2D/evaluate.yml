@@ -13,13 +13,13 @@ user_parameters:
   help: The base-folder under which the trained model is saved.
 - name: testInputPath
   display: Path to the Input Data
-  value: D:\MRI\Fiji2.app\dl4mic\unet-data\training_source\
+  value: E:\MRI\eaudissect\Soukaina\DL-Prediction\180515-ch2\
   type: directory
   default: ../../unet-data/quality/source/
   help: The path to the folder containig the input images.
 - name: testGroundTruthPath
   display: Path to the Ground Truth Data
-  value: D:\MRI\Fiji2.app\dl4mic\unet-data\training_gt\
+  value: E:\MRI\eaudissect\Soukaina\DL-Prediction\180515-ch2-predicted\
   type: directory
   default: ../../unet-data/quality/target/
   help: The folder containing the ground-truth images.
