@@ -25,10 +25,12 @@ class ParserCreator(object):
                                             default=parameter['default'],
                                             type=float)
                     if parameter['type'] == 'bool':
-                        storeParam = 'store_false'
-                        if parameter['default']:
+                        if parameter['value']==0:
+                            storeParam = 'store_false'
+                        else:
                             storeParam = 'store_true'
                         parser.add_argument('--' + parameter['name'],
                                             help=parameter['help'],
+                                            default=parameter['default'],
                                             action=storeParam)
         return parser

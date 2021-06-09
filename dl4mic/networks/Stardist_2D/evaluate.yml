@@ -1,9 +1,9 @@
 user_parameters:
 - name: name
   display: Name
-  value: new_unet2D_model
+  value: new_stardist_model
   type: string
-  default: new_unet2D_model
+  default: new_stardist_model
   help: The name of the model. The model is read from a folder with this name.
 - name: baseDir
   display: Base Directory
@@ -11,15 +11,21 @@ user_parameters:
   type: directory
   default: E:\MRI\Fiji.app\dl4mic\models\
   help: The base-folder under which the trained model is saved.
+- name: nRays
+  display: Number of Rays
+  value: 16
+  type: int
+  default: 32
+  help: Set number of rays (corners) used for StarDist.
 - name: testInputPath
   display: Path to the Input Data
-  value: E:\MRI\Fiji.app\dl4mic\unet-data\second_source\
+  value: E:\MRI\Fiji.app\dl4mic\unet-data\evaluation_source\
   type: directory
-  default: E:\MRI\Fiji.app\dl4mic\unet-data\second_source\
+  default: E:\MRI\Fiji.app\dl4mic\unet-data\evaluation_source\
   help: The path to the folder containig the input images.
 - name: testGroundTruthPath
   display: Path to the Ground Truth Data
-  value: E:\MRI\Fiji.app\dl4mic\unet-data\second_gt\
+  value: E:\MRI\Fiji.app\dl4mic\unet-data\evaluation_gt\
   type: directory
-  default: E:\MRI\Fiji.app\dl4mic\unet-data\second_gt\
+  default: E:\MRI\Fiji.app\dl4mic\unet-data\evaluation_gt\
   help: The folder containing the ground-truth images.

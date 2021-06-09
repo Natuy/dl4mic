@@ -1,25 +1,25 @@
 user_parameters:
 - name: name
   display: Name
-  value: new_n2v_model2
+  value: new_n2v_model
   type: string
-  default: new n2v model
+  default: new_n2v_model
   help: The name of the model. The model will be saved in a folder with this name. Using the name of an existing model will overwrite the data.
 - name: baseDir
   display: Base Directory
-  value: ../../models/
+  value: E:\MRI\Fiji.app\dl4mic\models\
   type: directory
-  default: ../../models
+  default: E:\MRI\Fiji.app\dl4mic\models\
   help: The base-folder under which the trained model will be saved.
 - name: dataPath
   display: Path to the Source Data
   value: E:\MRI\Fiji.app\dl4mic\n2v-data\training\
   type: directory
-  default: ../../n2v-data/training
+  default: E:\MRI\Fiji.app\dl4mic\n2v-data\training\
   help: The path to the folder containing the noisy images on which the model will be trained.
 - name: epochs
   display: Epochs
-  value: 4
+  value: 30
   type: int
   default: 30
   help: The number of epochs the network will be trained.
@@ -38,7 +38,7 @@ advanced_parameters:
   help: Define the number of training steps by epoch. By default this parameter is calculated so that each image / patch is seen at least once per epoch. Enter 0 to use number_of_patches / batch_size.
 - name: batchSize
   display: Batch Size
-  value: 32
+  value: 16
   type: int
   default: 128
   help: This parameter defines the number of patches seen in each training step. Noise2Void requires a large batch size for stable training. Reduce this parameter if your GPU runs out of memory.
@@ -66,7 +66,7 @@ internal_network_parameters:
   value: 3
   type: int
   default: 3
-  help: The size of conv. kernels in first layer
+  help: The size of convonvolution kernels in first layer
 - name: unetNFirst
   display: U-Net Channels
   value: 32
@@ -79,9 +79,10 @@ internal_network_parameters:
   type: float
   default: 1.6
   help: The percentage of pixels to be manipulated by N2V
-- name: noAugment
-  display: No Data Augmentation
+data_augmentation:
+- name: dataAugment
+  display: Data Augmentation
   value: 1
   type: bool
   default: True
-  help: Do not rotate and flip training patches.
+  help: Rotate and flip training patches to increase the size of the dataset

@@ -106,7 +106,7 @@ def create_patches(Training_source, Training_target, patch_width, patch_height):
     img_save_path = os.path.join(Patch_source,'patch_'+str(i)+'.tif')
     mask_save_path = os.path.join(Patch_target,'patch_'+str(i)+'.tif')
 
-    # if the mask contains at least 1% of its total number pixels as mask, then go ahead and save the images
+    # if the mask conatins at least 1% of its total number pixels as mask, then go ahead and save the images
     pixel_threshold_array = sorted(all_patches_mask[i].flatten())
     if pixel_threshold_array[int(round(len(pixel_threshold_array)*0.99))]>0:
       io.imsave(img_save_path, img_as_ubyte(normalizeMinMax(all_patches_img[i])))
@@ -300,11 +300,12 @@ def normalize_mi_ma(x, mi, ma, clip=False, eps=1e-20, dtype=np.float32):#dtype=n
 
 
 
-# Simple normalization to min/max for the Mask
+# Simple normalization to min/max fir the Mask
 def normalizeMinMax(x, dtype=np.float32):
   x = x.astype(dtype,copy=False)
   x = (x - np.amin(x)) / (np.amax(x) - np.amin(x))
   return x
+
 
 # def predictionGenerator(Data_path, target_size = (256,256), as_gray = True):
 #   for filename in os.listdir(Data_path):

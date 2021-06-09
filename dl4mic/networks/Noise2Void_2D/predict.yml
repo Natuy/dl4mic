@@ -3,25 +3,25 @@ user_parameters:
   display: Name
   value: new_n2v_model
   type: string
-  default: new n2v model
+  default: new_n2v_model
   help: The name of the model. The model is read from a folder with this name.
 - name: baseDir
   display: Base Directory
-  value: ../../models
+  value: E:\MRI\Fiji.app\dl4mic\models\
   type: directory
-  default: ../../models
+  default: E:\MRI\Fiji.app\dl4mic\models\
   help: The base-folder under which the trained model is saved.
 - name: dataPath
   display: Path to the Input Data
   value: E:\MRI\Fiji.app\dl4mic\n2v-data\prediction-in\
   type: directory
-  default: ../../n2v-data/prediction-in
+  default: E:\MRI\Fiji.app\dl4mic\n2v-data\prediction-in\
   help: The path to the folder containig the noisy images.
 - name: output
   display: Path to the Output Data
-  value: E:\MRI\Fiji.app\dl4mic\n2v-data\tmp\
+  value: E:\MRI\Fiji.app\dl4mic\n2v-data\prediction-out\
   type: directory
-  default: ../../n2v-data/prediction-out
+  default: E:\MRI\Fiji.app\dl4mic\n2v-data\prediction-out\
   help: The folder into which the result images will be saved.
 - name: tileX
   display: Tile X

@@ -117,7 +117,7 @@ dependencies:
     - attrs==19.3.0
     - backcall==0.2.0
     - bleach==3.1.5
-    - csbdeep==0.4.1
+    - csbdeep==0.6.2
     - defusedxml==0.6.0
     - entrypoints==0.3
     - ipykernel==5.3.0
@@ -158,4 +158,4 @@ dependencies:
     - tqdm==4.46.1
     - wcwidth==0.2.4
     - webencodings==0.5.1
-
+    - stardist==0.7.1

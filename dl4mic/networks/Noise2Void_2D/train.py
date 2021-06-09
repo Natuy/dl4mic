@@ -30,10 +30,10 @@ def main(argv):
     n2v.setKernelSize(args.netKernelSize)
     n2v.setUNetNFirst(args.unetNFirst)
     n2v.setPercentPixel(args.n2vPercPix)
-    if args.noAugment:
-        n2v.deactivateDataAugmentation()
-    else:
+    if args.dataAugment:
         n2v.activateDataAugmentation()
+    else:
+        n2v.deactivateDataAugmentation()
 
     n2v.train()
     n2v.saveHistory()

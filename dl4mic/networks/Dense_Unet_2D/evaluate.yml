@@ -1,25 +1,25 @@
 user_parameters:
 - name: name
   display: Name
-  value: turgomap_denseunet2D_model_4_256_night
+  value: new_denseunet2D_model
   type: string
-  default: new_unet2D_model
+  default: new_denseunet2D_model
   help: The name of the model. The model is read from a folder with this name.
 - name: baseDir
   display: Base Directory
-  value: ../../models/
+  value: E:\MRI\Fiji.app\dl4mic\models\
   type: directory
-  default: ../../models/
+  default: E:\MRI\Fiji.app\dl4mic\models\
   help: The base-folder under which the trained model is saved.
 - name: testInputPath
   display: Path to the Input Data
   value: E:\MRI\Fiji.app\dl4mic\unet-data\second_source\
   type: directory
-  default: ../../unet-data/quality/source/
+  default: E:\MRI\Fiji.app\dl4mic\unet-data\second_source\
   help: The path to the folder containig the input images.
 - name: testGroundTruthPath
   display: Path to the Ground Truth Data
   value: E:\MRI\Fiji.app\dl4mic\unet-data\second_gt\
   type: directory
-  default: ../../unet-data/quality/target/
+  default: E:\MRI\Fiji.app\dl4mic\unet-data\second_gt\
   help: The folder containing the ground-truth images.

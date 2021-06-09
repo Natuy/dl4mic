@@ -54,7 +54,7 @@ dependencies:
   - scikit-image=0.16.2
   - scikit-learn=0.23.2
   - pip:
-    - csbdeep==0.5.2
+    - csbdeep==0.6.2
     - cycler==0.10.0
     - imagecodecs==2020.5.30
     - keras==2.2.5
@@ -68,4 +68,5 @@ dependencies:
     - ruamel-yaml-clib==0.2.0
     - tifffile==2020.6.3
     - tqdm==4.47.0
-    
+    - stardist==0.7.1
+    - packaging==20.9
