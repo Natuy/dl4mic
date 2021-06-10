@@ -7,18 +7,14 @@ sys.path.append(r'../lib/')
 from dl4mic.cliparser import ParserCreator
 from dl4mic.stardist import *
 
-
 def main(argv):
-
-    W = '\033[0m'  # white (normal)
-    R = '\033[31m'  # red
     parser = ParserCreator.createArgumentParser("./evaluate.yml")
     args = parser.parse_args(argv[1:])
     full_QC_model_path = os.path.join(args.baseDir, args.name)
     if os.path.exists(os.path.join(full_QC_model_path, 'weights_best.h5')):
         print("The " + args.name + " network will be evaluated")
     else:
-        print(R + '!! WARNING: The chosen model does not exist !!' + W)
+        print('!! WARNING: The chosen model does not exist !!')
         print('Please make sure you provide a valid model path and model name before proceeding further.')
 
     # Create a quality control/Prediction Folder
@@ -43,13 +39,19 @@ def main(argv):
     source_dir_list = os.listdir(args.testInputPath)
     number_of_dataset = len(source_dir_list)
     print('Number of dataset found in the folder: '+str(number_of_dataset))
+    im=imread(args.testInputPath +"/"+ source_dir_list[0])
+    n_channel = 1 if im.ndim == 2 else im.shape[-1]
+    if n_channel == 1:
+        axis_norm = (0, 1)  # normalize channels independently
+    if n_channel > 1:
+        axis_norm = (0, 1, 2)  # normalize channels jointly
 
     predictions = []
     polygons= []
     for i in range(number_of_dataset):
         print("processing dataset " + str(i+1) + ", file: " + source_dir_list[i])
         image = imread(args.testInputPath +"/"+ source_dir_list[i])
-        
+        image = normalize(image,1,99.8, axis=axis_norm)
         labels, poly =model.predict_instances(image)
         predictions.append(labels)
         polygons.append(poly)
@@ -80,6 +82,13 @@ def main(argv):
 
                 stats = matching(test_ground_truth_image, test_prediction, thresh=0.5)
 
+                # Convert pixel values to 0 or 255
+                test_prediction_0_to_255 = test_prediction
+                test_prediction_0_to_255[test_prediction_0_to_255 > 0] = 255
+
+                # Convert pixel values to 0 or 255
+                test_ground_truth_0_to_255 = test_ground_truth_image
+                test_ground_truth_0_to_255[test_ground_truth_0_to_255 > 0] = 255
                 # Intersection over Union metric
 
                 intersection = np.logical_and(test_ground_truth_image, test_prediction)

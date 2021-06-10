@@ -37,8 +37,12 @@ def main(argv):
     X = list(map(imread, X))
     Y = list(map(imread, Y))
     # Normalisation
-    axis_norm = (0, 1)
     n_channel = 1 if X[0].ndim == 2 else X[0].shape[-1]
+    if n_channel == 1:
+        axis_norm = (0,1)   # normalize channels independently
+    if n_channel > 1:
+        axis_norm = (0,1,2) # normalize channels jointly
+
 
     X = [normalize(x, 1, 99.8, axis=axis_norm) for x in X]
     Y = [fill_label_holes(y) for y in Y]
@@ -59,17 +63,8 @@ def main(argv):
     X_trn, Y_trn = [X[i] for i in ind_train], [Y[i] for i in ind_train]
 
     full_model_path = os.path.join(args.baseDir, args.name)
-    W = '\033[0m'  # white (normal)
-    R = '\033[31m'  # red
     if os.path.exists(full_model_path):
-        print(R + '!! WARNING: Folder already exists and will be overwritten !!' + W)
-
-    model_checkpoint = ModelCheckpoint(os.path.join(full_model_path, 'weights_best.hdf5'), monitor='val_loss',
-                                       verbose=1, save_best_only=True)
-
-
-    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, verbose=1, mode='auto',
-                                  patience=10, min_lr=0)
+        print('!! WARNING: Folder already exists and will be overwritten !!')
 
     conf = Config2D(
         n_rays=args.nRays,
@@ -95,13 +90,13 @@ def main(argv):
     else:
         number_of_steps = args.stepsPerEpoch
 
-    augmenter = None
+    augment = None
     if args.augmentationFactor > 1:
-        augmenter = augmenter
+        augment = augmenter
         print("Data Augmentation Enabled")
 
     if os.path.exists(full_model_path):
-        print(R+'!! WARNING: Model folder already existed and has been removed !!'+W)
+        print('!! WARNING: Model folder already existed and has been removed !!')
         shutil.rmtree(full_model_path)
 
     os.makedirs(full_model_path)
@@ -119,18 +114,16 @@ def main(argv):
     print('---------------------------- ------------------------ ----------------------------')
 
     start = time.time()
-
-    #model.callbacks.append(model_checkpoint);
-    #model.callbacks.append(reduce_lr)
     
-    history = model.train(X_trn, Y_trn, validation_data=(X_val, Y_val), augmenter=augmenter,
+    history = model.train(X_trn, Y_trn, validation_data=(X_val, Y_val), augmenter=augment,
                           epochs=args.epochs,
                           steps_per_epoch=number_of_steps)
 
     # Save the last model
-    model.keras_model.save(os.path.join(full_model_path, 'weights_last.hdf5'))
+    #model.keras_model.save(os.path.join(full_model_path, 'weights_last.hdf5'))
 
     lossDataCSVPath = os.path.join(full_model_path, 'Quality Control/training_evaluation.csv')
+
     with open(lossDataCSVPath, 'w', newline="") as f:
         writer = csv.writer(f)
         writer.writerow(history.history.keys())

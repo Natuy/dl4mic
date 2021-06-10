@@ -111,11 +111,9 @@ def stardist(config,name,basedir):
 def saveResult(save_path, nparray, polygons, source_dir_list, prefix=''):
     if not os.path.exists(save_path):
         os.makedirs(save_path)
-        
+
     for (filename, image,poly) in zip(source_dir_list, nparray, polygons):
-        print(os.path.join(save_path, prefix+os.path.splitext(filename)[0]+'.tif'))
         imsave(os.path.join(save_path, prefix+os.path.splitext(filename)[0]+'.tif'), image, polygons)
-        print(poly['coord'])
         export_imagej_rois(os.path.join(save_path, prefix+os.path.splitext(filename)[0]), poly['coord'])
 
 
@@ -154,15 +152,16 @@ def export_imagej_rois(fname, polygons, set_position=True, subpixel=True, compre
     if isinstance(polygons,np.ndarray):
         polygons = (polygons,)
 
-    fname = Path(fname)
-    if fname.suffix == '.zip':
-        fname = fname.with_suffix('')
+    if polygons[0].shape[0]>0:
+        fname = Path(fname)
+        if fname.suffix == '.zip':
+            fname = fname.with_suffix('')
 
-    with ZipFile(str(fname)+'.zip', mode='w', compression=compression) as roizip:
-        for pos,polygroup in enumerate(polygons,start=1):
-            for i,poly in enumerate(polygroup,start=1):
-                roi = polyroi_bytearray(poly[1],poly[0], pos=(pos if set_position else None), subpixel=subpixel)
-                roizip.writestr('{pos:03d}_{i:03d}.roi'.format(pos=pos,i=i), roi)
+        with ZipFile(str(fname)+'.zip', mode='w', compression=compression) as roizip:
+            for pos,polygroup in enumerate(polygons,start=1):
+                for i,poly in enumerate(polygroup,start=1):
+                    roi = polyroi_bytearray(poly[1],poly[0], pos=(pos if set_position else None), subpixel=subpixel)
+                    roizip.writestr('{pos:03d}_{i:03d}.roi'.format(pos=pos,i=i), roi)
 
 
 def polyroi_bytearray(x,y,pos=None,subpixel=True):
@@ -183,10 +182,8 @@ def polyroi_bytearray(x,y,pos=None,subpixel=True):
     # add offset since pixel center is at (0.5,0.5) in ImageJ
     x_raw = np.asarray(x).ravel() + 0.5
     y_raw = np.asarray(y).ravel() + 0.5
-    print(x_raw)
     x = np.round(x_raw)
     y = np.round(y_raw)
-    print(x)
     assert len(x) == len(y)
     top, left, bottom, right = y.min(), x.min(), y.max(), x.max() # bbox
     n_coords = len(x)
@@ -224,7 +221,5 @@ def polyroi_bytearray(x,y,pos=None,subpixel=True):
     return bytearray(B)
 
 # -------------- Other definitions -----------
-W  = '\033[0m'  # white (normal)
-R  = '\033[31m' # red
 prediction_prefix = ''
 

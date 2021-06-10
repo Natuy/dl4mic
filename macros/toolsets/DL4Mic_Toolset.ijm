@@ -181,7 +181,6 @@ function train() {
 	name = getValueOfParameter(_PT_TRAINING,"name");
 	outPath = baseDir + name;
 	showMessageWithCancel("Training of "+_CURRENT_NETWORK+"\n"+"Epochs: " + epochs + "\n" + "Data path: "+dataPath + "\n" + "Result will be saved as " + outPath);
-	if (isOpen("Log")) selectWindow("Log");
 	
 	launchPythonExecution(_PT_TRAINING);
 	catchLog(_PT_TRAINING);
@@ -234,7 +233,7 @@ function evaluate() {
 
 	baseDir = getValueOfParameter(_PT_EVALUATE,'baseDir');
 	name = getValueOfParameter(_PT_EVALUATE,"name");
-	qcDir = baseDir + File.separator + name + File.separator +"Quality Control"+File.separator ;
+	qcDir = baseDir + name + File.separator +"Quality Control"+File.separator ;
 	predictionsDir = qcDir + "Prediction"+File.separator ;
 	
 	print("" + count + " result images have been written to: \n" + predictionsDir);
@@ -757,7 +756,6 @@ function openImageSeries(path, name, file, zoomOut) {
 	if(file!="") {
 		parameter = parameter + "filter="+file; 
 	}
-	print(parameter);
 	run("Image Sequence...", parameter);
 	id = getImageID();
 	rename(name);
@@ -790,6 +788,10 @@ function initNetworksArray() {
 	return networks;
 }
 
+macro "Display Training Evaluation Plot []"{
+	displayTrainingEvaluationPlot();
+}
+
 function displayTrainingEvaluationPlot() {
 	requireNetwork();
 	
@@ -799,14 +801,34 @@ function displayTrainingEvaluationPlot() {
 		text = File.openAsString(path);
 		text = replace(text, "\n\n", "\n");
 		lines = split(text, "\n");
+		
+		header = split(lines[0],",");
+		loss_id=-1;
+		valloss_id = -1;
+		for(i=0;i< header.length;i++){
+			if(header[i].matches("loss")){
+				loss_id=i;
+			}if(header[i].matches("val_loss")){
+				valloss_id=i;
+			}
+		}
+		if(loss_id==-1){
+			print("Loss column not found, taking first column as loss");
+			loss_id=0;
+		}
+		if(valloss_id==-1){
+			print("Val Loss column not found, taking second column as val_loss");
+			valloss_id=1;
+		}
+		
 		loss = newArray(0);
 		valLoss = newArray(0);
 		for (i = 1; i < lines.length; i++) {
 			line = lines[i];
 			parts = split(line, ',');
 			if (parts.length<2) continue;
-			currentLoss = parseFloat(parts[0]);
-			currentValLoss = parseFloat(parts[1]);
+			currentLoss = parseFloat(parts[loss_id]);
+			currentValLoss = parseFloat(parts[valloss_id]);
 			loss = Array.concat(loss, currentLoss);
 			valLoss = Array.concat(valLoss, currentValLoss);
 		}
@@ -841,6 +863,7 @@ function catchLog(_PT){
 	
 	_COMPRESSED_EPOCH_LOG = true;
 	
+	if (isOpen("Log")) selectWindow("Log");
 	logPath = getDirectory("imagej") + "dl4mic"+File.separator +"networks"+File.separator+_CURRENT_NETWORK+File.separator+_LOG_FILENAME[_PT];
 	exists = File.exists(logPath);
 	print("log path", logPath);
