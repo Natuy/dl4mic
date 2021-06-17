@@ -802,7 +802,8 @@ function displayTrainingEvaluationPlot() {
 		text = replace(text, "\n\n", "\n");
 		lines = split(text, "\n");
 		
-		header = split(lines[0],",");
+		header = split(lines[0],",")
+;
 		loss_id=-1;
 		valloss_id = -1;
 		for(i=0;i< header.length;i++){
@@ -863,7 +864,8 @@ function catchLog(_PT){
 	
 	_COMPRESSED_EPOCH_LOG = true;
 	
-	if (isOpen("Log")) selectWindow("Log");
+	
+if (isOpen("Log")) selectWindow("Log");
 	logPath = getDirectory("imagej") + "dl4mic"+File.separator +"networks"+File.separator+_CURRENT_NETWORK+File.separator+_LOG_FILENAME[_PT];
 	exists = File.exists(logPath);
 	print("log path", logPath);

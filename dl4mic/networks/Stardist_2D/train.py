@@ -32,8 +32,6 @@ def main(argv):
     X = sorted(glob.glob(args.dataSourcePath+"*.tif"))
     Y = sorted(glob.glob(args.dataTargetPath+"*.tif"))
 
-
-
     X = list(map(imread, X))
     Y = list(map(imread, Y))
     # Normalisation
@@ -71,7 +69,7 @@ def main(argv):
         train_batch_size=args.batchSize,
         n_channel_in=n_channel,
         train_patch_size=(args.patchSizeXY, args.patchSizeXY),
-        grid=(args.gridParameterX, args.gridParameterY),
+        grid=(args.gridParameter, args.gridParameter),
         train_learning_rate=args.learningRate,
     )
 

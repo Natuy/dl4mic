@@ -28,7 +28,7 @@ def main(argv):
 
     conf = Config2D(
         n_rays=args.nRays,
-        grid=(2,2),
+        grid=(args.gridParameter,args.gridParameter),
     )
     model = stardist(conf,name=args.name, basedir=args.baseDir)
 
