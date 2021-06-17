@@ -3,25 +3,25 @@ user_parameters:
   display: Name
   value: new_n2v_model
   type: string
-  default: new n2v model
+  default: new_n2v_model
   help: The name of the model. The model is read from a folder with this name.
 - name: baseDir
   display: Base Directory
-  value: ../../models/
+  value: E:\MRI\Fiji.app\dl4mic\models\
   type: directory
-  default: ../../models/
+  default: E:\MRI\Fiji.app\dl4mic\models\
   help: The base-folder under which the trained model is saved.
 - name: testInputPath
   display: Path to the Input Data
-  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/n2v-data/evaluation/input/
+  value: E:\MRI\Fiji.app\dl4mic\n2v-data\evaluation\input\
   type: directory
-  default: ../../models/new_n2v_model/test/input/
+  default: E:\MRI\Fiji.app\dl4mic\n2v-data\evaluation\input\
   help: The path to the folder containig the noisy input images.
 - name: testGroundTruthPath
   display: Path to the Ground Truth Data
-  value: /media/baecker/DONNEES1/programs/fiji-linux64/Fiji.app/dl4mic/n2v-data/evaluation/gt/
+  value: E:\MRI\Fiji.app\dl4mic\n2v-data\evaluation\gt\
   type: directory
-  default: ../../models/new_n2v_model/test/gt/
+  default: E:\MRI\Fiji.app\dl4mic\n2v-data\evaluation\gt\
   help: The folder containing the ground-truth images.
 - name: tileX
   display: Tile X
@@ -30,7 +30,7 @@ user_parameters:
   default: 1
   help: The image will be cut into Tile X tiles in the x-dimension if necessary to fit into the GPU memory.
 - name: tileY
-  displaydisplay: Tile Y
+  display: Tile Y
   value: 2
   type: int
   default: 2

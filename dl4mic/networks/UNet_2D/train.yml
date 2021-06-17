@@ -1,31 +1,31 @@
 user_parameters:
 - name: name
   display: Name
-  value: turgomap_unet2D_model_trash
+  value: new_unet2D_model
   type: string
   default: new_unet2D_model
   help: The name of the model. The model will be saved in a folder with this name. Using the name of an existing model will overwrite the data
 - name: baseDir
   display: Base Directory
-  value: ../../models
+  value: E:\MRI\Fiji.app\dl4mic\models\
   type: directory
-  default: ../../models
+  default: E:\MRI\Fiji.app\dl4mic\models\
   help: The base-folder under which the trained model will be saved.
 - name: dataSourcePath
   display: Path to the Source Data
-  value: ../../unet-data/training_source
+  value: E:\MRI\Fiji.app\dl4mic\unet-data\training_source\
   type: directory
-  default: ../../unet-data/training/source
+  default: E:\MRI\Fiji.app\dl4mic\unet-data\training_source\
   help: The path to the folder containing the input images on which the model will be trained.
 - name: dataTargetPath
   display: Path to the Target Data
-  value: ../../unet-data/training_gt
+  value: E:\MRI\Fiji.app\dl4mic\unet-data\training_gt\
   type: directory
-  default: ../../unet-data/training/target
+  default: E:\MRI\Fiji.app\dl4mic\unet-data\training_gt\
   help: The path to the folder containing the gt-masks on which the model will be trained.
 - name: epochs
   display: Epochs
-  value: 1
+  value: 200
   type: int
   default: 200
   help: The number of epochs the network will be trained.
@@ -62,7 +62,7 @@ advanced_parameters:
   help: The initial learning rate. The learning rate controls how much the weights of the network with are adjusted with respect to the loss gradient.
 - name: resumeTraining
   display: Resume Training
-  value: false
+  value: 0
   type: bool
   default: false
   help: If enabled, the training will take as starting weight the weigths of the Original Model
@@ -82,7 +82,7 @@ internal_network_parameters:
 data_augmentation:
 - name: useDataAugmentation
   display: Use Data Augmentation
-  value: 0
+  value: 1
   type: bool
   default: True
   help: Data augmentation can improve training progress by amplifying differences in the dataset. This can be useful if the available dataset is small since, in this case, it is possible that a network could quickly learn every example in the dataset (overfitting), without augmentation. Augmentation is not necessary for training and if the dataset is large the values can be set to False.

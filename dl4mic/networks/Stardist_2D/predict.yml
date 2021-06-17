@@ -1,9 +1,9 @@
 user_parameters:
 - name: name
   display: Name
-  value: new_denseunet2D_model
+  value: new_stardist_model
   type: string
-  default: new_denseunet2D_model
+  default: new_stardist_model
   help: The name of the model. The model is read from a folder with this name.
 - name: baseDir
   display: Base Directory
@@ -11,21 +11,21 @@ user_parameters:
   type: directory
   default: E:\MRI\Fiji.app\dl4mic\models\
   help: The base-folder under which the trained model is saved.
+- name: nRays
+  display: Number of Rays
+  value: 16
+  type: int
+  default: 32
+  help: Set number of rays (corners) used for StarDist.
 - name: dataPath
   display: Path to the Input Data
-  value: E:\MRI\Fiji.app\dl4mic\unet-data\second_source\
+  value: E:\MRI\Fiji.app\dl4mic\unet-data\predict_source\
   type: directory
-  default: E:\MRI\Fiji.app\dl4mic\unet-data\second_source\
+  default: E:\MRI\Fiji.app\dl4mic\unet-data\predict_source\
   help: The path to the folder containig the input images.
 - name: output
   display: Path to the Output Data
-  value: E:\MRI\Fiji.app\dl4mic\unet-data\model_output\
+  value: E:\MRI\Fiji.app\dl4mic\unet-data\predict_output\
   type: directory
-  default: E:\MRI\Fiji.app\dl4mic\unet-data\model_output\
+  default: E:\MRI\Fiji.app\dl4mic\unet-data\predict_output\
   help: The folder into which the result images will be saved.
-- name: threshold
-  display: Threshold
-  value: 127.5
-  type: float
-  default: 127.5
-  help: The threshold value used to create binary masks

@@ -1,27 +1,27 @@
 user_parameters:
 - name: name
   display: Name
-  value: turgomap_unet2D_model_4
+  value: new_unet2D_model
   type: string
-  default: turgomap_unet2D_model
+  default: new_unet2D_model
   help: The name of the model. The model is read from a folder with this name.
 - name: baseDir
   display: Base Directory
-  value: ../../models/
+  value: E:\MRI\Fiji.app\dl4mic\models\
   type: directory
-  default: ../../models
+  default: E:\MRI\Fiji.app\dl4mic\models\
   help: The base-folder under which the trained model is saved.
 - name: dataPath
   display: Path to the Input Data
-  value: E:\MRI\eaudissect\Soukaina\DL-Prediction\180515-ch1\
+  value: E:\MRI\Fiji.app\dl4mic\unet-data\second_source\
   type: directory
-  default: ../../unet-data/data
+  default: E:\MRI\Fiji.app\dl4mic\unet-data\second_source\
   help: The path to the folder containig the input images.
 - name: output
   display: Path to the Output Data
-  value: E:\MRI\eaudissect\Soukaina\DL-Prediction\180515-ch1-predicted\
+  value: E:\MRI\Fiji.app\dl4mic\unet-data\predict_output\
   type: directory
-  default: ../../unet-data/tmp_out
+  default: E:\MRI\Fiji.app\dl4mic\unet-data\predict_output\
   help: The folder into which the result images will be saved.
 - name: threshold
   display: Threshold

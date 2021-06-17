@@ -1,0 +1,56 @@
+macro:
+	DL4Mic Action Tool (f2)
+	DL4Mic About [f2]
+	Help Action Tool (f3)
+	DL4mic Help [f3]
+	Select a network Menu Tool
+	Info Action Tool (f4)
+	DL4Mic Info [f4]
+	Training Parameter Menu Tool
+	Train the model Action Tool (f6)
+	DL4Mic Train [f6]
+	Evaluate the model Action Tool (f7)
+	DL4Mic Evaluate [f7]
+	Evaluate the model Action Tool (f7) Options
+	Predict Action Tool (f8)
+	DL4Mic Predict [f8]
+	Predict Action Tool (f8) Options
+	Open Log []
+	Reset Parameters []
+	
+function:
+	//Info
+		showHelp()
+		about()
+		info()
+	//Main
+		train()
+		evaluate()
+		predict()
+	//Python Management
+		installEnv(oldEnv, newEnv)
+		launchPythonExecution(_PT)
+		writeBatchFile(_PT)
+	//Parameters Management
+		getParameterString(_PT)
+		getValueOfParameter(_PT,aParameter)
+		readParameters(_PT)
+		saveParameters(_PT)
+	//Dialog Management
+		showMenuParameterDialog()
+		showParametersDialog(_PT,parameterGroup)
+		showInstallEnvDialog()
+		showPythonInterpreterDialog()
+		selectNetwork()
+		askLogToOpen()
+	//Misc
+		requireNetwork()
+		requireInboundPT(_PT)
+		setSubtitles(imageID, columnName, label)
+		emptyTmpFolder()
+		containsFileWithPrefix(folder, prefix)
+		openImageSeries(path, name, file, zoomOut)
+		findPythonInterpreter()
+		initNetworksArray()
+		displayTrainingEvaluationPlot()
+		catchLog(_PT)
