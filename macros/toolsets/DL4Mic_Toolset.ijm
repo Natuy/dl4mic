@@ -30,13 +30,13 @@ var _PT_ACTION = newArray(
 	"evaluate"
 	);
 
-var _CURRENT_PARAMETER_GROUP = newArray(0);
-var _CURRENT_PARAMETER_NAME = newArray(0);
-var _CURRENT_PARAMETER_DISPLAY = newArray(0);
-var _CURRENT_PARAMETER_VALUE = newArray(0);
-var _CURRENT_PARAMETER_HELP = newArray(0);
-var _CURRENT_PARAMETER_TYPE = newArray(0);
-var _CURRENT_PARAMETER_DEFAULT = newArray(0);
+var _CURRENT_PARAMETER_GROUP 	= newArray(0);
+var _CURRENT_PARAMETER_NAME		= newArray(0);
+var _CURRENT_PARAMETER_DISPLAY 	= newArray(0);
+var _CURRENT_PARAMETER_VALUE 	= newArray(0);
+var _CURRENT_PARAMETER_HELP 	= newArray(0);
+var _CURRENT_PARAMETER_TYPE 	= newArray(0);
+var _CURRENT_PARAMETER_DEFAULT 	= newArray(0);
 
 var trainingParameterMenuArray = newArray("user parameters","advanced parameters","internal network parameters","data augmentation","---","python interpreter","install deep-learning env." );
 var trainingParameterMenuItems = newMenu("Training Parameter Menu Tool", trainingParameterMenuArray);
@@ -137,6 +137,22 @@ macro "Reset all parameters to default values[]"{
 	_CURRENT_NETWORK = current_network;
 }
 
+macro "Set all parameters default values to current values[]"{
+	showMessageWithCancel("Are you sure you want to Modify all default parameters ? This cannot be undone");
+	current_network = _CURRENT_NETWORK;
+	for(n=0;n<_NETWORKS.length();n++){
+		_CURRENT_NETWORK=_NETWORKS[n];
+		for(_pt = 0 ; _pt < 3;_pt++){
+			readParameters(_pt);
+			for (i = 0; i < _CURRENT_PARAMETER_GROUP.length; i++) {
+				_CURRENT_PARAMETER_VALUE[i] = _CURRENT_PARAMETER_DEFAULT[i];
+			}
+			saveParameters(_pt);
+		}
+	}
+	_CURRENT_NETWORK = current_network;
+}
+
 //Display information
 
 function showHelp() {
@@ -158,10 +174,9 @@ function about() {
 
 function info() {
 	requireNetwork();
-	
-	message = File.openAsString(_NETWORKS_DIR + File.separator + _CURRENT_NETWORK + "/info.html");
-	imagePath = "file:///"+_NETWORKS_DIR + File.separator + _CURRENT_NETWORK + "/picture.png";
-	imagePath = replace(imagePath, '\\', '/');
+	message = File.openAsString(_NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator +"info.html");
+	imagePath = "file:///"+_NETWORKS_DIR + File.separator + _CURRENT_NETWORK + File.separator +"picture.png";
+	imagePath = replace(imagePath, '\\', File.separator);
 	message = replace(message, "<!--img-->", "<img src='"+imagePath+"'>");
 	showMessage("Info: "+_CURRENT_NETWORK, message);
 }
@@ -185,7 +200,7 @@ function train() {
 	launchPythonExecution(_PT_TRAINING);
 	catchLog(_PT_TRAINING);
 	
-	displayTrainingEvaluationPlot();
+	displayTrainingEvaluationPlot(baseDir,name);
 }
 
 function evaluate() {
@@ -563,7 +578,6 @@ function saveParameters(_PT){
 		content = content + '  help: ' 	  	+ _CURRENT_PARAMETER_HELP[i] + "\n";
 	}
 	
-	//_PT Dependent
 	File.saveString(content, baseFolder + File.separator+_PT_ACTION[_PT]+".yml");
 }
 
@@ -789,21 +803,32 @@ function initNetworksArray() {
 }
 
 macro "Display Training Evaluation Plot []"{
-	displayTrainingEvaluationPlot();
+	baseDir = getDirectory("Base Directory");
+	files = getFileList(baseDir);
+	
+	Dialog.create("Select the model");
+	Dialog.addChoice("Model",files,"");
+	Dialog.show();
+	model = Dialog.getChoice();
+	
+	displayTrainingEvaluationPlot(baseDir,model);
 }
 
-function displayTrainingEvaluationPlot() {
-	requireNetwork();
-	
-	path = ""+getValueOfParameter(_PT_TRAINING,"baseDir") + getValueOfParameter(_PT_TRAINING,"name") + File.separator + "Quality Control" + File.separator + "training_evaluation.csv";
+function displayTrainingEvaluationPlot(baseDir,model) {
+	path = ""+ baseDir + model + File.separator + "Quality Control" + File.separator + "training_evaluation.csv";
+	if(!File.exists(path)){
+		print("Unable to find training evaluation file");
+		return;
+	}
 	os = toLowerCase(getInfo("os.name"));
+	open(path);
+	/*
 	if (indexOf(os, "win")>-1) {
 		text = File.openAsString(path);
 		text = replace(text, "\n\n", "\n");
 		lines = split(text, "\n");
 		
-		header = split(lines[0],",")
-;
+		header = split(lines[0],",");
 		loss_id=-1;
 		valloss_id = -1;
 		for(i=0;i< header.length;i++){
@@ -836,17 +861,19 @@ function displayTrainingEvaluationPlot() {
 		Table.create(path);
 		Table.setColumn("loss", loss, path);
 		Table.setColumn("val_loss", valLoss, path);	
+		
 	} else {
 		open(path);
 	}
+	*/
+	
 	tableTitle = getInfo("window.title");
 	loss = Table.getColumn("loss", tableTitle);
 	valLoss = Table.getColumn("val_loss", tableTitle);
-	xValues = newArray(loss.length);
-	for (i = 1; i <= xValues.length; i++) {
-		xValues[i-1] = i; 
-	}
-	Plot.create("training evaluation "+_CURRENT_NETWORK + "(" +getValueOfParameter(_PT_TRAINING,"name") + ")", "epoch", "loss");
+	xValues = Array.getSequence(loss.length+1);
+	xValues = Array.deleteIndex(xValues,0);
+	
+	Plot.create("training evaluation "+model+"", "epoch", "loss");
 	Plot.setColor("orange");
 	Plot.setLineWidth(2);
 	Plot.add("line", xValues, loss, "training loss");
@@ -864,7 +891,6 @@ function catchLog(_PT){
 	
 	_COMPRESSED_EPOCH_LOG = true;
 	
-	
 if (isOpen("Log")) selectWindow("Log");
 	logPath = getDirectory("imagej") + "dl4mic"+File.separator +"networks"+File.separator+_CURRENT_NETWORK+File.separator+_LOG_FILENAME[_PT];
 	exists = File.exists(logPath);
@@ -879,8 +905,12 @@ if (isOpen("Log")) selectWindow("Log");
 		wait(500);
 		exists = File.exists(logPath);
 	}
-	
-	out = File.openAsString(logPath);
+	if(File.exists(logPath)){
+		out = File.openAsString(logPath);
+	}else{
+		print("Unable to find log, aborting macro");
+		exit();
+	}
 	count = 0;
 	finished = false;
 	endFound = false;
