@@ -18,7 +18,6 @@ macro:
 	Display Training Evaluation Plot []
 	Open Log []
 	Reset all parameters to default values []
-	Set all parameters default values to current values []
 	
 function:
 	//Info

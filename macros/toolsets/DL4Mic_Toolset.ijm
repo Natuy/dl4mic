@@ -116,29 +116,25 @@ macro "Predict Action Tool (f8) Options" {
 }
 
 //Supplementary Macros, not associated with tools
+macro "Display Training Evaluation Plot []"{
+	baseDir = getDirectory("Base Directory");
+	files = getFileList(baseDir);
+	
+	Dialog.create("Select the model");
+	Dialog.addChoice("Model",files,"");
+	Dialog.show();
+	model = Dialog.getChoice();
+	
+	displayTrainingEvaluationPlot(baseDir,model);
+}
+
 macro "Open Log []"{
 	_pt=askLogToOpen();
 	catchLog(_pt);
 }
 
-macro "Reset all parameters to default values[]"{
+macro "Reset all parameters to default values []"{
 	showMessageWithCancel("Are you sure you want to Restore all parameters to default? This cannot be undone");
-	current_network = _CURRENT_NETWORK;
-	for(n=0;n<_NETWORKS.length();n++){
-		_CURRENT_NETWORK=_NETWORKS[n];
-		for(_pt = 0 ; _pt < 3;_pt++){
-			readParameters(_pt);
-			for (i = 0; i < _CURRENT_PARAMETER_GROUP.length; i++) {
-				_CURRENT_PARAMETER_VALUE[i] = _CURRENT_PARAMETER_DEFAULT[i];
-			}
-			saveParameters(_pt);
-		}
-	}
-	_CURRENT_NETWORK = current_network;
-}
-
-macro "Set all parameters default values to current values[]"{
-	showMessageWithCancel("Are you sure you want to Modify all default parameters ? This cannot be undone");
 	current_network = _CURRENT_NETWORK;
 	for(n=0;n<_NETWORKS.length();n++){
 		_CURRENT_NETWORK=_NETWORKS[n];
@@ -572,7 +568,11 @@ function saveParameters(_PT){
 		}
 		content = content + '- name: ' 		+ _CURRENT_PARAMETER_NAME[i] + "\n";
 		content = content + '  display: ' 	+ _CURRENT_PARAMETER_DISPLAY[i] + "\n";
-		content = content + '  value: ' 	+ _CURRENT_PARAMETER_VALUE[i] + "\n";
+		if(_CURRENT_PARAMETER_VALUE[i] == ""){
+			content = content + '  value: ' 	+ _CURRENT_PARAMETER_DEFAULT[i] + "\n";
+		}else{
+			content = content + '  value: ' 	+ _CURRENT_PARAMETER_VALUE[i] + "\n";
+		}
 		content = content + '  type: ' 		+ _CURRENT_PARAMETER_TYPE[i] + "\n";
 		content = content + '  default: '	+ _CURRENT_PARAMETER_DEFAULT[i] + "\n";
 		content = content + '  help: ' 	  	+ _CURRENT_PARAMETER_HELP[i] + "\n";
@@ -802,18 +802,6 @@ function initNetworksArray() {
 	return networks;
 }
 
-macro "Display Training Evaluation Plot []"{
-	baseDir = getDirectory("Base Directory");
-	files = getFileList(baseDir);
-	
-	Dialog.create("Select the model");
-	Dialog.addChoice("Model",files,"");
-	Dialog.show();
-	model = Dialog.getChoice();
-	
-	displayTrainingEvaluationPlot(baseDir,model);
-}
-
 function displayTrainingEvaluationPlot(baseDir,model) {
 	path = ""+ baseDir + model + File.separator + "Quality Control" + File.separator + "training_evaluation.csv";
 	if(!File.exists(path)){
@@ -890,8 +878,9 @@ function catchLog(_PT){
 	requireInboundPT(_PT);
 	
 	_COMPRESSED_EPOCH_LOG = true;
+	_LIVE_TRAINING_PLOT = true;
 	
-if (isOpen("Log")) selectWindow("Log");
+	if (isOpen("Log")) selectWindow("Log");
 	logPath = getDirectory("imagej") + "dl4mic"+File.separator +"networks"+File.separator+_CURRENT_NETWORK+File.separator+_LOG_FILENAME[_PT];
 	exists = File.exists(logPath);
 	print("log path", logPath);
@@ -929,7 +918,15 @@ if (isOpen("Log")) selectWindow("Log");
 	
 	end   =-1;
 	last_a=-1;
-	last_b=-1;	
+	last_b=-1;
+	
+	loss_value = newArray();
+	valloss_value = newArray();
+	plot_started = false;
+	
+	if(_PT == _PT_TRAINING && _LIVE_TRAINING_PLOT){
+		Plot.create("Current Training", "epoch", "loss");
+	}
 	while (!finished){
 		if (endFound) finished = true;
 		lines = split(out, "\n");
@@ -940,6 +937,7 @@ if (isOpen("Log")) selectWindow("Log");
 		start = count;
 		end = lines.length;
 	
+		
 		for (i = start; i < end; i++) {
 			printed= false;
 			if(_COMPRESSED_EPOCH_LOG){
@@ -962,6 +960,57 @@ if (isOpen("Log")) selectWindow("Log");
 			if(!printed){
 				print(lines[i]);
 			}
+			if(_PT == _PT_TRAINING && _LIVE_TRAINING_PLOT){
+				if(lines[i].startsWith("Epoch")){
+					if(i==0){
+						
+					}else{
+						epoch_split=split(lines[i-1]," ");
+						loss_set = false;
+						valloss_set = false;
+						for(s=0;s<epoch_split.length;s++){
+							if(epoch_split[s]=="loss:"){
+								loss_value = Array.concat(loss_value,parseFloat(epoch_split[s+1]));
+								loss_set = true;
+							}
+							if(epoch_split[s]=="val_loss:"){
+								valloss_value = Array.concat(valloss_value,parseFloat(epoch_split[s+1]));
+								valloss_set = true;
+							}
+						}
+						if(!loss_set){
+							loss_value = Array.concat(loss_value,NaN);
+						}
+						if(!valloss_set){
+							valloss_value = Array.concat(valloss_value,NaN);
+						}
+						xValues = Array.getSequence(loss_value.length);
+						if(plot_started){
+							Plot.setColor("orange");
+							Plot.replace( 0,"line", xValues, loss_value);
+							Plot.setColor("blue");
+							Plot.replace( 1,"line", xValues, valloss_value);
+							Plot.setLegend("training loss\tvalidation loss", "top-right");
+							Plot.setStyle(0, "orange,none,2.0,Line");
+							Plot.setStyle(1, "blue,none,2.0,Line");
+							Plot.removeNaNs;
+						}else{
+							if(loss_value[loss_value.length-1]!=NaN && valloss_value[valloss_value.length-1]!=NaN){
+								Plot.setColor("orange");
+								Plot.setLineWidth(2);
+								Plot.add("line", xValues, loss_value, "training loss");
+								Plot.setColor("blue");
+								Plot.setLineWidth(2);
+								Plot.add("line", xValues, valloss_value, "validation loss");
+								Plot.update();
+								plot_started=true;
+							}
+						}
+						Plot.setLimits(0,xValues.length+1,NaN,NaN);
+						//Plot.setLimitsToFit();
+					}
+				}
+			}
 		}
 		count=end;
 		endFound = indexOf(out, endString)!=-1;
@@ -970,5 +1019,8 @@ if (isOpen("Log")) selectWindow("Log");
 		if (File.exists(logPath)){
 		    out = File.openAsString(logPath);
 	    }
+	}
+	if(_PT==_PT_TRAINING && _LIVE_TRAINING_PLOT){
+		close("Current Training");
 	}
 }
